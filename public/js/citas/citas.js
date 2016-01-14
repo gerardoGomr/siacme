@@ -44,6 +44,7 @@ $(function() {
 
 			var check = $.fullCalendar.formatDate(date,'yyyy-MM-dd');
 			var today = $.fullCalendar.formatDate(new Date(),'yyyy-MM-dd');
+
 			if(check < today) {
 				// Previous Day. show message if you want otherwise do nothing.
 				// So it will be unselectable
@@ -92,19 +93,39 @@ $(function() {
         }
 	});
 
-	// generar lista
-	$('#generarLista').on('click', function(event) {
-		event.preventDefault();
+	$calendario.find('span.fc-button-prev').click(function(){
+		verificarFechas();
+	});
 
-		// nueva ventana
-		window.open($(this).attr('href'), '_blank', 'scrollbars=yes, width=800, height=600');
-	})
+	$calendario.find('span.fc-button-next').click(function(){
+		verificarFechas();
+	});
+
+	verificarFechas();
 });
 
 // recargar eventos del calendario
 function recargarCitas()
 {
     $('#calendario').fullCalendar('refetchEvents');
+}
+
+/**
+ * verificar si se puede o no generar el reporte
+ */
+function verificarFechas()
+{
+	var fecha = $.fullCalendar.formatDate($('#calendario').fullCalendar('getDate'), 'yyyy-MM-dd'),
+		today = $.fullCalendar.formatDate(new Date(),'yyyy-MM-dd');
+
+	// por default no se puede
+	$('#generarLista').attr('href', 'javascript:;');
+	$('#generarLista').removeClass('btn-success').addClass('btn-default');
+	if(fecha >= today) {
+		// habilitar
+		$('#generarLista').removeClass('btn-default').addClass('btn-success');
+		$('#generarLista').attr('href', $('#rutaPdf').val() + '/' + btoa($('#medico').val()) + '/' + fecha);
+	}
 }
 
 setInterval(function(){

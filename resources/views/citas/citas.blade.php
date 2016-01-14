@@ -16,11 +16,12 @@
 			<div class="widget">
 				<div class="widget-body innerAll inner-2x">
 					<div data-component>
-						<div><a href="{{ url('citas/lista/pdf') }}" class="btn btn-success" id="generarLista"><i class="fa fa-file"></i>&nbsp;<i class="fa fa-print"></i> Generar lista</a></div>
+						<div><a href="javascript:;" class="btn btn-success" id="generarLista"><i class="fa fa-file"></i>&nbsp;<i class="fa fa-print"></i> Generar lista</a></div>
 						<div class="separator bottom"></div>
 						<div id="calendario"></div>
 						<input type="hidden" id="medico" value="{{ $medico->getUsername() }}" />
 						<input type="hidden" id="rutaCitas" value="{!! url('citas/') !!}" />
+						<input type="hidden" id="rutaPdf" value="{{ url('citas/lista/pdf') }}" />
 						<input type="hidden" id="reprogramar" value="0" />
 						<input type="hidden" id="_token" value="{{ csrf_token() }}" />
 					</div>
