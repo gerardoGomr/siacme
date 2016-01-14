@@ -36,12 +36,11 @@ class CitasController extends Controller
     }
 
     /**
-     * @param Request                      $request
      * @param string                       $username
      * @param UsuariosRepositorioInterface $usuariosRepositorio
      * @return View
      */
-    public function index(Request $request, $username, UsuariosRepositorioInterface $usuariosRepositorio)
+    public function index($username, UsuariosRepositorioInterface $usuariosRepositorio)
     {
         if(($medico = $usuariosRepositorio->obtenerUsuarioPorUsername($username)) === null) {
             return view('error');

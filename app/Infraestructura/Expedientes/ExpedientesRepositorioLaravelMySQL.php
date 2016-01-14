@@ -13,8 +13,6 @@ use Siacme\Dominio\Usuarios\Usuario;
  */
 class ExpedientesRepositorioLaravelMySQL implements ExpedientesRepositorioInterface
 {
-	//public abstract function buscarExpedientesPorNombre($nombreBusqueda = '');
-
 	/**
 	 * @param Expediente $expediente
 	 * @return bool
@@ -27,7 +25,7 @@ class ExpedientesRepositorioLaravelMySQL implements ExpedientesRepositorioInterf
 					->insertGetId([
 						'idPaciente'         => $expediente->getPaciente()->getId(),
 						'UserMedico'         => $expediente->getMedico()->getUsername(),
-						'PrimeraVez'         => 1,
+						'PrimeraVez'         => $expediente->primeraVez() ? '1' : '0',
 						'FechaCreacion'      => date('Y-m-d'),
 						'FechaActualizacion' => date('Y-m-d')
 					]);
@@ -39,6 +37,7 @@ class ExpedientesRepositorioLaravelMySQL implements ExpedientesRepositorioInterf
 					->where('idExpediente', '=', $expediente->getId())
 					->update([
 						'PrimeraVez'		 => $expediente->primeraVez() ? '1' : '0',
+						'Firma'				 => $expediente->getFirma(),
 						'FechaActualizacion' => date('Y-m-d')
 					]);
 			}
@@ -70,7 +69,7 @@ class ExpedientesRepositorioLaravelMySQL implements ExpedientesRepositorioInterf
 				$expediente = new Expediente($expedientes->idExpediente);
 				$expediente->setPaciente($paciente);
 				$expediente->setMedico($medico);
-
+				$expediente->setPrimeraVez($expedientes->PrimeraVez);
 				return $expediente;
 			}
 
@@ -78,5 +77,14 @@ class ExpedientesRepositorioLaravelMySQL implements ExpedientesRepositorioInterf
 		} catch(\PDOException $e) {
 			return null;
 		}
+	}
+
+	/**
+	 * @param  int		  $idExpediente
+	 * @return Expediente
+	 */
+	public function obtenerExpedientePorId($idExpediente)
+	{
+
 	}
 }

@@ -161,6 +161,8 @@ class PacientesRepositorioLaravelMySQL
 		$paciente->setEscolaridad(new Escolaridad($pacientes->idEscolaridad, $pacientes->Escolaridad));
 		$paciente->setInstitucionMedica(new InstitucionMedica($pacientes->idInstitucionMedica, $pacientes->InstitucionMedica));
 
+		$paciente->revisaFoto();
+
 		$paciente->setNombre($pacientes->Nombre);
 		$paciente->setPaterno($pacientes->Paterno);
 		$paciente->setMaterno($pacientes->Materno);

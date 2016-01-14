@@ -2,11 +2,14 @@
 namespace Siacme\Http\Controllers\Expedientes;
 
 use Illuminate\Http\Request;
+use Siacme\Dominio\Citas\Cita;
+use Siacme\Dominio\Citas\CitaEstatus;
 use Siacme\Dominio\Expedientes\Expediente;
 use Siacme\Dominio\Pacientes\FotografiaPaciente;
 use Siacme\Dominio\Pacientes\Paciente;
 use Siacme\Http\Requests;
 use Siacme\Http\Controllers\Controller;
+use Siacme\Infraestructura\Citas\CitasRepositorioInterface;
 use Siacme\Infraestructura\Expedientes\ExpedientesRepositorioInterface;
 use Siacme\Infraestructura\Pacientes\MarcaPastaRepositorioInterface;
 use Siacme\Infraestructura\Pacientes\PadecimientoRepositorioInterface;
@@ -14,6 +17,7 @@ use Siacme\Infraestructura\Pacientes\TrastornoRepositorioInterface;
 use Siacme\Infraestructura\Usuarios\UsuariosRepositorioInterface;
 use Siacme\Pacientes\PacientesRepositorioInterface;
 use Siacme\Servicios\Expedientes\FabricaExpedientesVistas;
+use Siacme\Servicios\Expedientes\FabricaExpedientesVistasVer;
 use Siacme\Servicios\Pacientes\PacientesFactory;
 use Siacme\Servicios\Pacientes\PacientesRepositorioFactory;
 use Siacme\Usuarios\Especialidad;
@@ -26,26 +30,36 @@ use View;
 
 class ExpedienteController extends Controller
 {
-	public function __construct()
-	{
+	/**
+	 * @var UsuariosRepositorioInterface
+	 */
+	protected $usuariosRepositorio;
 
+	/**
+	 * @var ExpedientesRepositorioInterface
+	 */
+	protected $expedientesRepositorio;
+
+	public function __construct(UsuariosRepositorioInterface $usuariosRepositorio, ExpedientesRepositorioInterface $expedientesRepositorio)
+	{
+		$this->usuariosRepositorio    = $usuariosRepositorio;
+		$this->expedientesRepositorio = $expedientesRepositorio;
 	}
 
 	/**
 	 * @param                              $idPaciente
 	 * @param                              $userMedico
-	 * @param UsuariosRepositorioInterface $usuariosRepositorio
 	 * @return mixed
 	 */
-	public function ver($idPaciente, $userMedico, UsuariosRepositorioInterface $usuariosRepositorio, ExpedientesRepositorioInterface $expedientesRepositorio)
+	public function ver($idPaciente, $userMedico)
 	{
 		$idPaciente           = (int)base64_decode($idPaciente);
 		$userMedico           = base64_decode($userMedico);
-		$medico               = $usuariosRepositorio->obtenerUsuarioPorUsername($userMedico);
+		$medico               = $this->usuariosRepositorio->obtenerUsuarioPorUsername($userMedico);
 		$pacientesRepositorio = PacientesRepositorioFactory::crear($medico);
 		$paciente             = $pacientesRepositorio->obtenerPacientePorId($idPaciente);
-		$expediente           = $expedientesRepositorio->obtenerExpedientePorPacienteMedico($paciente, $medico);
-		return FabricaExpedientesVistas::construirVista($paciente, $medico, $expediente);
+		$expediente           = $this->expedientesRepositorio->obtenerExpedientePorPacienteMedico($paciente, $medico);
+		return FabricaExpedientesVistasVer::construirVista($paciente, $medico, $expediente);
 
 	}
 
@@ -55,19 +69,17 @@ class ExpedienteController extends Controller
 	 * @param PadecimientoRepositorioInterface $padecimientosRepositorio
 	 * @param TrastornoRepositorioInterface    $trastornosRepositorio
 	 * @param MarcaPastaRepositorioInterface   $pastasRepositorio
-	 * @param UsuariosRepositorioInterface     $usuariosRepositorio
-	 * @param ExpedientesRepositorioInterface  $expedientesRepositorio
 	 * @return \Siacme\Servicios\Expedientes\ExpedienteOtorrino
 	 * @throws \Exception
 	 */
-	public function index($idPaciente, $userMedico, PadecimientoRepositorioInterface $padecimientosRepositorio, TrastornoRepositorioInterface $trastornosRepositorio, MarcaPastaRepositorioInterface $pastasRepositorio, UsuariosRepositorioInterface $usuariosRepositorio, ExpedientesRepositorioInterface $expedientesRepositorio)
+	public function index($idPaciente, $userMedico, PadecimientoRepositorioInterface $padecimientosRepositorio, TrastornoRepositorioInterface $trastornosRepositorio, MarcaPastaRepositorioInterface $pastasRepositorio)
 	{
 		$idPaciente           = (int)base64_decode($idPaciente);
 		$userMedico           = base64_decode($userMedico);
-		$medico               = $usuariosRepositorio->obtenerUsuarioPorUsername($userMedico);
+		$medico               = $this->usuariosRepositorio->obtenerUsuarioPorUsername($userMedico);
 		$pacientesRepositorio = PacientesRepositorioFactory::crear($medico);
 		$paciente             = $pacientesRepositorio->obtenerPacientePorId($idPaciente);
-		$expediente           = $expedientesRepositorio->obtenerExpedientePorPacienteMedico($paciente, $medico);
+		$expediente           = $this->expedientesRepositorio->obtenerExpedientePorPacienteMedico($paciente, $medico);
 		$listaPadecimientos   = $padecimientosRepositorio->obtenerPadecimientos();
 		$listaTrastornos      = $trastornosRepositorio->obtenerTrastornos();
 		$listaMarcas          = $pastasRepositorio->obtenerMarcaPastas();
@@ -77,18 +89,16 @@ class ExpedienteController extends Controller
 
 	/**
 	 * @param Request $request
-	 * @param UsuariosRepositorioInterface $usuariosRepositorio
-	 * @param ExpedientesRepositorioInterface $expedientesRepositorio
 	 * @return \Illuminate\Contracts\Routing\ResponseFactory|\Symfony\Component\HttpFoundation\Response
 	 */
-	public function agregarEditarExpediente(Request $request, UsuariosRepositorioInterface $usuariosRepositorio, ExpedientesRepositorioInterface $expedientesRepositorio)
+	public function agregarEditarExpediente(Request $request)
 	{
 		$idPaciente           = (int)base64_decode($request->get('idPaciente'));
 		$userMedico           = base64_decode($request->get('userMedico'));
-		$medico               = $usuariosRepositorio->obtenerUsuarioPorUsername($userMedico);
+		$medico               = $this->usuariosRepositorio->obtenerUsuarioPorUsername($userMedico);
 		$pacientesRepositorio = PacientesRepositorioFactory::crear($medico);
 		$paciente             = $pacientesRepositorio->obtenerPacientePorId($idPaciente);
-		$expediente           = $expedientesRepositorio->obtenerExpedientePorPacienteMedico($paciente, $medico);
+		$expediente           = $this->expedientesRepositorio->obtenerExpedientePorPacienteMedico($paciente, $medico);
 
 		// alimentar de Http Post
 		PacientesFactory::alimentarDeHttp($request, $paciente, $medico);
@@ -104,7 +114,7 @@ class ExpedienteController extends Controller
 			$expediente->setMedico($medico);
 			$expediente->setPaciente($paciente);
 			$expediente->setPrimeraVez(true);
-			$expedientesRepositorio->persistir($expediente);
+			$this->expedientesRepositorio->persistir($expediente);
 		}
 
 		// éxito
@@ -112,38 +122,31 @@ class ExpedienteController extends Controller
 	}
 
 	/**
-	 * firmar expediente y cambiar estatus a cita
-	 * @param  int $idExpediente
-	 * @return response
+	 * firmar
+	 * @param \Illuminate\Http\Request                                $request
+	 * @param \Siacme\Infraestructura\Citas\CitasRepositorioInterface $citasRepositorio
+	 * @return \Illuminate\Contracts\Routing\ResponseFactory|\Symfony\Component\HttpFoundation\Response
 	 */
-	public function firmar(Request $request)
+	public function firmar(Request $request, CitasRepositorioInterface $citasRepositorio)
 	{
-		// parámetros enviados
-		$idCita       = base64_decode($request->get('idCita'));
-		$idExpediente = base64_decode($request->get('idExpediente'));
-
-		$cita = new Cita();
-		$cita->setId($idCita);
-
-		$this->citasRepositorio->cargarDatos($cita);
-
-		// obtener expediente
-		$expediente = FabricaExpediente::construirExpediente($cita->getMedico()->getEspecialidad());
-		$expediente->setId($idExpediente);
-		$expedienteRepositorio = FabricaExpedientesRepositorio::construirRepositorio($cita->getMedico()->getEspecialidad());
-		$expedienteRepositorio->obtenerExpedientePorExpediente($expediente);
+		$idPaciente           = (int)base64_decode($request->get('idPaciente'));
+		$userMedico           = base64_decode($request->get('userMedico'));
+		$medico               = $this->usuariosRepositorio->obtenerUsuarioPorUsername($userMedico);
+		$pacientesRepositorio = PacientesRepositorioFactory::crear($medico);
+		$paciente             = $pacientesRepositorio->obtenerPacientePorId($idPaciente);
+		$expediente           = $this->expedientesRepositorio->obtenerExpedientePorPacienteMedico($paciente, $medico);
 
 		$expediente->setFirma(rand());
-		$expediente->necesitaFirma(false);
 
-		if(!$expedienteRepositorio->persistir($expediente)) {
+		if(!$this->expedientesRepositorio->persistir($expediente)) {
 			return response(0);
 		}
 
 		// cambiar estatus a 3 = en espera
+		$cita = $citasRepositorio->obtenerCitaPorPacienteMedico($paciente, $medico);
 		$cita->setEstatus(new CitaEstatus(3));
 
-		if(!$this->citasRepositorio->actualizaEstatus($cita)) {
+		if(!$citasRepositorio->actualizaEstatus($cita)) {
 			return response(0);
 		}
 
@@ -152,10 +155,9 @@ class ExpedienteController extends Controller
 
 	/**
 	 * @param Request                      $request
-	 * @param UsuariosRepositorioInterface $usuariosRepositorio
 	 * @return \Illuminate\Contracts\Routing\ResponseFactory|\Symfony\Component\HttpFoundation\Response
 	 */
-    public function subirFoto(Request $request, UsuariosRepositorioInterface $usuariosRepositorio)
+    public function subirFoto(Request $request)
     {
         // obtener la foto adjuntada
         if($_FILES['fotoAdjuntada']['error'] !== UPLOAD_ERR_OK) {
@@ -164,7 +166,7 @@ class ExpedienteController extends Controller
 
 		$idPaciente           = (int)base64_decode($request->get('idPaciente'));
 		$userMedico           = base64_decode($request->get('userMedico'));
-		$medico               = $usuariosRepositorio->obtenerUsuarioPorUsername($userMedico);
+		$medico               = $this->usuariosRepositorio->obtenerUsuarioPorUsername($userMedico);
 		$pacientesRepositorio = PacientesRepositorioFactory::crear($medico);
 		$paciente             = $pacientesRepositorio->obtenerPacientePorId($idPaciente);
         $fotografia 		  = new FotografiaPaciente($_FILES['fotoAdjuntada']['tmp_name']);
@@ -180,10 +182,9 @@ class ExpedienteController extends Controller
 
 	/**
 	 * @param Request                      $request
-	 * @param UsuariosRepositorioInterface $usuariosRepositorio
 	 * @return \Illuminate\Contracts\Routing\ResponseFactory|\Symfony\Component\HttpFoundation\Response
 	 */
-    public function recortarFoto(Request $request, UsuariosRepositorioInterface $usuariosRepositorio)
+    public function recortarFoto(Request $request)
     {
         // obtener parámetros
 		$x                    = $request->get('x');
@@ -193,7 +194,7 @@ class ExpedienteController extends Controller
 		$url                  = $request->get('urlFoto');
 		$idPaciente           = (int)base64_decode($request->get('idPaciente'));
 		$userMedico           = base64_decode($request->get('userMedico'));
-		$medico               = $usuariosRepositorio->obtenerUsuarioPorUsername($userMedico);
+		$medico               = $this->usuariosRepositorio->obtenerUsuarioPorUsername($userMedico);
 		$pacientesRepositorio = PacientesRepositorioFactory::crear($medico);
 		$paciente             = $pacientesRepositorio->obtenerPacientePorId($idPaciente);
 
@@ -209,22 +210,27 @@ class ExpedienteController extends Controller
     }
 
 	/**
-	 * @param                              $idPaciente
-	 * @param                              $userMedico
-	 * @param UsuariosRepositorioInterface $usuariosRepositorio
-	 * @return mixed
+	 * @param $idPaciente
+	 * @param $userMedico
+	 * @return View
 	 */
-	public function camara($idPaciente, $userMedico, UsuariosRepositorioInterface $usuariosRepositorio)
+	public function camara($idPaciente, $userMedico)
 	{
 		$idPaciente           = (int)base64_decode($idPaciente);
 		$userMedico           = base64_decode($userMedico);
-		$medico               = $usuariosRepositorio->obtenerUsuarioPorUsername($userMedico);
+		$medico               = $this->usuariosRepositorio->obtenerUsuarioPorUsername($userMedico);
 		$pacientesRepositorio = PacientesRepositorioFactory::crear($medico);
 		$paciente             = $pacientesRepositorio->obtenerPacientePorId($idPaciente);
 		return View::make('expedientes.expediente_paciente_camara', compact('paciente', 'medico'));
 	}
 
-	public function capturarFoto($idPaciente, $userMedico, Request $request, UsuariosRepositorioInterface $usuariosRepositorio)
+	/**
+	 * @param                          $idPaciente
+	 * @param                          $userMedico
+	 * @param \Illuminate\Http\Request $request
+	 * @return \Illuminate\Contracts\Routing\ResponseFactory|\Symfony\Component\HttpFoundation\Response
+	 */
+	public function capturarFoto($idPaciente, $userMedico, Request $request)
 	{
 		// obtener la foto adjuntada
 		if($_FILES['webcam']['error'] !== UPLOAD_ERR_OK) {
@@ -233,7 +239,7 @@ class ExpedienteController extends Controller
 
 		$idPaciente           = (int)base64_decode($idPaciente);
 		$userMedico           = base64_decode($userMedico);
-		$medico               = $usuariosRepositorio->obtenerUsuarioPorUsername($userMedico);
+		$medico               = $this->usuariosRepositorio->obtenerUsuarioPorUsername($userMedico);
 		$pacientesRepositorio = PacientesRepositorioFactory::crear($medico);
 		$paciente             = $pacientesRepositorio->obtenerPacientePorId($idPaciente);
 		$fotografia 		  = new FotografiaPaciente($_FILES['webcam']['tmp_name']);

@@ -1332,6 +1332,14 @@ class Paciente extends Persona
         return true;
     }
 
+    public function revisaFoto()
+    {
+        $id = (string)$this->id;
+        if(file_exists("public/pacientesFotografias/$id.jpg")) {
+            $this->fotografia = new FotografiaPaciente("public/pacientesFotografias/$id.jpg");
+        }
+    }
+
     /**
      * buscar un padecimiento de los agregados
      * @param  Padecimiento $padecimiento

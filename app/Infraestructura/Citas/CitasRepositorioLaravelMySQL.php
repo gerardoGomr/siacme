@@ -187,6 +187,10 @@ class CitasRepositorioLaravelMySQL implements CitasRepositorioInterface
 		}
 	}
 
+	/**
+	 * @param \Siacme\Dominio\Citas\Cita $cita
+	 * @return bool
+	 */
 	public function actualizaEstatus(Cita $cita)
 	{
 		try {
@@ -201,6 +205,50 @@ class CitasRepositorioLaravelMySQL implements CitasRepositorioInterface
 			//mail del error para debug
 			mail("gerardo.gomr@gmail.com", "Error en el sistema SIACM", "Error: ".$e->getMessage());
 			return false;
+		}
+	}
+
+	/**
+	 * @param \Siacme\Dominio\Pacientes\Paciente $paciente
+	 * @param \Siacme\Dominio\Usuarios\Usuario   $medico
+	 * @return Cita
+	 */
+	public function obtenerCitaPorPacienteMedico(Paciente $paciente, Usuario $medico)
+	{
+		try {
+
+			$citas = DB::table('cita')
+					->join('cita_estatus', 'cita.idCitaEstatus', '=', 'cita_estatus.idCitaEstatus')
+					->where('cita.idPaciente', $paciente->getId())
+					->where('cita.UserDoctor', $medico->getUsername())
+					->first();
+
+			$totalCitas = count($citas);
+
+			if($totalCitas > 0) {
+				$cita = new Cita($citas->idCita);
+
+				//cita estatus
+				$citaEstatus = new CitaEstatus();
+				$citaEstatus->setId($citas->idCitaEstatus);
+				$citaEstatus->setEstatus($citas->CitaEstatus);
+
+				$cita->setFecha($citas->FechaCita);
+				$cita->setHora($citas->HoraCita);
+				$cita->setMedico($medico);
+				$cita->setEstatus($citaEstatus);
+				$cita->setPaciente($paciente);
+
+				return $cita;
+
+			}
+
+			return null;
+
+		} catch(Exception $e) {
+			//mail del error para debug
+			mail("gerardo.gomr@gmail.com", "Error en el sistema SIACM", "Error: ".$e->getMessage());
+			return null;
 		}
 	}
 }

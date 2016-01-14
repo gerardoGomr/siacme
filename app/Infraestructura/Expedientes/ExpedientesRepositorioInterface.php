@@ -22,4 +22,10 @@ interface ExpedientesRepositorioInterface
 	 * @return array
 	 */
 	public function obtenerExpedientePorPacienteMedico(Paciente $paciente, Usuario $medico);
+
+	/**
+	 * @param  int		  $idExpediente
+	 * @return Expediente
+	 */
+	public function obtenerExpedientePorId($idExpediente);
 }

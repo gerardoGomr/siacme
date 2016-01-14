@@ -14,7 +14,7 @@ use View;
 * @date    25/08/2015
 */
 
-class FabricaExpedientesVistas
+class FabricaExpedientesVistasVer
 {
 	/**
 	 * @param Paciente   $paciente
@@ -31,7 +31,7 @@ class FabricaExpedientesVistas
 		switch ($medico->getUsername()) {
 			case 'johanna.vazquez':
 				// odontopediatría
-				return View::make('expedientes.expediente_odontopediatria', compact('paciente', 'medico', 'listaPadecimientos', 'listaTrastornos',  'listaMarcas', 'expediente'));
+				return View::make('expedientes.expediente_odontopediatria_ver', compact('expediente', 'paciente', 'medico'));
 				break;
 
 			case 1:

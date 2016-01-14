@@ -10,7 +10,7 @@
 								<div class="form-group">
 									<div class="radio">
 										<label>
-											@if($expediente->compruebaTrastorno($trastorno))
+											@if($expediente->getPaciente()->compruebaTrastorno($trastorno))
 												{!! Form::radio('trastorno', $trastorno->getId(), true, []) !!} {{ $trastorno->getTrastornoLenguaje() }}
 											@else
 												{!! Form::radio('trastorno', $trastorno->getId(), null, []) !!} {{ $trastorno->getTrastornoLenguaje() }}

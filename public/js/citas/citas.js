@@ -7,7 +7,6 @@ $(function() {
         med         = $('#medico').val(),
         rutaCitas   = $('#rutaCitas').val();
 
-
     // configuración del calendario
 	$calendario.fullCalendar({
 		header: {
@@ -15,7 +14,7 @@ $(function() {
 			center: 'title',
 			right: 'month,agendaWeek,agendaDay'
 		},
-		buttonText: {//This is to add icons to the visible buttons
+		buttonText: {
             prev: "<span class='fa fa-caret-left'></span>",
             next: "<span class='fa fa-caret-right'></span>",
             today: 'Hoy',
@@ -53,46 +52,53 @@ $(function() {
 			}
 
             if($('#reprogramar').val() === '1') {
-      		// reprogramar
-      		bootbox.confirm('¿Desea reprogramar la cita a esta fecha?', function(resp) {
-      			if(resp === true) {
-      				//reprogramar
-					$.ajax({
-				        url:        rutaCitas + '/reprogramar',
-				        type:       'post',
-				        data:		{date: date.getFullYear()+"-"+(date.getMonth() + 1)+"-"+date.getDate(), time: date.getHours()+":"+date.getMinutes(), _token: $('#_token').val()}
-				    })
-				    .done(function(resultado) {
-				        console.log(resultado);
+				// reprogramar
+				bootbox.confirm('¿Desea reprogramar la cita a esta fecha?', function(resp) {
+					if(resp === true) {
+						//reprogramar
+						$.ajax({
+							url:        rutaCitas + '/reprogramar',
+							type:       'post',
+							data:		{date: date.getFullYear()+"-"+(date.getMonth() + 1)+"-"+date.getDate(), time: date.getHours()+":"+date.getMinutes(), _token: $('#_token').val()}
+						})
+						.done(function(resultado) {
+							console.log(resultado);
 
-				        if(resultado !== '1') {
-							bootbox.alert('Ocurrió un error al reprogramar la cita. Intente de nuevo');
-			            	return false;
-				        }
+							if(resultado !== '1') {
+								bootbox.alert('Ocurrió un error al reprogramar la cita. Intente de nuevo');
+								return false;
+							}
 
-                        // resetear variable reprogramar y recargar eventos
-				        $('#reprogramar').val('0');
-                        recargarCitas();
+							// resetear variable reprogramar y recargar eventos
+							$('#reprogramar').val('0');
+							recargarCitas();
 
-				        bootbox.alert('Cita reprogramada con éxito.');
-				    })
-				    .fail(function(XMLHttpRequest, textStatus, errorThrown) {
-				        console.log(errorThrown);
-                        $('#reprogramar').val('0');
-				        bootbox.alert('Error al realizar la operación solicitada');
-				    });
-      			}
-      		});
-
+							bootbox.alert('Cita reprogramada con éxito.');
+						})
+						.fail(function(XMLHttpRequest, textStatus, errorThrown) {
+							console.log(errorThrown);
+							$('#reprogramar').val('0');
+							bootbox.alert('Error al realizar la operación solicitada');
+						});
+					}
+				});
           	} else {
           		// curso normal
           		window.open(rutaCitas + '/agregar/' + btoa(date.getFullYear()+"-"+(date.getMonth() + 1)+"-"+date.getDate()) + '/' + btoa(date.getHours()+":"+date.getMinutes()) + '/' + btoa(med), '_blank', 'scrollbars=yes, width=700, height=500');
           	}
-       },
+       	},
         eventClick: function(calEvent, jsEvent, view){
         	window.open(rutaCitas + '/detalle/' + btoa(calEvent.id) + '/' + btoa(med), '_blank', 'scrollbars=yes, width=700, height=500');
         }
 	});
+
+	// generar lista
+	$('#generarLista').on('click', function(event) {
+		event.preventDefault();
+
+		// nueva ventana
+		window.open($(this).attr('href'), '_blank', 'scrollbars=yes, width=800, height=600');
+	})
 });
 
 // recargar eventos del calendario

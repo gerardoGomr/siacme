@@ -44,6 +44,8 @@ Route::group(['middleware' => 'checaLogin'], function() {
 	Route::post('citas/guardaEnSesion', 'Citas\CitasController@guardaEnSesion');
 	// acción de reprogramar
 	Route::post('citas/reprogramar', 'Citas\CitasController@reprogramar');
+	// generar el reporte de las citas del dia
+	Route::get('citas/lista/pdf', 'Citas\CitasController@pdf');
 	///////////////////////////////////////////////////////////////////////////////////////////////////////
 
 	/////////////////////////////////////////// EXPEDIENTES //////////////////////////////////////////////
@@ -54,7 +56,7 @@ Route::group(['middleware' => 'checaLogin'], function() {
 	// guardar / editar expediente
 	Route::post('expedientes/agregarEditar', 'Expedientes\ExpedienteController@agregarEditarExpediente');
 	// firmar expediente
-	Route::post('expedientes/firmar/odont', 'Expedientes\ExpedienteController@firmar');
+	Route::post('expedientes/firmar', 'Expedientes\ExpedienteController@firmar');
 	// subir foto
 	Route::post('expedientes/subir/foto', 'Expedientes\ExpedienteController@subirFoto');
 	//recortar foto

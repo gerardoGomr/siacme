@@ -9,7 +9,7 @@
 							{!! Form::label('tipoCepillo', 'Tipo de cepillo dental:', ['class' => 'control-label']) !!}
 							<div class="radio">
 								<label>
-									@if($expediente->getTipoCepilloAdulto() === 1)
+									@if($expediente->getPaciente()->getTipoCepilloAdulto() === 1)
 										{!! Form::radio('tipoCepillo', 1, true, []) !!} Adultos
 									@else
 										{!! Form::radio('tipoCepillo', 1, null, []) !!} Adultos
@@ -19,7 +19,7 @@
 
 							<div class="radio">
 								<label>
-									@if($expediente->getTipoCepilloAdulto() === 2)
+									@if($expediente->getPaciente()->getTipoCepilloAdulto() === 2)
 										{!! Form::radio('tipoCepillo', 2, true, []) !!} Niños
 									@else
 										{!! Form::radio('tipoCepillo', 2, null, []) !!} Niños
@@ -38,7 +38,7 @@
 									<?php
 									$selected = '';
 
-									if($expediente->compruebaMarcaPasta($marcaPasta) === true) {
+									if($expediente->getPaciente()->compruebaMarcaPasta($marcaPasta) === true) {
 										$selected = 'selected="selected"';
 									}
 									?>
@@ -51,14 +51,14 @@
 					<div class="col-xs-6">
 						<div class="form-group">
 							{!! Form::label('txtVecesCepilla', '¿Cuántas veces cepilla los dientes del niño(a) al día?:', ['class' => 'control-label']) !!}
-							{!! Form::text('txtVecesCepilla', $expediente->getVecesCepillaDiente(), ['class' => 'form-control']) !!}
+							{!! Form::text('txtVecesCepilla', $expediente->getPaciente()->getVecesCepillaDiente(), ['class' => 'form-control']) !!}
 						</div>
 					</div>
 
 					<div class="col-xs-6">
 						<div class="form-group">
 							{!! Form::label('txtEdadErupcionaPrimerDiente', '¿A qué edad erupcionó el primer diente?:', ['class' => 'control-label']) !!}
-							{!! Form::text('txtEdadErupcionaPrimerDiente', $expediente->getEdadErupcionoPrimerDiente(), ['class' => 'form-control']) !!}
+							{!! Form::text('txtEdadErupcionaPrimerDiente', $expediente->getPaciente()->getEdadErupcionoPrimerDiente(), ['class' => 'form-control']) !!}
 						</div>
 					</div>
 
@@ -67,7 +67,7 @@
 							{!! Form::label('ayudaAlCepillarse', '¿Alguien le ayuda a cepillarse los dientes?:', ['class' => 'control-label']) !!}
 							<div class="radio">
 								<label>
-									@if($expediente->getAlguienAyudaACepillarse() === 1)
+									@if($expediente->getPaciente()->getAlguienAyudaACepillarse() === 1)
 										{!! Form::radio('ayudaAlCepillarse', 1, true, []) !!} Sí
 									@else
 										{!! Form::radio('ayudaAlCepillarse', 1, null, []) !!} Sí
@@ -77,7 +77,7 @@
 
 							<div class="radio">
 								<label>
-									@if($expediente->getAlguienAyudaACepillarse() === 0)
+									@if($expediente->getPaciente()->getAlguienAyudaACepillarse() === 0)
 										{!! Form::radio('ayudaAlCepillarse', 2, true, []) !!} No
 									@else
 										{!! Form::radio('ayudaAlCepillarse', 2, null, []) !!} No
@@ -90,7 +90,7 @@
 					<div class="col-xs-6">
 						<div class="form-group">
 							{!! Form::label('txtVecesCome', '¿Cuántas veces come al día?:', ['class' => 'control-label']) !!}
-							{!! Form::text('txtVecesCome', $expediente->getVecesComeDia(), ['class' => 'form-control']) !!}
+							{!! Form::text('txtVecesCome', $expediente->getPaciente()->getVecesComeDia(), ['class' => 'form-control']) !!}
 						</div>
 					</div>
 				</div>
@@ -105,7 +105,7 @@
 						<div class="form-group">
 							<div class="checkbox">
 								<label>
-									@if($expediente->getHiloDental() === 1)
+									@if($expediente->getPaciente()->getHiloDental() === 1)
 										{!! Form::checkbox('hiloDental', 1, true, []) !!} Hilo dental
 									@else
 										{!! Form::checkbox('hiloDental', 1, null, []) !!} Hilo dental
@@ -119,7 +119,7 @@
 						<div class="form-group">
 							<div class="checkbox">
 								<label>
-									@if($expediente->getEnjuagueBucal() === 1)
+									@if($expediente->getPaciente()->getEnjuagueBucal() === 1)
 										{!! Form::checkbox('enjuagueBucal', 1, true, []) !!} Enjuague bucal
 									@else
 										{!! Form::checkbox('enjuagueBucal', 1, null, []) !!} Enjuague bucal
@@ -133,7 +133,7 @@
 						<div class="form-group">
 							<div class="checkbox">
 								<label>
-									@if($expediente->getLimpiadorLingual() === 1)
+									@if($expediente->getPaciente()->getLimpiadorLingual() === 1)
 										{!! Form::checkbox('limpiadorLingual', 1, true, []) !!} Limpiador lingual
 									@else
 										{!! Form::checkbox('limpiadorLingual', 1, null, []) !!} Limpiador lingual
@@ -147,7 +147,7 @@
 						<div class="form-group">
 							<div class="checkbox">
 								<label>
-									@if($expediente->getTabletasReveladoras() === 1)
+									@if($expediente->getPaciente()->getTabletasReveladoras() === 1)
 										{!! Form::checkbox('tabletasReveladoras', 1, true, []) !!} Tabletas reveladoras
 									@else
 										{!! Form::checkbox('tabletasReveladoras', 1, null, []) !!} Tabletas reveladoras
@@ -161,7 +161,7 @@
 						<div class="form-group">
 							<div class="checkbox">
 								<label>
-									@if($expediente->getOtroAuxiliar() === 1)
+									@if($expediente->getPaciente()->getOtroAuxiliar() === 1)
 										{!! Form::checkbox('otroAuxiliar', 1, true, []) !!} Otro
 									@else
 										{!! Form::checkbox('otroAuxiliar', 1, null, []) !!} Otro
@@ -173,7 +173,7 @@
 
 					<div class="col-xs-6">
 						<div class="form-group">
-							{!! Form::text('txtEspecifiqueAuxiliar', $expediente->getEspecifiqueAuxiliar(), ['class' => 'form-control', 'placeholder' => 'Especifique']) !!}
+							{!! Form::text('txtEspecifiqueAuxiliar', $expediente->getPaciente()->getEspecifiqueAuxiliar(), ['class' => 'form-control', 'placeholder' => 'Especifique']) !!}
 						</div>
 					</div>
 				</div>

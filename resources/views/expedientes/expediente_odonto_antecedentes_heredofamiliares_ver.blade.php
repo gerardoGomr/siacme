@@ -92,10 +92,6 @@
 						<p>{{ $expediente->getPaciente()->getEnfermedadesHermanos() }}</p>
 					</div>
 				</div>
-
-				<div class="form-group">
-					<a href="javascript:;" title="Guardar>>" class="guardar btn btn-primary"><i class="fa fa-save"></i> Guardar</a>
-				</div>
 			</div>
 		</div>
 	</div>

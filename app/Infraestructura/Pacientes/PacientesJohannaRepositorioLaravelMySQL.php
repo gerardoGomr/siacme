@@ -145,7 +145,7 @@ class PacientesJohannaRepositorioLaravelMySQL implements PacientesRepositorioInt
 						'idMarcaPasta'               => $paciente->getMarcaPasta()->getId(),
 						'idComportamientoInicial'    => $paciente->getComportamientoInicial()->getId(),
 						'idComportamientoFrankl'     => $paciente->getComportamientoFrankl()->getId(),
-						'idTrastornoLenguaje'        => $paciente->getTrastorno()->getId(),
+						'idTrastornoLenguaje'        => $paciente->getTrastornoLenguaje()->getId(),
 						'idMorfologiaCraneofacial'   => $paciente->getMorfologiaCraneofacial()->getId(),
 						'idMorfologiaFacial'         => $paciente->getMorfologiaFacial()->getId(),
 						'idConvexividadFacial'       => $paciente->getConvexividadFacial()->getId(),

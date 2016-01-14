@@ -39,4 +39,11 @@ interface CitasRepositorioInterface
 	 * @return bool
 	 */
 	public function actualizaEstatus(Cita $cita);
+
+	/**
+	 * @param \Siacme\Dominio\Pacientes\Paciente $paciente
+	 * @param \Siacme\Dominio\Usuarios\Usuario   $medico
+	 * @return Cita
+	 */
+	public function obtenerCitaPorPacienteMedico(Paciente $paciente, Usuario $medico);
 }

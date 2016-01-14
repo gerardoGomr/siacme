@@ -220,56 +220,6 @@ $(function() {
 			});
 		}
 	});
-
-	// validar formulario
-	//$formExpediente.validate({
-	//	rules: {
-	//		txtEdad: {
-	//			digits: true
-	//		},
-	//		txtTelefono: {
-	//			digits: true
-	//		},
-	//		txtCelular: {
-	//			digits: true
-	//		},
-	//		txtEmail: {
-	//			email: true
-	//		},
-	//		txtNumHermanos: {
-	//			digits: true
-	//		},
-	//		txtNumHermanosVivos: {
-	//			digits: true
-	//		},
-	//		txtNumHermanosFinados: {
-	//			digits: true
-	//		}
-	//	},
-	//	messages: {
-	//		txtEdad: {
-	//			digits: 'Ingrese sólo números'
-	//		},
-	//		txtTelefono: {
-	//			digits: 'Ingrese sólo números'
-	//		},
-	//		txtCelular: {
-	//			digits: 'Ingrese sólo números'
-	//		},
-	//		txtEmail: {
-	//			email: 'Ingrese un correo electrónico válido'
-	//		},
-	//		txtNumHermanos: {
-	//			digits: 'Ingrese sólo números'
-	//		},
-	//		txtNumHermanosVivos: {
-	//			digits: 'Ingrese sólo números'
-	//		},
-	//		txtNumHermanosFinados: {
-	//			digits: 'Ingrese sólo números'
-	//		}
-	//	}
-	//});
 });
 
 /**

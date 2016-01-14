@@ -16,6 +16,8 @@
 			<div class="widget">
 				<div class="widget-body innerAll inner-2x">
 					<div data-component>
+						<div><a href="{{ url('citas/lista/pdf') }}" class="btn btn-success" id="generarLista"><i class="fa fa-file"></i>&nbsp;<i class="fa fa-print"></i> Generar lista</a></div>
+						<div class="separator bottom"></div>
 						<div id="calendario"></div>
 						<input type="hidden" id="medico" value="{{ $medico->getUsername() }}" />
 						<input type="hidden" id="rutaCitas" value="{!! url('citas/') !!}" />

@@ -15,7 +15,7 @@
 							@foreach($listaPadecimientos as $padecimiento)
 								<div class="checkbox">
 									<label>
-										@if($expediente->buscarPadecimiento($padecimiento) === true)
+										@if($expediente->getPaciente()->buscarPadecimiento($padecimiento) === true)
 											{!! Form::checkbox('padecimiento[]', $padecimiento->getId(), true, []) !!} {{ $padecimiento->getPadecimiento() }}
 										@else
 											{!! Form::checkbox('padecimiento[]', $padecimiento->getId(), null, []) !!} {{ $padecimiento->getPadecimiento() }}
@@ -46,7 +46,7 @@
 						<div class="form-group">
 							<div class="checkbox">
 								<label>
-									@if($expediente->getSeLeHacenMoretones() === 1)
+									@if($expediente->getPaciente()->getSeLeHacenMoretones() === 1)
 										{!! Form::checkbox('moretones', null, true, []) !!}	Se le hacen moretones
 									@else
 										{!! Form::checkbox('moretones', null, null, []) !!}	Se le hacen moretones
@@ -60,7 +60,7 @@
 						<div class="form-group">
 							<div class="checkbox">
 								<label>
-									@if($expediente->getHaRequeridoTransfusion() === 1)
+									@if($expediente->getPaciente()->getHaRequeridoTransfusion() === 1)
 										{!! Form::checkbox('transfusion', null, true, []) !!}	Ha requerido transfusión sanguínea
 									@else
 										{!! Form::checkbox('transfusion', null, null, []) !!}	Ha requerido transfusión sanguínea
@@ -74,7 +74,7 @@
 						<div class="form-group">
 							<div class="checkbox">
 								<label>
-									@if($expediente->getHaTenidoFracturas() === 1)
+									@if($expediente->getPaciente()->getHaTenidoFracturas() === 1)
 										{!! Form::checkbox('fracturas', null, true, []) !!}	Ha tenido fracturas
 									@else
 										{!! Form::checkbox('fracturas', null, null, []) !!}	Ha tenido fracturas
@@ -87,7 +87,7 @@
 					<div class="col-xs-6">
 						<div class="form-group">
 							{!! Form::label('txtFractura', '¿En donde?:', ['class' => 'control-label']) !!}
-							{!! Form::text('txtFractura', $expediente->getEspecifiqueFracturas(), ['class' => 'form-control']) !!}
+							{!! Form::text('txtFractura', $expediente->getPaciente()->getEspecifiqueFracturas(), ['class' => 'form-control']) !!}
 						</div>
 					</div>
 
@@ -95,7 +95,7 @@
 						<div class="form-group">
 							<div class="checkbox">
 								<label>
-									@if($expediente->getHaSidoIntervenido() === 1)
+									@if($expediente->getPaciente()->getHaSidoIntervenido() === 1)
 										{!! Form::checkbox('cirugia', null, true, []) !!}	Ha sido intervenido quirúrgicamente
 									@else
 										{!! Form::checkbox('cirugia', null, null, []) !!}	Ha sido intervenido quirúrgicamente
@@ -108,7 +108,7 @@
 					<div class="col-xs-6">
 						<div class="form-group">
 							{!! Form::label('txtCirugia', '¿En donde?:', ['class' => 'control-label']) !!}
-							{!! Form::text('txtCirugia', $expediente->getEspecifiqueIntervencion(), ['class' => 'form-control']) !!}
+							{!! Form::text('txtCirugia', $expediente->getPaciente()->getEspecifiqueIntervencion(), ['class' => 'form-control']) !!}
 						</div>
 					</div>
 
@@ -116,7 +116,7 @@
 						<div class="form-group">
 							<div class="checkbox">
 								<label>
-									@if($expediente->getHaSidoHospitalizado() === 1)
+									@if($expediente->getPaciente()->getHaSidoHospitalizado() === 1)
 										{!! Form::checkbox('hospitalizado', null, true, []) !!}	Ha sido hospitalizado
 									@else
 										{!! Form::checkbox('hospitalizado', null, null, []) !!}	Ha sido hospitalizado
@@ -129,7 +129,7 @@
 					<div class="col-xs-6">
 						<div class="form-group">
 							{!! Form::label('txtHospitalizado', '¿De qué?:', ['class' => 'control-label']) !!}
-							{!! Form::text('txtHospitalizado', $expediente->getEspecifiqueHospitalizacion(), ['class' => 'form-control']) !!}
+							{!! Form::text('txtHospitalizado', $expediente->getPaciente()->getEspecifiqueHospitalizacion(), ['class' => 'form-control']) !!}
 						</div>
 					</div>
 
@@ -137,7 +137,7 @@
 						<div class="form-group">
 							<div class="checkbox">
 								<label>
-									@if($expediente->getExFumador() === 1)
+									@if($expediente->getPaciente()->getExFumador() === 1)
 										{!! Form::checkbox('exFumador', null, true, []) !!}	Ex-fumador
 									@else
 										{!! Form::checkbox('exFumador', null, null, []) !!}	Ex-fumador
@@ -151,7 +151,7 @@
 						<div class="form-group">
 							<div class="checkbox">
 								<label>
-									@if($expediente->getExAlcoholico() === 1)
+									@if($expediente->getPaciente()->getExAlcoholico() === 1)
 										{!! Form::checkbox('exAlcoholico', null, true, []) !!}	Ex-alcohólico
 									@else
 										{!! Form::checkbox('exAlcoholico', null, null, []) !!}	Ex-alcohólico
@@ -165,7 +165,7 @@
 						<div class="form-group">
 							<div class="checkbox">
 								<label>
-									@if($expediente->getExAdicto() === 1)
+									@if($expediente->getPaciente()->getExAdicto() === 1)
 										{!! Form::checkbox('exAdicto', null, true, []) !!}	Ex-adicto
 									@else
 										{!! Form::checkbox('exAdicto', null, null, []) !!}	Ex-adicto
@@ -179,7 +179,7 @@
 						<div class="form-group">
 							<div class="checkbox">
 								<label>
-									@if($expediente->getEstaBajoTratamiento() === 1)
+									@if($expediente->getPaciente()->getEstaBajoTratamiento() === 1)
 										{!! Form::checkbox('tratamiento', null, true, []) !!}	Está bajo tratamiento
 									@else
 										{!! Form::checkbox('tratamiento', null, null, []) !!}	Está bajo tratamiento
@@ -192,7 +192,7 @@
 					<div class="col-xs-6">
 						<div class="form-group">
 							{!! Form::label('txtTratamiento', 'Especifique:', ['class' => 'control-label']) !!}
-							{!! Form::text('txtTratamiento', $expediente->getEspecifiqueTratamiento(), ['class' => 'form-control']) !!}
+							{!! Form::text('txtTratamiento', $expediente->getPaciente()->getEspecifiqueTratamiento(), ['class' => 'form-control']) !!}
 						</div>
 					</div>
 				</div>
