@@ -179,8 +179,12 @@ class Cita
      */
     public static function verificaFechaCita($fecha)
     {
-    	list($dia, $mes, $anio) = explode('/', $fecha);
+		$fechaAModificar = explode('/', $fecha);
+		if(count($fechaAModificar) === 3) {
+			// fecha con formato dia/mes anio
+			return $fechaAModificar[2] . '-' . $fechaAModificar[1] . '-' . $fechaAModificar[0];
+		}
 
-    	return "$anio-$mes-$dia";
+		return $fecha;
     }
 }

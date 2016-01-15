@@ -36,6 +36,7 @@ class ConsultasController extends Controller
     /**
      * obtener la lista de citas del medico seleccionado
      * por default las del día
+     * @param string $username
      * @return Response
      */
     public function index($username)

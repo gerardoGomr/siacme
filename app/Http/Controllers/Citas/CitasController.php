@@ -9,6 +9,8 @@ use Siacme\Dominio\Citas\CitaEstatus;
 use Siacme\Infraestructura\Usuarios\UsuariosRepositorioInterface;
 use Siacme\Infraestructura\Citas\CitasRepositorioInterface;
 use Siacme\Infraestructura\Expedientes\ExpedientesRepositorioInterface;
+use Siacme\Reportes\Citas\ListaCitasPdf;
+use Siacme\Reportes\ReporteJohannaPdf;
 use Siacme\Servicios\Pacientes\PacientesFactory;
 use Siacme\Servicios\Pacientes\PacientesRepositorioFactory;
 use View;
@@ -356,5 +358,23 @@ class CitasController extends Controller
         $request->session()->forget('idCita');
 
         return response(1);
+    }
+
+    /**
+     * generar lista citas PDF
+     * @param $medico
+     * @param $fecha
+     */
+    public function pdf($medico, $fecha)
+    {
+        $medico = base64_decode($medico);
+        $fecha  = base64_decode($fecha);
+
+        $listaCitas = $this->citasRepositorio->obtenerCitasPorMedico($medico, $fecha);
+        $reporte = new ListaCitasPdf($listaCitas, $fecha);
+        $reporte->SetHeaderMargin(10);
+        $reporte->SetAutoPageBreak(true);
+        $reporte->SetMargins(15, 25);
+        $reporte->generar();
     }
 }
