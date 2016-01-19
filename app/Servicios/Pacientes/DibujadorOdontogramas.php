@@ -1,9 +1,13 @@
 <?php
-namespace Siacme\Expedientes;
+namespace Siacme\Servicios\Pacientes;
+
+use Siacme\Dominio\Pacientes\Odontograma;
 
 /**
-* @author Gerardo Adrián Gómez Ruiz
-*/
+ * Class DibujadorOdontogramas
+ * @package Siacme\Servicios\Pacientes
+ * @author  Gerardo Adrián Gómez Ruiz
+ */
 class DibujadorOdontogramas implements DibujadorInterface
 {
 	/**

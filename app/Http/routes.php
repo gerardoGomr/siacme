@@ -68,19 +68,19 @@ Route::group(['middleware' => 'checaLogin'], function() {
 
 	/////////////////////////////////////////// CONSULTAS //////////////////////////////////////////////
 	// principal consultas
-	Route::get('consultas/{medico}', 'ConsultasController\ConsultasController@index');
+	Route::get('consultas/{medico}', 'Consultas\ConsultasController@index');
 	// buscar citas por dia
-	Route::post('consultas/verCitas', 'ConsultasController\ConsultasController@verCitasDelDia');
+	Route::post('consultas/citas', 'Consultas\ConsultasController@verCitasDelDia');
 	// ver detalle de una cita
-	Route::post('consultas/citaDetalle', 'ConsultasController\ConsultasController@citaDetalle');
+	Route::post('consultas/cita/detalle', 'Consultas\ConsultasController@citaDetalle');
 	// abrir pantalla de captura de consulta
-	Route::get('consultas/capturar/{id1}/{id2}', 'ConsultasController\ConsultasController@capturar');
+	Route::get('consultas/capturar/{id}/{med}', 'Consultas\ConsultasController@capturar');
 	// abrir pantalla de selección de estatus, pasando el número de diente
-	Route::get('consultas/odontograma/estatus/{id}', 'ConsultasController\ConsultasController@seleccionEstatus');
+	Route::get('consultas/odontograma/estatus/{id}', 'Consultas\ConsultasController@seleccionEstatus');
 	// guardar estatus para el odontograma
-	Route::post('consultas/odontograma/estatus/asignar', 'ConsultasController\ConsultasController@asignarEstatusDental');
+	Route::post('consultas/odontograma/estatus/asignar', 'Consultas\ConsultasController@asignarEstatusDental');
 	// pintar odontograma
-	Route::post('consultas/odontograma/dibujar', 'ConsultasController\ConsultasController@dibujar');
+	Route::post('consultas/odontograma/dibujar', 'Consultas\ConsultasController@dibujar');
 	// ventana recetas
-	Route::get('consultas/receta/agregar', 'ConsultasController\ConsultasController@capturaReceta');
+	Route::get('consultas/receta/agregar', 'Consultas\ConsultasController@capturaReceta');
 });

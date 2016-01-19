@@ -11,10 +11,10 @@
 				<div class="col-table">
 					<div class="innerAll">
 						<div class="media">
-							<img src="/assets/images/people/250/2.jpg" class="thumb pull-left" alt="" width="100">
+							<img src="{{ $expediente->getPaciente()->tieneFoto() ? asset($expediente->getPaciente()->getFotografia()->getRuta()) : '' }}" class="thumb pull-left" alt="" width="100">
 							<div class="media-body innerAll half">
 								<h4 class="media-heading">{{ $expediente->getPaciente()->getNombreCompleto() }}</h4>
-								<p>{{ $expediente->getEdadAnios() }} años<br/>Vive en: {{ $expediente->getLugarNacimiento() }}<br/>Expediente {{ $expediente->numeroExpediente() }}</p>
+								<p>{{ $expediente->getPaciente()->getEdadAnios() }} años<br/>Vive en: {{ $expediente->getPaciente()->getLugarNacimiento() }}<br/>Expediente {{ $expediente->numeroExpediente() }}</p>
 							</div>
 						</div>
 					</div>
@@ -32,7 +32,7 @@
 													<a href="#consulta" data-toggle="tab"><i class="fa fa-user"></i> Consulta</a>
 												</li>
 
-												@if($expediente->getSubsecuente() === false)
+												@if($expediente->primeraVez() === true)
 													<li>
 														<a href="#expediente" data-toggle="tab"><i class="fa fa-folder-open"></i> Expediente</a>
 													</li>
@@ -51,8 +51,8 @@
 												])
 											!!}
 												<div class="tab-content">
-													@include('consultas.consultas_odontopediatria_consulta_agregar')
-													@if($expediente->getSubsecuente() === false)
+													@if($expediente->primeraVez())
+														@include('consultas.consultas_odontopediatria_consulta_agregar')
 														@include('consultas.consultas_odontopediatria_expediente_agregar')
 													@endif
 													@include('consultas.consultas_odontopediatria_historial')

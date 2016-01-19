@@ -1,9 +1,11 @@
 <?php
-namespace Siacme\Consultas;
+namespace Siacme\Dominio\Consultas;
 
 /**
-* @author Gerardo Adrián Gómez Ruiz
-*/
+ * Class Consulta
+ * @package Siacme\Dominio\Consultas
+ * @author  Gerardo Adrián Gómez Ruiz
+ */
 class Consulta
 {
 	/**

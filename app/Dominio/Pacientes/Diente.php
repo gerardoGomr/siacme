@@ -1,9 +1,11 @@
 <?php
-namespace Siacme\Expedientes;
+namespace Siacme\Dominio\Pacientes;
 
 /**
-* @author Gerardo Adrián Gómez Ruiz
-*/
+ * Class Diente
+ * @package Siacme\Dominio\Pacientes
+ * @author  Gerardo Adrián Gómez Ruiz
+ */
 class Diente
 {
 	/**

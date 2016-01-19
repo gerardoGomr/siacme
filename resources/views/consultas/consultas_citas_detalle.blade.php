@@ -34,7 +34,7 @@
 
 		<div class="col-xs-4 col-md-3 col-lg-4">
 			<div class="box-generic">
-				<a href="{{ url('/consultas/capturar/'.base64_encode($cita->getMedico()->getEspecialidad()->getId()).'/'.base64_encode($cita->getPaciente()->getId())) }}" class="generarConsulta btn btn-primary btn-block"><i class="fa fa-plus"></i> Generar consulta</a>
+				<a href="{{ url('consultas/capturar/'.base64_encode($cita->getPaciente()->getId()).'/'.base64_encode($cita->getMedico()->getUsername())) }}" class="generarConsulta btn btn-primary btn-block"><i class="fa fa-plus"></i> Generar consulta</a>
 			</div>
 		</div>
 	</div>

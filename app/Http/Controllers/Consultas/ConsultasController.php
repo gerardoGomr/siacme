@@ -1,19 +1,18 @@
 <?php
-namespace Siacme\Http\Controllers\ConsultasController;
+namespace Siacme\Http\Controllers\Consultas;
 
 use Illuminate\Http\Request;
 
 use Siacme\Http\Requests;
 use Siacme\Http\Controllers\Controller;
-use Siacme\Citas\Cita;
-use Siacme\Citas\CitasRepositorioInterface;
-use Siacme\Expedientes\FabricaExpedientesRepositorio;
-use Siacme\Pacientes\PacientesRepositorioInterface;
-use Siacme\Usuarios\EspecialidadesRepositorioInterface;
-use Siacme\Consultas\FabricaConsultasViews;
-use Siacme\Expedientes\DibujadorOdontogramas;
-use Siacme\Expedientes\Odontograma;
+use Siacme\Infraestructura\Citas\CitasRepositorioInterface;
+use Siacme\Infraestructura\Expedientes\ExpedientesRepositorioInterface;
+use Siacme\Servicios\Consultas\FabricaConsultasViews;
+use Siacme\Servicios\Pacientes\DibujadorOdontogramas;
+use Siacme\Dominio\Pacientes\Odontograma;
 use Siacme\Expedientes\DienteEstatusRepositorioInterface;
+use Siacme\Infraestructura\Usuarios\UsuariosRepositorioInterface;
+use Siacme\Servicios\Pacientes\PacientesRepositorioFactory;
 use View;
 
 class ConsultasController extends Controller
@@ -25,12 +24,25 @@ class ConsultasController extends Controller
     protected $citasRepositorio;
 
     /**
-     * constructor
-     * @param CitasRepositorioInterface $citasRepositorio
+     * @var \Siacme\Infraestructura\Usuarios\UsuariosRepositorioInterface
      */
-    public function __construct(CitasRepositorioInterface $citasRepositorio)
+    protected $usuariosRepositorio;
+
+    /**
+     * @var \Siacme\Infraestructura\Expedientes\ExpedientesRepositorioInterface
+     */
+    protected $expedientesRepositorio;
+
+    /**
+     * ConsultasController constructor.
+     * @param \Siacme\Infraestructura\Citas\CitasRepositorioInterface       $citasRepositorio
+     * @param \Siacme\Infraestructura\Usuarios\UsuariosRepositorioInterface $usuariosRepositorio
+     */
+    public function __construct(CitasRepositorioInterface $citasRepositorio, UsuariosRepositorioInterface $usuariosRepositorio, ExpedientesRepositorioInterface $expedientesRepositorio)
     {
-        $this->citasRepositorio = $citasRepositorio;
+        $this->citasRepositorio       = $citasRepositorio;
+        $this->usuariosRepositorio    = $usuariosRepositorio;
+        $this->expedientesRepositorio = $expedientesRepositorio;
     }
 
     /**
@@ -62,54 +74,42 @@ class ConsultasController extends Controller
     }
 
     /**
-     * ver el detalle de la cita
-     * @param  Request $request
-     * @return View
+     * @param \Illuminate\Http\Request                                            $request
+     * @param \Siacme\Infraestructura\Expedientes\ExpedientesRepositorioInterface $expedientesRepositorio
+     * @return mixed
      */
-    public function citaDetalle(Request $request)
+    public function citaDetalle(Request $request,ExpedientesRepositorioInterface $expedientesRepositorio)
     {
-        $idCita = base64_decode($request->get('idCita'));
+        $idCita     = base64_decode($request->get('idCita'));
+        $cita       = $this->citasRepositorio->obtenerCitaPorId($idCita);
+        $expediente = $expedientesRepositorio->obtenerExpedientePorPacienteMedico($cita->getPaciente(), $cita->getMedico());
 
-        $cita = new Cita();
-        $cita->setId($idCita);
-
-        $this->citasRepositorio->cargarDatos($cita);
-        $expedientesRepositorio = FabricaExpedientesRepositorio::construirRepositorio($cita->getMedico()->getEspecialidad());
-
-        $expediente = $expedientesRepositorio->obtenerExpedientePorPaciente($cita->getPaciente());
-        // var_dump($expediente);exit;
         return View::make('consultas.consultas_citas_detalle', compact('cita', 'expediente'));
     }
 
     /**
-     * generar vista de captura de consultas de acuerdo a la especialidad
-     * @param  int                                $idEspecialidad
-     * @param  int                                $idPaciente
-     * @param  Request                            $request
-     * @param  PacientesRepositorioInterface      $pacientesRepositorio
-     * @param  EspecialidadesRepositorioInterface $especialidadesRepositorio
-     * @return View
+     * @param $idPaciente
+     * @param $userMedico
+     * @return mixed
      */
-    public function capturar($idEspecialidad, $idPaciente, Request $request, PacientesRepositorioInterface $pacientesRepositorio, EspecialidadesRepositorioInterface $especialidadesRepositorio)
+    public function capturar($idPaciente, $userMedico)
     {
-        $idEspecialidad         = base64_decode($idEspecialidad);
-        $idPaciente             = base64_decode($idPaciente);
+        $idPaciente = (int)base64_decode($idPaciente);
+        $userMedico = base64_decode($userMedico);
 
         // obtener la especialidad, expediente y paciente
-        $paciente               = $pacientesRepositorio->obtenerPacientePorId($idPaciente);
-        $especialidad           = $especialidadesRepositorio->obtenerEspecialidadPorId($idEspecialidad);
-
-        $expedientesRepositorio = FabricaExpedientesRepositorio::construirRepositorio($especialidad);
-        $expediente             = $expedientesRepositorio->obtenerExpedientePorPaciente($paciente);
-
-        $odontograma            = new Odontograma();
-        $dibujadorOdontograma   = new DibujadorOdontogramas($odontograma);
+        $medico               = $this->usuariosRepositorio->obtenerUsuarioPorUsername($userMedico);
+        $pacientesRepositorio = PacientesRepositorioFactory::crear($medico);
+        $paciente             = $pacientesRepositorio->obtenerPacientePorId($idPaciente);
+        $expediente           = $this->expedientesRepositorio->obtenerExpedientePorPacienteMedico($paciente, $medico);
+        $odontograma          = new Odontograma();
+        $dibujadorOdontograma = new DibujadorOdontogramas($odontograma);
 
         // guardar el odontograma creado en la sesión activa para procesamiento
-        $request->session()->put('odontograma', $odontograma);
+        //$request->session()->put('odontograma', $odontograma);
 
         // generar vista
-        return FabricaConsultasViews::construirVista($especialidad, $expediente, $dibujadorOdontograma);
+        return FabricaConsultasViews::construirVista($expediente, $dibujadorOdontograma);
     }
 
     /**

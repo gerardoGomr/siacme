@@ -90,7 +90,15 @@ class Expediente
 	 */
 	public function setPrimeraVez($primeraVez)
 	{
-		$this->primeraVez = $primeraVez;
+		$this->primeraVez = false;
+
+		if (is_numeric($primeraVez)) {
+			if ((int)$primeraVez === 1) {
+				$this->primeraVez = true;
+			}
+		} else {
+			$this->primeraVez = $primeraVez;
+		}
 	}
 
 	/**
