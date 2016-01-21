@@ -34,13 +34,6 @@ class DibujadorOdontogramas implements DibujadorInterface
 	{
 		$html = '<table class="table table-bordered text-center" id="odontograma"><tr>';
 
-		// filas vacías
-		$html .= $this->dibujarFilasVacias(16);
-
-		$html .= '</tr><tr>';
-
-		$html .= $this->dibujarFilasVacias(16);
-
 		// primera sección de dientes
 		$html .= '</tr><tr>';
 
@@ -52,11 +45,11 @@ class DibujadorOdontogramas implements DibujadorInterface
 		$html .= $this->dibujarNumeroDientes(18, 11);
 		$html .= $this->dibujarNumeroDientes(21, 28);
 
-		$html .= '</tr><tr><td rowspan="8" colspan="3">&nbsp;</td>';
+		$html .= '</tr><tr><td rowspan="7" colspan="3">&nbsp;</td>';
 
 		$html .= $this->dibujarFilasVacias(10);
 
-		$html .= '<td rowspan="8" colspan="3">&nbsp;</td>';
+		$html .= '<td rowspan="7" colspan="3">&nbsp;</td>';
 
 		$html .= '</tr><tr>';
 
@@ -85,9 +78,6 @@ class DibujadorOdontogramas implements DibujadorInterface
 
 		$html .= '</tr><tr>';
 
-		$html .= $this->dibujarFilasVacias(10);
-
-		$html .= '</tr><tr>';
 
 		$html .= $this->dibujarNumeroDientes(48, 41);
 		$html .= $this->dibujarNumeroDientes(31, 38);
@@ -131,7 +121,7 @@ class DibujadorOdontogramas implements DibujadorInterface
 		if($inicio > $fin) {
 			for ($i = $inicio; $i >= $fin; $i--) {
 
-				if($this->odontograma->encontrarDientePorNumero($i)) {
+				if($this->odontograma->diente($i)) {
 
 					$strImagen = !is_null($this->odontograma->diente($i)->estatus(1)) ? $this->odontograma->diente($i)->estatus(1)->getImagen() : '';
 
@@ -143,7 +133,7 @@ class DibujadorOdontogramas implements DibujadorInterface
 
 			for ($i = $inicio; $i <= $fin; $i++) {
 
-				if($this->odontograma->encontrarDientePorNumero($i)) {
+				if($this->odontograma->diente($i)) {
 
 					$strImagen = !is_null($this->odontograma->diente($i)->estatus(1)) ? $this->odontograma->diente($i)->estatus(1)->getImagen() : '';
 
@@ -168,7 +158,7 @@ class DibujadorOdontogramas implements DibujadorInterface
 		if($inicio > $fin) {
 			for ($i = $inicio; $i >= $fin; $i--) {
 
-				if($this->odontograma->encontrarDientePorNumero($i)) {
+				if($this->odontograma->diente($i)) {
 
 					$html .= '<td>' . $this->odontograma->diente($i)->getNumero() . '</td>';
 				}
@@ -178,7 +168,7 @@ class DibujadorOdontogramas implements DibujadorInterface
 
 			for ($i = $inicio; $i <= $fin; $i++) {
 
-				if($this->odontograma->encontrarDientePorNumero($i)) {
+				if($this->odontograma->diente($i)) {
 
 					$html .= '<td>' . $this->odontograma->diente($i)->getNumero() . '</td>';
 				}

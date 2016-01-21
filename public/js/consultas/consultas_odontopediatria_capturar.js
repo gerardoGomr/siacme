@@ -10,7 +10,7 @@ $(function() {
 	init();
 
 	// validar formulario
-	// agregaValidacionesElementos($formConsulta);
+	agregaValidacionesElementos($formConsulta);
 
 	// evento click de los dientes
 	$('#odontograma').on('click', 'a.diente', function(event) {

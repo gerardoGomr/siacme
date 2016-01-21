@@ -13,17 +13,18 @@ use View;
 class FabricaConsultasViews
 {
 	/**
-	 * @param \Siacme\Dominio\Expedientes\Expediente              $expediente
-	 * @param \Siacme\Servicios\Pacientes\DibujadorInterface|null $dibujadorOdontograma
-	 * @return \Siacme\Servicios\Consultas\ExpedienteOtorrino
+	 * @param Expediente $expediente
+	 * @param DibujadorInterface|null $dibujadorOdontograma
+	 * @param null $listaComportamientosFrankl
+	 * @return ExpedienteOtorrino
 	 * @throws \Exception
 	 */
-	public static function construirVista(Expediente $expediente, DibujadorInterface $dibujadorOdontograma = null)
+	public static function construirVista(Expediente $expediente, DibujadorInterface $dibujadorOdontograma = null, $listaComportamientosFrankl = null)
 	{
 		switch ($expediente->getMedico()->getUsername()) {
 			case 'johanna.vazquez':
 				// odontopediatría
-				return View::make('consultas.consultas_odontopediatria_capturar', compact('expediente', 'dibujadorOdontograma'));
+				return View::make('consultas.consultas_odontopediatria_capturar', compact('expediente', 'dibujadorOdontograma', 'listaComportamientosFrankl'));
 				break;
 
 			case 1:

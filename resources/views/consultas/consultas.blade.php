@@ -55,8 +55,8 @@
 @stop
 
 @section('js')
-	<script type="text/javascript" src="{{ asset('public/js/ajax.js') }}"></script>
-	<script type="text/javascript" src="{{ asset('public/js/consultas.js') }}"></script>
 	<script type="text/javascript" src="{{ asset('public/assets/components/common/forms/elements/bootstrap-datepicker/assets/lib/js/bootstrap-datepicker.js') }}"></script>
 	<script type="text/javascript" src="{{ asset('public/assets/components/common/forms/elements/bootstrap-datepicker/assets/lib/js/locales/bootstrap-datepicker.es.js') }}"></script>
+	<script type="text/javascript" src="{{ asset('public/js/ajax.js') }}"></script>
+	<script type="text/javascript" src="{{ asset('public/js/consultas/consultas.js') }}"></script>
 @stop

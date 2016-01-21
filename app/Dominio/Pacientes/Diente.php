@@ -18,21 +18,27 @@ class Diente
 	 * estatus del diente
 	 * @var array
 	 */
-	protected $listaEstatus;
+	protected $listaPadecimientos;
 
-	/**
-	 * constructor
-	 * @param int
-	 */
-	public function __construct($numero, $listaEstatus = null)
+    /**
+     * @var bool
+     */
+    protected $existe;
+
+    /**
+     * Diente constructor.
+     * @param $numero
+     * @param null $listaPadecimientos
+     * @param bool|true $existe
+     */
+	public function __construct($numero, $listaPadecimientos = null, $existe = true)
 	{
-        $this->numero       = $numero;
-        $this->listaEstatus = $listaEstatus;
+        $this->numero             = $numero;
+        $this->listaPadecimientos = $listaPadecimientos;
+        $this->existe             = $existe;
 	}
 
     /**
-     * Gets the numero de diente.
-     *
      * @return int
      */
     public function getNumero()
@@ -41,8 +47,6 @@ class Diente
     }
 
     /**
-     * Sets the numero de diente.
-     *
      * @param int $numero the numero
      */
     public function setNumero($numero)
@@ -51,28 +55,24 @@ class Diente
     }
 
     /**
-     * Gets the imagen del diente.
-     *
      * @return string
      */
-    public function getListaEstatus()
+    public function getListaPadecimientos()
     {
-        return $this->estatus;
+        return $this->listaPadecimientos;
     }
 
     /**
-     * Sets the imagen del diente.
-     *
-     * @param array $estatus the imagen
+     * @param array $listaPadecimientos
      */
-    public function setListaEstatus($listaEstatus)
+    public function setListaPadecimientos($listaPadecimientos)
     {
-        $this->listaEstatus = $listaEstatus;
+        $this->listaPadecimientos = $listaPadecimientos;
     }
 
     public function estatus($id)
     {
-        foreach ($this->listaEstatus as $estatus) {
+        foreach ($this->listaPadecimientos as $estatus) {
 
             if($estatus->getId() === $id) {
                 return $estatus;
@@ -80,5 +80,18 @@ class Diente
         }
 
         return null;
+    }
+
+    /**
+     * indica si el tipo de diente es de leche o permanente
+     * @return string
+     */
+    public function tipo()
+    {
+        if ($this->numero >= 51) {
+            return 'Leche';
+        }
+
+        return 'Permanente';
     }
 }

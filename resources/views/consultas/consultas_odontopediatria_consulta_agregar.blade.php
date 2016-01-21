@@ -70,14 +70,6 @@
 									<span class="input-group-addon">mm/Hg</span>
 								</div>
 							</div>
-
-							<div class="col-lg-4 col-md-6">
-								<label class="control-label">Comportamiento Frankl:</label>
-								<div class="input-group">
-									<input type="text" name="txtTension" id="txtTension" value="" placeholder="" class="form-control">
-									<span class="input-group-addon">mm/Hg</span>
-								</div>
-							</div>
 						</div>
 					</div>
 
@@ -96,6 +88,17 @@
 					<div class="form-group">
 						<label class="control-label">Nota médica:</label>
 						<textarea name="txtNota" id="txtNota" class="required form-control" rows="8"></textarea>
+					</div>
+
+					<div class="form-group">
+						<label class="control-label">Comportamiento Frankl</label>
+						@foreach ($listaComportamientosFrankl as $comportamientoFrankl)
+							<div class="radio">
+								<label>
+									<input type="radio" name="comportamientoFrankl" value="{{ $comportamientoFrankl->getId() }}"> {{ $comportamientoFrankl->getComportamientoFrankl() }}
+								</label>
+							</div>
+						@endforeach
 					</div>
 				</div>
 			</div>

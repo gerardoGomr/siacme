@@ -7,6 +7,7 @@ use Siacme\Http\Requests;
 use Siacme\Http\Controllers\Controller;
 use Siacme\Infraestructura\Citas\CitasRepositorioInterface;
 use Siacme\Infraestructura\Expedientes\ExpedientesRepositorioInterface;
+use Siacme\Infraestructura\Pacientes\ComportamientosFranklRepositorioInterface;
 use Siacme\Servicios\Consultas\FabricaConsultasViews;
 use Siacme\Servicios\Pacientes\DibujadorOdontogramas;
 use Siacme\Dominio\Pacientes\Odontograma;
@@ -24,19 +25,20 @@ class ConsultasController extends Controller
     protected $citasRepositorio;
 
     /**
-     * @var \Siacme\Infraestructura\Usuarios\UsuariosRepositorioInterface
+     * @var UsuariosRepositorioInterface
      */
     protected $usuariosRepositorio;
 
     /**
-     * @var \Siacme\Infraestructura\Expedientes\ExpedientesRepositorioInterface
+     * @var ExpedientesRepositorioInterface
      */
     protected $expedientesRepositorio;
 
     /**
      * ConsultasController constructor.
-     * @param \Siacme\Infraestructura\Citas\CitasRepositorioInterface       $citasRepositorio
-     * @param \Siacme\Infraestructura\Usuarios\UsuariosRepositorioInterface $usuariosRepositorio
+     * @param CitasRepositorioInterface $citasRepositorio
+     * @param UsuariosRepositorioInterface $usuariosRepositorio
+     * @param ExpedientesRepositorioInterface $expedientesRepositorio
      */
     public function __construct(CitasRepositorioInterface $citasRepositorio, UsuariosRepositorioInterface $usuariosRepositorio, ExpedientesRepositorioInterface $expedientesRepositorio)
     {
@@ -90,9 +92,11 @@ class ConsultasController extends Controller
     /**
      * @param $idPaciente
      * @param $userMedico
-     * @return mixed
+     * @param ComportamientosFranklRepositorioInterface $comportamientosRepositorio
+     * @return View
+     * @throws \Exception
      */
-    public function capturar($idPaciente, $userMedico)
+    public function capturar($idPaciente, $userMedico, ComportamientosFranklRepositorioInterface $comportamientosRepositorio)
     {
         $idPaciente = (int)base64_decode($idPaciente);
         $userMedico = base64_decode($userMedico);
@@ -104,12 +108,13 @@ class ConsultasController extends Controller
         $expediente           = $this->expedientesRepositorio->obtenerExpedientePorPacienteMedico($paciente, $medico);
         $odontograma          = new Odontograma();
         $dibujadorOdontograma = new DibujadorOdontogramas($odontograma);
+        $listaComportamientos = $comportamientosRepositorio->obtenerComportamientos();
 
         // guardar el odontograma creado en la sesión activa para procesamiento
         //$request->session()->put('odontograma', $odontograma);
 
         // generar vista
-        return FabricaConsultasViews::construirVista($expediente, $dibujadorOdontograma);
+        return FabricaConsultasViews::construirVista($expediente, $dibujadorOdontograma, $listaComportamientos);
     }
 
     /**

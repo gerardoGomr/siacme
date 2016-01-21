@@ -57,14 +57,15 @@ class Odontograma
 	public function agregarDientes($inicio, $fin)
 	{
 		for ($i = $inicio; $i <= $fin; $i++) {
-			$this->agregarDiente(new Diente($i,  array(new DienteEstatus())));
+			// se agrega un nuevo diente con sus características por default
+			$this->agregarDiente(new Diente($i,  array(new DientePadecimiento())));
 		}
 	}
 
 	/**
-	 * encontrar un diente por numero
-	 * @param  int $numero
-	 * @return Diente
+	 * devolver un diente dependiendo el numero
+	 * @param $numero
+	 * @return Diente|null
 	 */
 	public function diente($numero)
 	{
@@ -75,22 +76,6 @@ class Odontograma
 			}
 		}
 
-		throw new \Exception('Diente no encontrado');
-	}
-
-	/**
-	 * encontrar un diente por numero
-	 * @param  int $numero
-	 * @return bool
-	 */
-	public function encontrarDientePorNumero($numero) {
-		foreach ($this->listaDientes as $diente) {
-
-			if($diente->getNumero() === $numero) {
-				return true;
-			}
-		}
-
-		return false;
+		return null;
 	}
 }

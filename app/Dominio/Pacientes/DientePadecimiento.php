@@ -6,7 +6,7 @@ namespace Siacme\Dominio\Pacientes;
  * @package Siacme\Dominio\Pacientes
  * @author  Gerardo Adrián Gómez Ruiz
  */
-class DienteEstatus
+class DientePadecimiento
 {
 	/**
 	 * id de estatus
@@ -26,7 +26,7 @@ class DienteEstatus
 	 */
 	private $imagen;
 
-	public function __construct($id = 1, $nombre = 'Sin estatus', $imagen = 'public/img/dientes/sano.png')
+	public function __construct($id = 1, $nombre = 'Sano', $imagen = 'public/img/dientes/sano.png')
 	{
 		$this->id     = $id;
 		$this->nombre = $nombre;
