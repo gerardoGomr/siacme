@@ -51,8 +51,8 @@
 												])
 											!!}
 												<div class="tab-content">
+													@include('consultas.consultas_odontopediatria_consulta_agregar')
 													@if($expediente->primeraVez())
-														@include('consultas.consultas_odontopediatria_consulta_agregar')
 														@include('consultas.consultas_odontopediatria_expediente_agregar')
 													@endif
 													@include('consultas.consultas_odontopediatria_historial')

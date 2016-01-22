@@ -8,6 +8,7 @@ use Siacme\Http\Controllers\Controller;
 use Siacme\Infraestructura\Citas\CitasRepositorioInterface;
 use Siacme\Infraestructura\Expedientes\ExpedientesRepositorioInterface;
 use Siacme\Infraestructura\Pacientes\ComportamientosFranklRepositorioInterface;
+use Siacme\Infraestructura\Pacientes\PadecimientosDentalesRepositorioInterface;
 use Siacme\Servicios\Consultas\FabricaConsultasViews;
 use Siacme\Servicios\Pacientes\DibujadorOdontogramas;
 use Siacme\Dominio\Pacientes\Odontograma;
@@ -96,7 +97,7 @@ class ConsultasController extends Controller
      * @return View
      * @throws \Exception
      */
-    public function capturar($idPaciente, $userMedico, ComportamientosFranklRepositorioInterface $comportamientosRepositorio)
+    public function capturar($idPaciente, $userMedico, ComportamientosFranklRepositorioInterface $comportamientosRepositorio, PadecimientosDentalesRepositorioInterface $padecimientosRepositorio)
     {
         $idPaciente = (int)base64_decode($idPaciente);
         $userMedico = base64_decode($userMedico);
@@ -109,12 +110,13 @@ class ConsultasController extends Controller
         $odontograma          = new Odontograma();
         $dibujadorOdontograma = new DibujadorOdontogramas($odontograma);
         $listaComportamientos = $comportamientosRepositorio->obtenerComportamientos();
+        $listaPadecimientos   = $padecimientosRepositorio->obtenerPadecimientos();
 
         // guardar el odontograma creado en la sesión activa para procesamiento
         //$request->session()->put('odontograma', $odontograma);
 
         // generar vista
-        return FabricaConsultasViews::construirVista($expediente, $dibujadorOdontograma, $listaComportamientos);
+        return FabricaConsultasViews::construirVista($expediente, $dibujadorOdontograma, $listaComportamientos, $listaPadecimientos);
     }
 
     /**

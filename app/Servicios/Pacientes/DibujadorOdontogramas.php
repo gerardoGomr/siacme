@@ -125,7 +125,7 @@ class DibujadorOdontogramas implements DibujadorInterface
 
 					$strImagen = !is_null($this->odontograma->diente($i)->estatus(1)) ? $this->odontograma->diente($i)->estatus(1)->getImagen() : '';
 
-					$html .= '<td><a href="'.url('consultas/odontograma/estatus/' . $this->odontograma->diente($i)->getNumero()).'" class="diente"><img src="' . asset($strImagen) . '" /><input type="hidden" name="valor" value="' . $this->odontograma->diente($i)->getNumero() . '" /></a></td>';
+					$html .= '<td><a href="#dvPadecimientosDentales" class="diente" data-toggle="modal"><img src="' . asset($strImagen) . '" /><input type="hidden" name="valor" value="' . $this->odontograma->diente($i)->getNumero() . '" /></a></td>';
 				}
 			}
 
@@ -137,7 +137,7 @@ class DibujadorOdontogramas implements DibujadorInterface
 
 					$strImagen = !is_null($this->odontograma->diente($i)->estatus(1)) ? $this->odontograma->diente($i)->estatus(1)->getImagen() : '';
 
-					$html .= '<td><a href="'.url('consultas/odontograma/estatus/' . $this->odontograma->diente($i)->getNumero()).'" class="diente"><img src="' . asset($strImagen) . '" /><input type="hidden" name="valor" value="' . $this->odontograma->diente($i)->getNumero() . '" /></a></td>';
+					$html .= '<td><a href="#dvPadecimientosDentales" class="diente" data-toggle="modal"><img src="' . asset($strImagen) . '" /><input type="hidden" name="valor" value="' . $this->odontograma->diente($i)->getNumero() . '" /></a></td>';
 				}
 			}
 		}

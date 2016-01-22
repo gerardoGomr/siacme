@@ -12,7 +12,7 @@ function init()
 			this.currentElements.parents('.form-group:first').removeClass('has-error');
 
 			$.each(list, function(index, error) {
-				var ee = $(error.element);
+				var ee  = $(error.element);
 				var eep = ee.parents('label:first').length ? ee.parents('label:first') : ee.parents('div:first');
 
 				ee.parents('.form-group:first').addClass('has-error');

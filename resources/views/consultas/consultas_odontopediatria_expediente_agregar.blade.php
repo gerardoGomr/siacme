@@ -373,5 +373,7 @@
 		<div id="dvOdontograma">
 			@include('consultas.consultas_odontopediatria_odontograma')
 		</div>
+
+		@include('consultas.consultas_odontopediatria_seleccion_diente_padecimiento')
 	</div>
 </div>
