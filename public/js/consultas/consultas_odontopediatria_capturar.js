@@ -1,38 +1,77 @@
 $(function() {
 	// variables
-	var $formConsulta       = $('#formConsulta'),
-		$btnGuardarConsulta = $('#btnGuardarConsulta'),
-		$btnInterconsulta   = $('#btnInterconsulta'),
-		$btnLaboratorio     = $('#btnLaboratorio'),
-		$btnReceta 			= $('#btnReceta');
+	var $formConsulta       		  = $('#formConsulta'),
+		$btnGuardarPadecimientoDental = $('#btnGuardarPadecimientoDental'),
+		$btnGuardarConsulta 		  = $('#btnGuardarConsulta'),
+		$btnInterconsulta   		  = $('#btnInterconsulta'),
+		$btnLaboratorio     		  = $('#btnLaboratorio'),
+		$btnReceta 					  = $('#btnReceta');
 
 	// inicializar form
 	init();
 
+	// validación básica
+	$formConsulta.validate();
+
 	// validar formulario
-	// agregaValidacionesElementos($formConsulta);
+	agregaValidacionesElementos($formConsulta);
 
 	// evento click de los dientes
-	$('#odontograma').on('click', 'a.diente', function(event) {
-		event.preventDefault();
-		// abrir ventana de selección de estatus usando fancybox
-		// $.fancybox.open([{
-	 //        fitToView:   true,
-	 //        width:       '40%',
-		// 	maxHeight:   '40%',
-	 //        openEffect:  'fade',
-	 //        closeEffect: 'fade',
-	 //        type:        'iframe',
-	 //        href:        $(this).attr('href')
-	 //    }]);
-		window.open($(this).attr('href'), '_blank', 'width=400, height=500, scrollbars=yes');
+	$('#dvOdontograma').on('click', 'a.diente', function(event) {
+		// setear el valor del diente seleccionado
+		$('#diente').val($(this).children('input[name="valor"]').val());
 	});
 
-	// evento click para botón receta, abrir ventana
-	$btnReceta.on('click', function(event) {
+	/**
+	 * verificar cuantos padecimientos han sido seleccionados
+	 * agregar todos los padecimientos al arreglo
+	 */
+	$btnGuardarPadecimientoDental.on('click', function(event) {
 		event.preventDefault();
 
-		window.open($(this).attr('href'), '_blank', 'width=600, height=500, scrollbars=yes');
+		var totalPadecimientos = 0,
+		 	padecimientos      = [];
+
+		$('#dvPadecimientosDentales').find('input.padecimiento').each(function() {
+			if ($(this).is(':checked')) {
+				totalPadecimientos ++;
+
+				padecimientos.push($(this).val());
+			}
+		});
+
+		if (totalPadecimientos > 2) {
+			bootbox.alert('Solamente puede seleccionar hasta dos padecimientos');
+			return false;
+		} else if(totalPadecimientos === 0) {
+			bootbox.alert('Seleccione al menos un padecimiento');
+			return false;
+		}
+
+		// objeto a enviar
+		var datos = {
+			_token:        $formConsulta.find('input[name="_token"]').val(),
+			diente:        $('#diente').val(),
+			padecimientos: padecimientos
+		};
+
+		var respuesta = ajax($(this).attr('href'), 'post', 'html', datos, 'guardar');
+		respuesta.done(function(resultado) {
+			console.log(resultado);
+
+			if(resultado === '0') {
+				bootbox.alert('Ocurrió un error al guardar los padecimientos del diente seleccionado.');
+				return false;
+			}
+
+			bootbox.alert('Padecimientos asignados al diente seleccionado', function() {
+				$('#dvOdontograma').html(resultado);
+			});
+		})
+		.fail(function(XMLHttpRequest, textStatus, errorThrown) {
+			console.log(errorThrown);
+			bootbox.alert('Imposible realizar la operación solicitada');
+		});
 	});
 });
 

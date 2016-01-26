@@ -22,11 +22,6 @@
 						<label class="control-label">Interrogatorio por aparatos y sistemas:</label>
 						<textarea name="txtInterrogatorio" id="txtInterrogatorio" class="required form-control" rows="8"></textarea>
 					</div>
-
-					<div class="form-group">
-						<label class="control-label">Nota médica:</label>
-						<textarea name="txtNota" id="txtNota" class="required form-control" rows="8"></textarea>
-					</div>
 				</div>
 			</div>
 		</div>
@@ -86,6 +81,24 @@
 					<div class="form-group" style="display: none;">
 						<label class="control-label">Resultados de interconsulta:</label>
 						<textarea name="txtResultadosInterconsulta" rows="8" class="form-control"></textarea>
+					</div>
+				</div>
+
+				<div class="box-generic">
+					<div class="form-group">
+						<label class="control-label">Nota médica:</label>
+						<textarea name="txtNota" id="txtNota" class="required form-control" rows="8"></textarea>
+					</div>
+
+					<div class="form-group">
+						<label class="control-label">Comportamiento Frankl</label>
+						@foreach ($listaComportamientosFrankl as $comportamientoFrankl)
+							<div class="radio">
+								<label>
+									<input type="radio" name="comportamientoFrankl" value="{{ $comportamientoFrankl->getId() }}"> {{ $comportamientoFrankl->getComportamientoFrankl() }}
+								</label>
+							</div>
+						@endforeach
 					</div>
 				</div>
 			</div>

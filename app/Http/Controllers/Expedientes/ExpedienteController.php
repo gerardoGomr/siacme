@@ -2,11 +2,9 @@
 namespace Siacme\Http\Controllers\Expedientes;
 
 use Illuminate\Http\Request;
-use Siacme\Dominio\Citas\Cita;
 use Siacme\Dominio\Citas\CitaEstatus;
 use Siacme\Dominio\Expedientes\Expediente;
 use Siacme\Dominio\Pacientes\FotografiaPaciente;
-use Siacme\Dominio\Pacientes\Paciente;
 use Siacme\Http\Requests;
 use Siacme\Http\Controllers\Controller;
 use Siacme\Infraestructura\Citas\CitasRepositorioInterface;
@@ -15,12 +13,10 @@ use Siacme\Infraestructura\Pacientes\MarcaPastaRepositorioInterface;
 use Siacme\Infraestructura\Pacientes\PadecimientoRepositorioInterface;
 use Siacme\Infraestructura\Pacientes\TrastornoRepositorioInterface;
 use Siacme\Infraestructura\Usuarios\UsuariosRepositorioInterface;
-use Siacme\Pacientes\PacientesRepositorioInterface;
 use Siacme\Servicios\Expedientes\FabricaExpedientesVistas;
 use Siacme\Servicios\Expedientes\FabricaExpedientesVistasVer;
 use Siacme\Servicios\Pacientes\PacientesFactory;
 use Siacme\Servicios\Pacientes\PacientesRepositorioFactory;
-use Siacme\Usuarios\Especialidad;
 use View;
 
 /**

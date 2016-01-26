@@ -137,6 +137,8 @@ return [
         Illuminate\Validation\ValidationServiceProvider::class,
         Illuminate\View\ViewServiceProvider::class,
         Illuminate\Html\HtmlServiceProvider::class,
+        Elibyy\TCPDF\ServiceProvider::class,
+        Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider::class,
 
         /*
          * Application Service Providers...
@@ -153,7 +155,9 @@ return [
         Siacme\Providers\PadecimientosRepositorioServiceProvider::class,
         Siacme\Providers\EspecialidadesRepositorioServiceProvider::class,
         Siacme\Providers\DienteEstatusRepositorioServiceProvider::class,
-        Siacme\Providers\ExpedientesRepositorioServiceProvider::class
+        Siacme\Providers\ExpedientesRepositorioServiceProvider::class,
+        Siacme\Providers\ComportamientosFranklRepositorioServiceProvider::class,
+        Siacme\Providers\PadecimientosDentalesRepositorioServiceProvider::class
     ],
 
     /*

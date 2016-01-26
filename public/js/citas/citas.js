@@ -115,17 +115,10 @@ function recargarCitas()
  */
 function verificarFechas()
 {
-	var fecha = $.fullCalendar.formatDate($('#calendario').fullCalendar('getDate'), 'yyyy-MM-dd'),
-		today = $.fullCalendar.formatDate(new Date(),'yyyy-MM-dd');
+	var fecha = $.fullCalendar.formatDate($('#calendario').fullCalendar('getDate'), 'yyyy-MM-dd');
 
 	// por default no se puede
-	$('#generarLista').attr('href', 'javascript:;');
-	$('#generarLista').removeClass('btn-success').addClass('btn-default');
-	if(fecha >= today) {
-		// habilitar
-		$('#generarLista').removeClass('btn-default').addClass('btn-success');
-		$('#generarLista').attr('href', $('#rutaPdf').val() + '/' + btoa($('#medico').val()) + '/' + fecha);
-	}
+	$('#generarLista').attr('href', $('#rutaPdf').val() + '/' + btoa($('#medico').val()) + '/' + btoa(fecha));
 }
 
 setInterval(function(){

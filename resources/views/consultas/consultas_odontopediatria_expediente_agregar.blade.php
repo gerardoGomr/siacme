@@ -152,7 +152,7 @@
 					<div class="separator"></div>
 
 					<div class="row">
-						<div class="col-md-12 col-lg-6">
+						<div class="col-xs-12 col-lg-6">
 							<h4 class="text-small">Dentinción temporal</h4>
 							<table class="table table-bordered">
 								<thead class="bg-gray">
@@ -202,7 +202,7 @@
 							</table>
 						</div>
 
-						<div class="col-md-12 col-lg-6">
+						<div class="col-xs-12 col-lg-6">
 							<h4 class="text-small">Dentinción mixta o permanente</h4>
 							<table class="table table-bordered">
 								<thead class="bg-gray">
@@ -373,5 +373,7 @@
 		<div id="dvOdontograma">
 			@include('consultas.consultas_odontopediatria_odontograma')
 		</div>
+
+		@include('consultas.consultas_odontopediatria_seleccion_diente_padecimiento')
 	</div>
 </div>

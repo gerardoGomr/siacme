@@ -10,7 +10,9 @@
 
 @section('contenido')
 	<div class="login">
-		<div class="placeholder text-center"><i class="fa fa-user-md"></i></div>
+		<!--<div class="placeholder text-center"><i class="fa fa-user-md"></i></div>-->
+		<div class="placeholder text-center"><img src="{{ asset('public/img/boka.jpg') }}" width="100">&nbsp;<img src="{{ asset('public/img/orl.jpg') }}" width="150"></div>
+		<div class="separator bottom"></div>
 		<div class="panel panel-default col-sm-6 col-sm-offset-3">
 			<div class="panel-body">
 				@if (isset($error))

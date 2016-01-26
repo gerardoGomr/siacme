@@ -16,8 +16,8 @@
 		<div class="dropdown username hidden-xs pull-left">
 			<a class="dropdown-toggle " data-toggle="dropdown" href="#">
 				<span class="media margin-none">
-					<span class="media-body">
-						{{  Request::session()->get('Usuario')->getNombreCompleto()  }} <span class="caret"></span>
+					<span class="media-body strong" style="font-size: 12pt">
+						<i class="fa fa-user"></i> {{  Request::session()->get('Usuario')->getNombreCompleto()  }} <span class="caret"></span>
 					</span>
 				</span>
 			</a>

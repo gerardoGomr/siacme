@@ -1,8 +1,8 @@
 <div id="menu" class="hidden-print hidden-xs sidebar-blue sidebar-brand-primary">
 	<div id="sidebar-fusion-wrapper">
 		<div id="brandWrapper">
-			<a href="index.html?lang=en" class="display-block-inline pull-left logo"><img src="assets/images/logo/app-logo-style-default.png" alt=""></a>
-			<a href="index.html?lang=en"><span class="text">SIACME</span></a>
+			<a href="index.html?lang=en" class="display-block-inline pull-left logo"><img src="{{ asset('public/img/boka.jpg') }}" width="100"><img src="{{ asset('public/img/orl.jpg') }}" width="150"></a>
+			<a href="{{ url('/') }}"><span class="text">SIACME</span></a>
 		</div>
 		<div id="logoWrapper">
 			<div id="logo">
