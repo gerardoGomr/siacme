@@ -1,5 +1,6 @@
 <?php
 namespace Siacme\Dominio\Pacientes;
+use Illuminate\Support\Collection;
 
 /**
  * Class Diente
@@ -19,6 +20,12 @@ class Diente
 	 * @var array
 	 */
 	protected $listaPadecimientos;
+
+    /**
+     * tratamientos del diente
+     * @var Collection
+     */
+    protected $listaTratamientos;
 
     /**
      * @var bool
@@ -73,9 +80,13 @@ class Diente
     /**
      * agregar nuevo padecimiento al diente
      * @param DientePadecimiento $padecimiento
+     * @throws \Exception
      */
     public function agregarPadecimiento(DientePadecimiento $padecimiento)
     {
+        if (count($this->listaPadecimientos) > 2) {
+            throw new \Exception('Solo se permiten hasta dos padecimientos');
+        }
         $this->listaPadecimientos[] = $padecimiento;
     }
 
@@ -115,5 +126,60 @@ class Diente
         }
 
         return 'Permanente';
+    }
+
+    /**
+     * @return Collection
+     */
+    public function getListaTratamientos()
+    {
+        return $this->listaTratamientos;
+    }
+
+    /**
+     * @param Collection $listaTratamientos
+     */
+    public function setListaTratamientos(Collection $listaTratamientos)
+    {
+        $this->listaTratamientos = $listaTratamientos;
+    }
+
+    /**
+     * agregar nuevo tratamiento al diente
+     * @param DienteTratamiento $tratamiento
+     * @throws \Exception
+     */
+    public function agregarTratamiento(DienteTratamiento $tratamiento)
+    {
+        if (count($this->listaTratamientos) === 2) {
+            throw new \Exception('Solo se permiten hasta dos tratamientos por diente');
+        }
+
+        $this->listaTratamientos[] = $tratamiento;
+    }
+
+    /**
+     * remover todos los tratamientos del diente
+     */
+    public function removerTratamientos()
+    {
+        $this->listaTratamientos = null;
+    }
+
+    /**
+     * devolver un padecimiento en base a su id
+     * @param $id
+     * @return DienteTratamiento
+     */
+    public function tratamiento($id)
+    {
+        foreach ($this->listaTratamientos as $tratamiento) {
+
+            if($tratamiento->getId() === $id) {
+                return $tratamiento;
+            }
+        }
+
+        return null;
     }
 }
