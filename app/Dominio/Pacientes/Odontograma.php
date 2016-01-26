@@ -58,7 +58,7 @@ class Odontograma
 	{
 		for ($i = $inicio; $i <= $fin; $i++) {
 			// se agrega un nuevo diente con sus características por default
-			$this->agregarDiente(new Diente($i,  array(new DientePadecimiento())));
+			$this->agregarDiente(new Diente($i, new DientePadecimiento(1)));
 		}
 	}
 

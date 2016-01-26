@@ -83,4 +83,6 @@ Route::group(['middleware' => 'checaLogin'], function() {
 	Route::post('consultas/odontograma/dibujar', 'Consultas\ConsultasController@dibujar');
 	// ventana recetas
 	Route::get('consultas/receta/agregar', 'Consultas\ConsultasController@capturaReceta');
+	// asignar padecimientos al diente
+	Route::post('consultas/capturar/diente/padecimiento', 'Consultas\ConsultasController@agregaDientePadecimiento');
 });

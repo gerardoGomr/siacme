@@ -17,7 +17,7 @@
                     @endforeach
                 </div>
                 <div class="form-group">
-                    <a href="{{ url('') }}" class="btn btn-success" id="btnGuardarPadecimientoDental"><i class="fa fa-check"></i> Aceptar</a>
+                    <a href="{{ url('consultas/capturar/diente/padecimiento') }}" class="btn btn-success" id="btnGuardarPadecimientoDental"><i class="fa fa-check"></i> Aceptar</a>
                     <input type="hidden" name="diente" id="diente" value="">
                 </div>
             </div>

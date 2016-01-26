@@ -17,9 +17,9 @@ $(function() {
 	agregaValidacionesElementos($formConsulta);
 
 	// evento click de los dientes
-	$('#odontograma').on('click', 'a.diente', function(event) {
+	$('#dvOdontograma').on('click', 'a.diente', function(event) {
 		// setear el valor del diente seleccionado
-		$('#diente').val($(this).child('input[name="valor"]').val());
+		$('#diente').val($(this).children('input[name="valor"]').val());
 	});
 
 	/**
@@ -65,6 +65,7 @@ $(function() {
 			}
 
 			bootbox.alert('Padecimientos asignados al diente seleccionado', function() {
+				$('#dvOdontograma').html(resultado);
 			});
 		})
 		.fail(function(XMLHttpRequest, textStatus, errorThrown) {

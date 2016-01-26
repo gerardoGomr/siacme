@@ -46,4 +46,31 @@ class PadecimientosDentalesRepositorioMySQL implements PadecimientosDentalesRepo
             return null;
         }
     }
+
+    /**
+     * obtener un padecimiento en base a su id
+     * @param int $id
+     * @return DientePadecimiento
+     */
+    public function obtenerPadecimientoPorId($id)
+    {
+        try {
+            $padecimientos = DB::table('diente_padecimiento')
+                ->where('idDientePadecimiento', $id)
+                ->first();
+
+            $totalPadecimientos = count($padecimientos);
+
+            if ($totalPadecimientos > 0) {
+                $padecimiento = new DientePadecimiento($padecimientos->idDientePadecimiento, $padecimientos->DientePadecimiento, $padecimientos->RutaImagen);
+                return $padecimiento;
+            }
+
+            return null;
+
+        } catch (\PDOException $e) {
+            echo $e->getMessage();
+            return null;
+        }
+    }
 }

@@ -3,6 +3,7 @@ namespace Siacme\Http\Controllers\Consultas;
 
 use Illuminate\Http\Request;
 
+use Siacme\Dominio\Pacientes\DientePadecimiento;
 use Siacme\Http\Requests;
 use Siacme\Http\Controllers\Controller;
 use Siacme\Infraestructura\Citas\CitasRepositorioInterface;
@@ -94,10 +95,12 @@ class ConsultasController extends Controller
      * @param $idPaciente
      * @param $userMedico
      * @param ComportamientosFranklRepositorioInterface $comportamientosRepositorio
-     * @return View
+     * @param PadecimientosDentalesRepositorioInterface $padecimientosRepositorio
+     * @param Request $request
+     * @return \Siacme\Servicios\Consultas\ExpedienteOtorrino
      * @throws \Exception
      */
-    public function capturar($idPaciente, $userMedico, ComportamientosFranklRepositorioInterface $comportamientosRepositorio, PadecimientosDentalesRepositorioInterface $padecimientosRepositorio)
+    public function capturar($idPaciente, $userMedico, ComportamientosFranklRepositorioInterface $comportamientosRepositorio, PadecimientosDentalesRepositorioInterface $padecimientosRepositorio, Request $request)
     {
         $idPaciente = (int)base64_decode($idPaciente);
         $userMedico = base64_decode($userMedico);
@@ -113,43 +116,36 @@ class ConsultasController extends Controller
         $listaPadecimientos   = $padecimientosRepositorio->obtenerPadecimientos();
 
         // guardar el odontograma creado en la sesión activa para procesamiento
-        //$request->session()->put('odontograma', $odontograma);
+        $request->session()->put('odontograma', $odontograma);
 
         // generar vista
         return FabricaConsultasViews::construirVista($expediente, $dibujadorOdontograma, $listaComportamientos, $listaPadecimientos);
     }
 
     /**
-     * generar vista de selección de estatus dental
-     * @param  int $numeroDiente
+     * asignar padecimientos al diente seleccionado y repintar odontograma
+     * @param Request $request
+     * @param PadecimientosDentalesRepositorioInterface $padecimientosRepositorio
      * @return View
      */
-    public function seleccionEstatus($numeroDiente, DienteEstatusRepositorioInterface $dienteEstatusRepositorio)
+    public function agregaDientePadecimiento(Request $request, PadecimientosDentalesRepositorioInterface $padecimientosRepositorio)
     {
-        $listaDientesEstatus = $dienteEstatusRepositorio->obtenerEstatus();
-        return View::make('consultas.consultas_odontograma_estatus_diente', compact('numeroDiente', 'listaDientesEstatus'));
-    }
+        $numeroDiente = (int)$request->get('diente');
+        $odontograma  = $request->session()->get('odontograma');
 
-    /**
-     * asignar los estatus seleccionados para el diente especificado
-     * @param  Request $request
-     * @return Response
-     */
-    public function asignarEstatusDental(Request $request, DienteEstatusRepositorioInterface $dienteEstatusRepositorio)
-    {
-        $numeroDiente = (int)base64_decode($request->get('diente'));
-        $listaEstatus = array();
+        $odontograma->diente($numeroDiente)->removerPadecimientos();
 
         // recorrer los estatus enviados
-        foreach ($request->get('estatus') as $estatus) {
+        foreach ($request->get('padecimientos') as $padecimientos) {
             // alimentar la lista de estatus
-            $listaEstatus[] = $dienteEstatusRepositorio->obtenerEstatusPorId($estatus);
+            $padecimiento = $padecimientosRepositorio->obtenerPadecimientoPorId($padecimientos);
+            $odontograma->diente($numeroDiente)->agregarPadecimiento($padecimiento);
         }
 
-        // recuperar odontograma actual
-        $odontograma = $request->session()->get('odontograma');
-        $odontograma->diente($numeroDiente)->setListaEstatus($listaEstatus);
+        // guardar odontograma actual en sesión nuevamente
         $request->session()->put('odontograma', $odontograma);
+
+        return $this->dibujar($request);
     }
 
     /**

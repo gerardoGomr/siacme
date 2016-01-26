@@ -28,14 +28,14 @@ class Diente
     /**
      * Diente constructor.
      * @param $numero
-     * @param null $listaPadecimientos
+     * @param DientePadecimiento|null $padecimiento
      * @param bool|true $existe
      */
-	public function __construct($numero, $listaPadecimientos = null, $existe = true)
+	public function __construct($numero, DientePadecimiento $padecimiento = null, $existe = true)
 	{
-        $this->numero             = $numero;
-        $this->listaPadecimientos = $listaPadecimientos;
-        $this->existe             = $existe;
+        $this->numero               = $numero;
+        $this->listaPadecimientos[] = $padecimiento;
+        $this->existe               = $existe;
 	}
 
     /**
@@ -70,12 +70,34 @@ class Diente
         $this->listaPadecimientos = $listaPadecimientos;
     }
 
-    public function estatus($id)
+    /**
+     * agregar nuevo padecimiento al diente
+     * @param DientePadecimiento $padecimiento
+     */
+    public function agregarPadecimiento(DientePadecimiento $padecimiento)
     {
-        foreach ($this->listaPadecimientos as $estatus) {
+        $this->listaPadecimientos[] = $padecimiento;
+    }
 
-            if($estatus->getId() === $id) {
-                return $estatus;
+    /**
+     * remover todos los padecimientos del diente
+     */
+    public function removerPadecimientos()
+    {
+        $this->listaPadecimientos = null;
+    }
+
+    /**
+     * devolver un padecimiento en base a su id
+     * @param $id
+     * @return DientePadecimiento
+     */
+    public function padecimiento($id)
+    {
+        foreach ($this->listaPadecimientos as $padecimiento) {
+
+            if($padecimiento->getId() === $id) {
+                return $padecimiento;
             }
         }
 

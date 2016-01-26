@@ -13,4 +13,11 @@ interface PadecimientosDentalesRepositorioInterface
      * @return Collection
      */
     public function obtenerPadecimientos();
+
+    /**
+     * obtener un padecimiento en base a su id
+     * @param int $id
+     * @return DientePadecimiento
+     */
+    public function obtenerPadecimientoPorId($id);
 }

@@ -28,8 +28,7 @@ $(function() {
 
 				bootbox.alert('Estatus asignados al diente seleccionado', function() {
 					// mandar a pintar el odontograma nuevamente y cerrar la ventana
-					window.opener.repintar();
-					window.close();
+					$('#dvOdontograma').html(resultado);
 				});
 			})
 			.fail(function(XMLHttpRequest, textStatus, errorThrown) {
