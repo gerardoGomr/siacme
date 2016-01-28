@@ -1,6 +1,7 @@
 <?php
 namespace Siacme\Dominio\Pacientes;
 use Illuminate\Support\Collection;
+use Siacme\Dominio\Consultas\DientePlan;
 
 /**
  * Class Diente
@@ -146,10 +147,10 @@ class Diente
 
     /**
      * agregar nuevo tratamiento al diente
-     * @param DienteTratamiento $tratamiento
+     * @param DientePlan $tratamiento
      * @throws \Exception
      */
-    public function agregarTratamiento(DienteTratamiento $tratamiento)
+    public function agregarTratamiento(DientePlan $tratamiento)
     {
         if (count($this->listaTratamientos) === 2) {
             throw new \Exception('Solo se permiten hasta dos tratamientos por diente');
@@ -169,7 +170,7 @@ class Diente
     /**
      * devolver un padecimiento en base a su id
      * @param $id
-     * @return DienteTratamiento
+     * @return DientePlan
      */
     public function tratamiento($id)
     {

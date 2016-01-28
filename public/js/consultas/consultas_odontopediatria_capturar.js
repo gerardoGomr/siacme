@@ -66,6 +66,14 @@ $(function() {
 
 			bootbox.alert('Padecimientos asignados al diente seleccionado', function() {
 				$('#dvOdontograma').html(resultado);
+
+				$('#dvPadecimientosDentales').find('input.padecimiento').each(function() {
+					// reiniciar modal
+					$(this).attr('checked', false);
+				});
+
+				// cerrar modal
+				$('#dvPadecimientosDentales').modal('hide');
 			});
 		})
 		.fail(function(XMLHttpRequest, textStatus, errorThrown) {
