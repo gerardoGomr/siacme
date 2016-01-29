@@ -37,7 +37,9 @@
 														<a href="#expediente" data-toggle="tab"><i class="fa fa-folder-open"></i> Expediente</a>
 													</li>
 												@endif
-
+												<li>
+													<a href="#odontograma" data-toggle="tab"><i class="fa fa-search"></i> Odontograma</a>
+												</li>
 												<li>
 													<a href="#historial" data-toggle="tab"><i class="fa fa-clock-o"></i> Historial</a>
 												</li>
@@ -55,6 +57,7 @@
 													@if($expediente->primeraVez())
 														@include('consultas.consultas_odontopediatria_expediente_agregar')
 													@endif
+													@include('consultas.consultas_odontopediatria_odontograma')
 													@include('consultas.consultas_odontopediatria_historial')
 												</div>
 											{!! Form::close() !!}

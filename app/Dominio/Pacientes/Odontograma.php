@@ -15,13 +15,20 @@ class Odontograma
 	protected $listaDientes;
 
 	/**
+	 * @var boolean
+	 */
+	protected $revisado;
+
+	/**
 	 * construir el odontograma con una lista de dientes
 	 * si la lista no se proporciona, se asignan todos los diente
 	 * caso contrario, se asigna el que se pasa como parámetro
 	 * @param array $listaDientes
+	 * @param bool  $revisado
 	 */
-	public function __construct($listaDientes = null)
+	public function __construct($listaDientes = null, $revisado = false)
 	{
+		$this->revisado = $revisado;
 		if(!is_null($listaDientes)) {
 			$this->listaDientes = $listaDientes;
 
@@ -77,5 +84,37 @@ class Odontograma
 		}
 
 		return null;
+	}
+
+	/**
+	 * @return boolean
+	 */
+	public function revisado()
+	{
+		return $this->revisado;
+	}
+
+	/**
+	 * @param boolean $revisado
+	 */
+	public function setRevisado($revisado)
+	{
+		$this->revisado = $revisado;
+	}
+
+	/**
+	 * @return array
+	 */
+	public function getListaDientes()
+	{
+		return $this->listaDientes;
+	}
+
+	/**
+	 * @param array $listaDientes
+	 */
+	public function setListaDientes($listaDientes)
+	{
+		$this->listaDientes = $listaDientes;
 	}
 }

@@ -1,5 +1,5 @@
 <?php
-namespace Siacme\Servicios\Pacientes;
+namespace Siacme\Servicios;
 
 /**
  * Interface DibujadorInterface

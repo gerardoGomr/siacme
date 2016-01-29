@@ -1,5 +1,6 @@
 <?php
 namespace Siacme\Dominio\Consultas;
+use Siacme\Dominio\Pacientes\Odontograma;
 
 /**
  * @package Siacme\Dominio\Consultas
@@ -29,7 +30,7 @@ class PlanTratamiento
 
 	/**
 	 * constructor
-	 * @param bool $activo
+	 * @param bool $atendido
 	 * @param Collection $listaDientes
 	 */
 	public function __construct($atendido = true, $listaDientes = null)
@@ -68,5 +69,30 @@ class PlanTratamiento
 		}
 
 		return $atendido;
+	}
+
+	/**
+	 * generar el plan a partir de la lista de dientes del odontograma
+	 * @param Odontograma $odontograma
+	 */
+	public function generarDeOdontograma(Odontograma $odontograma)
+	{
+		$this->listaDientes = $odontograma->getListaDientes();
+	}
+
+	/**
+	 * @return Collection
+	 */
+	public function getListaDientes()
+	{
+		return $this->listaDientes;
+	}
+
+	/**
+	 * @param Collection $listaDientes
+	 */
+	public function setListaDientes($listaDientes)
+	{
+		$this->listaDientes = $listaDientes;
 	}
 }

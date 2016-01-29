@@ -2,9 +2,7 @@
 	<div class="form-group">
 		<a href="javascript:;" id="btnGuardarConsulta" class="btn btn-primary btn-small"><i class="fa fa-save"></i> Guardar consulta</a>
 
-		<a href="javascript:;" id="btnInterconsulta" class="btn btn-warning btn-small"><i class="fa fa-user-md"></i> Enviar a interconsulta</a>
-
-		<a href="javascript:;" id="btnLaboratorio" class="btn btn-warning btn-small"><i class="fa fa-mail-forward"></i> Enviar a estudios de laboratorio</a>
+		<a href="{{ url('consultas/plan/agregar') }}" id="btnGenerarPlan" class="btn btn-success btn-small" disabled="disabled"><i class="fa fa-money"></i> Generar plan</a>
 
 		<a href="{{ url('consultas/receta/agregar') }}" id="btnReceta" class="btn btn-danger btn-small"><i class="fa fa-edit"></i> Generar receta</a>
 	</div>

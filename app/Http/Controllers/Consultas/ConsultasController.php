@@ -3,17 +3,19 @@ namespace Siacme\Http\Controllers\Consultas;
 
 use Illuminate\Http\Request;
 
+use Siacme\Dominio\Consultas\PlanTratamiento;
 use Siacme\Dominio\Pacientes\DientePadecimiento;
 use Siacme\Http\Requests;
 use Siacme\Http\Controllers\Controller;
 use Siacme\Infraestructura\Citas\CitasRepositorioInterface;
+use Siacme\Infraestructura\Consultas\DienteTratamientosRepositorioInterface;
 use Siacme\Infraestructura\Expedientes\ExpedientesRepositorioInterface;
 use Siacme\Infraestructura\Pacientes\ComportamientosFranklRepositorioInterface;
 use Siacme\Infraestructura\Pacientes\PadecimientosDentalesRepositorioInterface;
+use Siacme\Servicios\Consultas\DibujadorPlanTratamiento;
 use Siacme\Servicios\Consultas\FabricaConsultasViews;
 use Siacme\Servicios\Pacientes\DibujadorOdontogramas;
 use Siacme\Dominio\Pacientes\Odontograma;
-use Siacme\Expedientes\DienteEstatusRepositorioInterface;
 use Siacme\Infraestructura\Usuarios\UsuariosRepositorioInterface;
 use Siacme\Servicios\Pacientes\PacientesRepositorioFactory;
 use View;
@@ -143,6 +145,7 @@ class ConsultasController extends Controller
         }
 
         // guardar odontograma actual en sesión nuevamente
+        $odontograma->setRevisado(true);
         $request->session()->put('odontograma', $odontograma);
 
         return $this->dibujar($request);
@@ -158,7 +161,23 @@ class ConsultasController extends Controller
         $odontograma          = $request->session()->get('odontograma');
         $dibujadorOdontograma = new DibujadorOdontogramas($odontograma);
 
-        return View::make('consultas.consultas_odontopediatria_odontograma', compact('dibujadorOdontograma'));
+        return response($dibujadorOdontograma->dibujar());
+    }
+
+    /**
+     * generar la vista para el plan de tratamiento
+     * @param Request $request
+     */
+    public function verPlan(Request $request, DienteTratamientosRepositorioInterface $dienteTratamientosRepositorio)
+    {
+        $odontograma = $request->session()->get('odontograma');
+        // obtener plan
+        !is_null($request->session()->get('plan')) ? $plan = $request->session()->get('plan') : $plan = new PlanTratamiento();
+
+        $plan->generarDeOdontograma($odontograma);
+        $listaDienteTratamientos = $dienteTratamientosRepositorio->obtenerDienteTratamientos();
+        $dibujadorPlan           = new DibujadorPlanTratamiento($plan, $listaDienteTratamientos);
+        return View::make('consultas.consultas_plan_tratamiento', compact('dibujadorPlan'));
     }
 
     /**

@@ -2,6 +2,7 @@ $(function() {
 	// variables
 	var $formConsulta       		  = $('#formConsulta'),
 		$btnGuardarPadecimientoDental = $('#btnGuardarPadecimientoDental'),
+		$btnGenerarPlan				  = $('#btnGenerarPlan'),
 		$btnGuardarConsulta 		  = $('#btnGuardarConsulta'),
 		$btnInterconsulta   		  = $('#btnInterconsulta'),
 		$btnLaboratorio     		  = $('#btnLaboratorio'),
@@ -74,6 +75,9 @@ $(function() {
 
 				// cerrar modal
 				$('#dvPadecimientosDentales').modal('hide');
+
+				// activar boton de plan
+				$btnGenerarPlan.attr('disabled', false);
 			});
 		})
 		.fail(function(XMLHttpRequest, textStatus, errorThrown) {
@@ -81,14 +85,13 @@ $(function() {
 			bootbox.alert('Imposible realizar la operación solicitada');
 		});
 	});
+
+	/**
+	 * abir nueva ventana
+	 * generar plan de tratamiento en base a odontograma
+	 */
+	$btnGenerarPlan.on('click', function(event) {
+		event.preventDefault();
+		window.open($(this).attr('href'), '_blank', 'width=800, height=600, scrollbars=yes');
+	});
 });
-
-/**
- * volver a dibujar el odontograma
- * @return html
- */
-function repintar() {
-	var datos = {_token: $('#formConsulta').find('input[name="_token"]').val()};
-
-	ajax($('#urlOdontograma').val(), 'post', 'html', datos, 'cargar', '', 'dvOdontograma');
-}

@@ -2,9 +2,7 @@
 namespace Siacme\Servicios\Consultas;
 
 use Siacme\Dominio\Expedientes\Expediente;
-use Siacme\Dominio\Usuarios\Usuario;
-use Siacme\Dominio\Pacientes\Paciente;
-use Siacme\Servicios\Pacientes\DibujadorInterface;
+use Siacme\Servicios\DibujadorInterface;
 use View;
 
 /**

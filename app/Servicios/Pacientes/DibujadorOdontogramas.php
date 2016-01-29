@@ -2,6 +2,7 @@
 namespace Siacme\Servicios\Pacientes;
 
 use Siacme\Dominio\Pacientes\Odontograma;
+use Siacme\Servicios\DibujadorInterface;
 
 /**
  * Class DibujadorOdontogramas

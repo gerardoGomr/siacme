@@ -157,7 +157,8 @@ return [
         Siacme\Providers\DienteEstatusRepositorioServiceProvider::class,
         Siacme\Providers\ExpedientesRepositorioServiceProvider::class,
         Siacme\Providers\ComportamientosFranklRepositorioServiceProvider::class,
-        Siacme\Providers\PadecimientosDentalesRepositorioServiceProvider::class
+        Siacme\Providers\PadecimientosDentalesRepositorioServiceProvider::class,
+        Siacme\Providers\DienteTratamientosRepositorioServiceProvider::class
     ],
 
     /*
