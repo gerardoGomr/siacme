@@ -50,4 +50,12 @@ class DientePlan
 	{
 		return $this->dienteTratamiento;
 	}
+
+	/**
+	 * @param DienteTratamiento $dienteTratamiento
+	 */
+	public function setDienteTratamiento(DienteTratamiento $dienteTratamiento)
+	{
+		$this->dienteTratamiento = $dienteTratamiento;
+	}
 }

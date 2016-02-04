@@ -3,6 +3,7 @@ namespace Siacme\Http\Controllers\Consultas;
 
 use Illuminate\Http\Request;
 
+use Siacme\Dominio\Consultas\DientePlan;
 use Siacme\Dominio\Consultas\PlanTratamiento;
 use Siacme\Dominio\Pacientes\DientePadecimiento;
 use Siacme\Http\Requests;
@@ -165,19 +166,45 @@ class ConsultasController extends Controller
     }
 
     /**
-     * generar la vista para el plan de tratamiento
+     * generar vista para el plan de tratamiento
      * @param Request $request
+     * @param DienteTratamientosRepositorioInterface $dienteTratamientosRepositorio
+     * @return View
      */
     public function verPlan(Request $request, DienteTratamientosRepositorioInterface $dienteTratamientosRepositorio)
     {
         $odontograma = $request->session()->get('odontograma');
+        $odontograma->borrarDientesTratamientos();
         // obtener plan
-        !is_null($request->session()->get('plan')) ? $plan = $request->session()->get('plan') : $plan = new PlanTratamiento();
+        if(!is_null($request->session()->get('plan'))) {
+            $plan = new PlanTratamiento();
+            $request->session()->forget('plan');
+        }
 
         $plan->generarDeOdontograma($odontograma);
         $listaDienteTratamientos = $dienteTratamientosRepositorio->obtenerDienteTratamientos();
         $dibujadorPlan           = new DibujadorPlanTratamiento($plan, $listaDienteTratamientos);
+
+        $request->session()->put('plan', $plan);
         return View::make('consultas.consultas_plan_tratamiento', compact('dibujadorPlan'));
+    }
+
+    public function agregarTratamiento(Request $request, DienteTratamientosRepositorioInterface $dienteTratamientosRepositorio)
+    {
+        $numeroDiente  = (int) $request->get('numeroDiente');
+        $idTratamiento = (int) $request->get('idTratamiento');
+
+        $dienteTratamiento = $dienteTratamientosRepositorio->obtenerDienteTratamientoPorId($idTratamiento);
+        $plan              = $request->session()->get('plan');
+
+        $plan->diente($numeroDiente)->agregarTratamiento(new DientePlan($dienteTratamiento));
+
+        $listaDienteTratamientos = $dienteTratamientosRepositorio->obtenerDienteTratamientos();
+        $dibujadorPlan           = new DibujadorPlanTratamiento($plan, $listaDienteTratamientos);
+
+        $request->session()->put('plan', $plan);
+
+        return $dibujadorPlan->dibujar();
     }
 
     /**

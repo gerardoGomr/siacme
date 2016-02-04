@@ -1,5 +1,6 @@
 <?php
 namespace Siacme\Dominio\Pacientes;
+use Illuminate\Support\Collection;
 
 /**
  * Class Odontograma
@@ -10,7 +11,7 @@ class Odontograma
 {
 	/**
 	 * lista de dientes
-	 * @var array
+	 * @var Collection
 	 */
 	protected $listaDientes;
 
@@ -23,16 +24,17 @@ class Odontograma
 	 * construir el odontograma con una lista de dientes
 	 * si la lista no se proporciona, se asignan todos los diente
 	 * caso contrario, se asigna el que se pasa como parámetro
-	 * @param array $listaDientes
+	 * @param Collection $listaDientes
 	 * @param bool  $revisado
 	 */
-	public function __construct($listaDientes = null, $revisado = false)
+	public function __construct(Collection $listaDientes = null, $revisado = false)
 	{
 		$this->revisado = $revisado;
 		if(!is_null($listaDientes)) {
 			$this->listaDientes = $listaDientes;
 
 		} else {
+			$this->listaDientes = new Collection();
 			$this->agregarDientes(11, 18);
 			$this->agregarDientes(21, 28);
 			$this->agregarDientes(31, 38);
@@ -52,7 +54,7 @@ class Odontograma
 	 */
 	public function agregarDiente(Diente $diente)
 	{
-		$this->listaDientes[] = $diente;
+		$this->listaDientes->push($diente);
 	}
 
 	/**
@@ -103,7 +105,7 @@ class Odontograma
 	}
 
 	/**
-	 * @return array
+	 * @return Collection
 	 */
 	public function getListaDientes()
 	{
@@ -111,10 +113,17 @@ class Odontograma
 	}
 
 	/**
-	 * @param array $listaDientes
+	 * @param Collection $listaDientes
 	 */
-	public function setListaDientes($listaDientes)
+	public function setListaDientes(Collection $listaDientes)
 	{
 		$this->listaDientes = $listaDientes;
+	}
+
+	public function borrarDientesTratamientos()
+	{
+		foreach ($this->listaDientes as $diente) {
+			$diente->removerTratamientos();
+		}
 	}
 }

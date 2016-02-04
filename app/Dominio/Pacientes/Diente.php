@@ -152,11 +152,15 @@ class Diente
      */
     public function agregarTratamiento(DientePlan $tratamiento)
     {
+        if(is_null($this->listaTratamientos)) {
+            $this->listaTratamientos = new Collection();
+        }
+
         if (count($this->listaTratamientos) === 2) {
             throw new \Exception('Solo se permiten hasta dos tratamientos por diente');
         }
 
-        $this->listaTratamientos[] = $tratamiento;
+        $this->listaTratamientos->push($tratamiento);
     }
 
     /**

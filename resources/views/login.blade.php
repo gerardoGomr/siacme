@@ -30,6 +30,7 @@
 
 					<div class="form-group">
 						{!! Form::text('txtUsername', null, [
+								'id'		   => 'txtUsername',
 								'class'        => 'form-control',
 								'placeholder'  => 'Nombre de usuario',
 								'autocomplete' => 'off'
@@ -50,4 +51,8 @@
 			</div>
 		</div>
 	</div>
+@stop
+
+@section('js')
+	<script src="{{ asset('public/js/login.js') }}"></script>
 @stop

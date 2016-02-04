@@ -12,4 +12,10 @@ interface DienteTratamientosRepositorioInterface
      * @return Collection
      */
     public function obtenerDienteTratamientos();
+
+    /**
+     * @param  int $id
+     * @return DienteTratamiento
+     */
+    public function obtenerDienteTratamientoPorId($id);
 }

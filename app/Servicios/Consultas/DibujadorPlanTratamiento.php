@@ -40,7 +40,7 @@ class DibujadorPlanTratamiento implements DibujadorInterface
     {
         // TODO: Implement dibujar() method.
         $html = '
-            <table class="table table-bordered">
+            <table class="table table-bordered tablaPlan">
                 <thead>
                     <tr>
                         <th>Diente</th>
@@ -55,11 +55,11 @@ class DibujadorPlanTratamiento implements DibujadorInterface
         foreach ($this->planTratamiento->getListaDientes() as $diente) {
             $html .= '
                 <tr>
-                    <td>' . $diente->getNumero() . '</td>
+                    <td class="diente">' . $diente->getNumero() . '</td>
                     <td>' . $this->dibujarPadecimientos($diente->getListaPadecimientos()) . '</td>
                     <td>' . $this->dibujarComboTratamientos($this->listaDienteTratamientos) .'</td>
                     <td>' . $this->dibujarComboTratamientos($this->listaDienteTratamientos) .'</td>
-                    <td></td>
+                    <td>' . $this->dibujarCostosTratamientos($diente->getListaTratamientos()) . '</td>
                 </tr>
             ';
         }
@@ -95,7 +95,7 @@ class DibujadorPlanTratamiento implements DibujadorInterface
     private function dibujarComboTratamientos($listaDienteTratamientos)
     {
         $html = '
-            <select name="dienteTratamientos" class="form-control">
+            <select name="dienteTratamientos" class="tratamientos form-control">
                 <option value="">Seleccione</option>
         ';
 
@@ -104,6 +104,28 @@ class DibujadorPlanTratamiento implements DibujadorInterface
         }
 
         $html .= '</select>';
+
+        return $html;
+    }
+
+    private function dibujarCostosTratamientos($listaDienteTratamientos)
+    {
+        $total = count($listaDienteTratamientos);
+        if ($total === 0 || is_null($listaDienteTratamientos)) {
+            return '';
+        }
+
+        $html = '';
+        $i = 1;
+        foreach ($listaDienteTratamientos as $dienteTratamiento) {
+            if ($i < $total) {
+                $html .= '$' . (string) number_format($dienteTratamiento->getDienteTratamiento()->getCosto(), 2) . ' + ';
+            } else {
+                $html .= '$' . (string) number_format($dienteTratamiento->getDienteTratamiento()->getCosto(), 2);
+            }
+
+            $i++;
+        }
 
         return $html;
     }

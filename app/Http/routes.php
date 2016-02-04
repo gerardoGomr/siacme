@@ -87,4 +87,6 @@ Route::group(['middleware' => 'checaLogin'], function() {
 	Route::post('consultas/capturar/diente/padecimiento', 'Consultas\ConsultasController@agregaDientePadecimiento');
 	// abrir ventana para plan de tratamiento
 	Route::get('consultas/plan/agregar', 'Consultas\ConsultasController@verPlan');
+	// agregar un tratamiento a un diente
+	Route::post('consultas/plan/tratamientos/agregar', 'Consultas\ConsultasController@agregarTratamiento');
 });

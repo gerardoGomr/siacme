@@ -1,5 +1,6 @@
 <?php
 namespace Siacme\Dominio\Consultas;
+use Illuminate\Support\Collection;
 use Siacme\Dominio\Pacientes\Odontograma;
 
 /**
@@ -33,7 +34,7 @@ class PlanTratamiento
 	 * @param bool $atendido
 	 * @param Collection $listaDientes
 	 */
-	public function __construct($atendido = true, $listaDientes = null)
+	public function __construct($atendido = true, Collection $listaDientes = null)
 	{
 		$this->atendido     = $atendido;
 		$this->listaDientes = $listaDientes;
@@ -46,7 +47,7 @@ class PlanTratamiento
 	public function costo()
 	{
 		$costo = 0;
-		foreach ($listaDientes as $diente) {
+		foreach ($this->listaDientes as $diente) {
 			foreach ($diente->getListaTratamientos() as $tratamiento) {
 				$costo += $tratamiento->getDienteTratamiento()->getCosto();
 			}
@@ -62,7 +63,7 @@ class PlanTratamiento
 	public function atendido()
 	{
 		$atendido = false;
-		foreach ($listaDientes as $diente) {
+		foreach ($this->listaDientes as $diente) {
 			foreach ($diente->getListaTratamientos() as $tratamiento) {
 				$atendido = $tratamiento->atendido();
 			}
@@ -91,8 +92,30 @@ class PlanTratamiento
 	/**
 	 * @param Collection $listaDientes
 	 */
-	public function setListaDientes($listaDientes)
+	public function setListaDientes(Collection $listaDientes)
 	{
 		$this->listaDientes = $listaDientes;
+	}
+
+	public function diente($numero)
+	{
+		foreach ($this->listaDientes as $diente) {
+
+			if($diente->getNumero() === $numero) {
+				return $diente;
+			}
+		}
+		/*if ($this->existeDiente($numero)) {
+			return $this->listaDientes->get($numero);
+		}*/
+	}
+
+	private function existeDiente($numero)
+	{
+		if ($this->listaDientes->has($numero)) {
+			return true;
+		}
+
+		return false;
 	}
 }
