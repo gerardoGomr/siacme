@@ -30,6 +30,11 @@ class PlanTratamiento
 	private $aQuienSeDirige;
 
 	/**
+	 * @var Collection
+	 */
+	private $listaOtrosTratamientos;
+
+	/**
 	 * constructor
 	 * @param bool $atendido
 	 * @param Collection $listaDientes
@@ -46,14 +51,30 @@ class PlanTratamiento
 	 */
 	public function costo()
 	{
-		$costo = 0;
+		$this->calcularCosto();
+		return $this->costo;
+	}
+
+	/**
+	 * calcular el costo en base a la lista de tratamientos de los dientes
+	 * y en base al costo de otros tratamientos
+	 */
+	private function calcularCosto()
+	{
+		$this->costo = 0;
 		foreach ($this->listaDientes as $diente) {
-			foreach ($diente->getListaTratamientos() as $tratamiento) {
-				$costo += $tratamiento->getDienteTratamiento()->getCosto();
+			if (!is_null($diente->getListaTratamientos())) {
+				foreach ($diente->getListaTratamientos() as $tratamiento) {
+					$this->costo += $tratamiento->getDienteTratamiento()->getCosto();
+				}
 			}
 		}
 
-		return $costo;
+		if (!is_null($this->listaOtrosTratamientos)) {
+			foreach ($this->listaOtrosTratamientos as $otroTratamiento) {
+				$this->costo += $otroTratamiento->getCosto();
+			}
+		}
 	}
 
 	/**
@@ -97,6 +118,11 @@ class PlanTratamiento
 		$this->listaDientes = $listaDientes;
 	}
 
+	/**
+	 * devolver un diente en específico
+	 * @param int $numero
+	 * @return Diente
+	 */
 	public function diente($numero)
 	{
 		foreach ($this->listaDientes as $diente) {
@@ -105,17 +131,62 @@ class PlanTratamiento
 				return $diente;
 			}
 		}
-		/*if ($this->existeDiente($numero)) {
-			return $this->listaDientes->get($numero);
-		}*/
 	}
 
-	private function existeDiente($numero)
+	/**
+	 * @return Collection
+	 */
+	public function getListaOtrosTratamientos()
 	{
-		if ($this->listaDientes->has($numero)) {
-			return true;
+		return $this->listaOtrosTratamientos;
+	}
+
+	/**
+	 * @param Collection $listaOtrosTratamientos
+	 */
+	public function setListaOtrosTratamientos(Collection $listaOtrosTratamientos)
+	{
+		$this->listaOtrosTratamientos = $listaOtrosTratamientos;
+	}
+
+	/**
+	 * agregar nuevo "otro" tratamiento al plan
+	 * @param int $indice
+	 * @param OtroTratamiento $tratamiento
+	 */
+	public function agregarTratamiento($indice, OtroTratamiento $tratamiento)
+	{
+		if(is_null($this->listaOtrosTratamientos)) {
+			$this->listaOtrosTratamientos = new Collection();
 		}
 
-		return false;
+		/*if (count($this->listaTratamientos) === 2) {
+            throw new \Exception('Solo se permiten hasta dos tratamientos por diente');
+        }*/
+
+		// si ya está ocupada la posición, la elimina para permitir agregar uno nuevo
+		if ($this->listaOtrosTratamientos->has($indice)) {
+			$this->listaOtrosTratamientos->forget($indice);
+		}
+
+		$this->listaOtrosTratamientos->put($indice, $tratamiento);
+	}
+
+	/**
+	 * remover todos los "otros" tratamientos del plan
+	 */
+	public function removerOtrosTratamientos()
+	{
+		$this->listaOtrosTratamientos = null;
+	}
+
+	/**
+	 * devolver "otro" tratamiento en base a su id
+	 * @param $indice
+	 * @return OtroTratamiento
+	 */
+	public function otroTratamiento($indice)
+	{
+		return $this->listaOtrosTratamientos->get($indice);
 	}
 }

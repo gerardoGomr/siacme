@@ -2,6 +2,7 @@
 namespace Siacme\Servicios\Consultas;
 
 use Illuminate\Support\Collection;
+use Siacme\Dominio\Consultas\DientePlan;
 use Siacme\Dominio\Consultas\PlanTratamiento;
 use Siacme\Servicios\DibujadorInterface;
 
@@ -40,7 +41,8 @@ class DibujadorPlanTratamiento implements DibujadorInterface
     {
         // TODO: Implement dibujar() method.
         $html = '
-            <table class="table table-bordered tablaPlan">
+            <p class="text-medium"><span class="strong">Costo total:</span> <span>$ '.(string) number_format($this->planTratamiento->costo(), 2).'</span></p>
+            <table class="table table-bordered tablaPlan text-small">
                 <thead>
                     <tr>
                         <th>Diente</th>
@@ -53,12 +55,17 @@ class DibujadorPlanTratamiento implements DibujadorInterface
                 <tbody>';
 
         foreach ($this->planTratamiento->getListaDientes() as $diente) {
+            $dientePlan1 = $dientePlan2 = null;
+            if (!is_null($diente->getListaTratamientos())) {
+                $dientePlan1 = $diente->getListaTratamientos()->get('1');
+                $dientePlan2 = $diente->getListaTratamientos()->get('2');
+            }
             $html .= '
                 <tr>
                     <td class="diente">' . $diente->getNumero() . '</td>
                     <td>' . $this->dibujarPadecimientos($diente->getListaPadecimientos()) . '</td>
-                    <td>' . $this->dibujarComboTratamientos($this->listaDienteTratamientos) .'</td>
-                    <td>' . $this->dibujarComboTratamientos($this->listaDienteTratamientos) .'</td>
+                    <td>' . $this->dibujarComboTratamientos('1', $this->listaDienteTratamientos, $dientePlan1) .'</td>
+                    <td>' . $this->dibujarComboTratamientos('2', $this->listaDienteTratamientos, $dientePlan2) .'</td>
                     <td>' . $this->dibujarCostosTratamientos($diente->getListaTratamientos()) . '</td>
                 </tr>
             ';
@@ -92,23 +99,45 @@ class DibujadorPlanTratamiento implements DibujadorInterface
         return $html;
     }
 
-    private function dibujarComboTratamientos($listaDienteTratamientos)
+    /**
+     * dibuja un combo de tratamientos
+     * @param string $nombre
+     * @param Collection $listaDienteTratamientos
+     * @param DientePlan $dientePlan
+     * @return string
+     */
+    private function dibujarComboTratamientos($nombre, Collection $listaDienteTratamientos, DientePlan $dientePlan = null)
     {
         $html = '
-            <select name="dienteTratamientos" class="tratamientos form-control">
+            <select class="tratamientos form-control">
                 <option value="">Seleccione</option>
         ';
 
         foreach ($listaDienteTratamientos as $dienteTratamientos) {
-            $html .= '<option value="' . $dienteTratamientos->getId() . '">' . $dienteTratamientos->getTratamiento() . '</option>';
+            $selected = '';
+
+            if (!is_null($dientePlan)) {
+                if ($dienteTratamientos->getId() === $dientePlan->getDienteTratamiento()->getId()) {
+                    $selected = 'selected="selected"';
+                }
+            }
+
+            $html .= '<option value="' . $dienteTratamientos->getId() . '" ' . $selected . '>' . $dienteTratamientos->getTratamiento() . '</option>';
         }
 
-        $html .= '</select>';
+        $html .= '</select>
+            <input type="hidden" class="numeroTratamiento" value="' . $nombre . '">
+        ';
 
         return $html;
     }
 
-    private function dibujarCostosTratamientos($listaDienteTratamientos)
+    /**
+     * presenta los costos de los tratamientos
+     * @param Collection $listaDienteTratamientos
+     * @return string
+     */
+    private function dibujarCostosTratamientos(Collection $listaDienteTratamientos = null)
     {
         $total = count($listaDienteTratamientos);
         if ($total === 0 || is_null($listaDienteTratamientos)) {

@@ -58,4 +58,5 @@ class DientePlan
 	{
 		$this->dienteTratamiento = $dienteTratamiento;
 	}
+
 }

@@ -147,20 +147,26 @@ class Diente
 
     /**
      * agregar nuevo tratamiento al diente
+     * @param int $indice
      * @param DientePlan $tratamiento
      * @throws \Exception
      */
-    public function agregarTratamiento(DientePlan $tratamiento)
+    public function agregarTratamiento($indice, DientePlan $tratamiento)
     {
         if(is_null($this->listaTratamientos)) {
             $this->listaTratamientos = new Collection();
         }
 
-        if (count($this->listaTratamientos) === 2) {
+        /*if (count($this->listaTratamientos) === 2) {
             throw new \Exception('Solo se permiten hasta dos tratamientos por diente');
+        }*/
+
+        // si ya está ocupada la posición, la elimina para permitir agregar uno nuevo
+        if ($this->listaTratamientos->has($indice)) {
+            $this->listaTratamientos->forget($indice);
         }
 
-        $this->listaTratamientos->push($tratamiento);
+        $this->listaTratamientos->put($indice, $tratamiento);
     }
 
     /**

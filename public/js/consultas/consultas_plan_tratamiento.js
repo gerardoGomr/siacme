@@ -7,9 +7,10 @@ $(function() {
 		if ($(this).val() !== '') {
 
 			var datos = {
-					_token: 	   $('#_token').val(),
-					numeroDiente:  $(this).parent('td').siblings('td.diente').text(),
-					idTratamiento: $(this).val()
+					_token: 	    $('#_token').val(),
+					numeroDiente:   $(this).parent('td').siblings('td.diente').text(),
+					idTratamiento:  $(this).val(),
+					numeroElemento: $(this).siblings('input.numeroTratamiento').val()
 				},
 				respuestaAjax = ajax($('#urlAgregarTratamientos').val(), 'post', 'html', datos, 'guardar');
 
