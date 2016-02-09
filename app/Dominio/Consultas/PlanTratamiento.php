@@ -41,8 +41,9 @@ class PlanTratamiento
 	 */
 	public function __construct($atendido = true, Collection $listaDientes = null)
 	{
-		$this->atendido     = $atendido;
-		$this->listaDientes = $listaDientes;
+		$this->atendido               = $atendido;
+		$this->listaDientes           = $listaDientes;
+		$this->listaOtrosTratamientos = new Collection();
 	}
 
 	/**
@@ -154,7 +155,7 @@ class PlanTratamiento
 	 * @param int $indice
 	 * @param OtroTratamiento $tratamiento
 	 */
-	public function agregarTratamiento($indice, OtroTratamiento $tratamiento)
+	public function agregarOtroTratamiento($indice, OtroTratamiento $tratamiento)
 	{
 		if(is_null($this->listaOtrosTratamientos)) {
 			$this->listaOtrosTratamientos = new Collection();

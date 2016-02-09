@@ -44,4 +44,32 @@ class OtrosTratamientosRepositorioLaravelMySQL implements OtrosTratamientosRepos
             return null;
         }
     }
+
+    /**
+     * @param int $id
+     * @return OtroTratamiento
+     */
+    public function obtenerOtroTratamientoPorId($id)
+    {
+        try {
+
+            $otrosTratamientos = DB::table('plan_otro_tratamiento')
+                ->where('idOtroTratamiento', $id)
+                ->first();
+
+            $totalOtrosTratamientos = count($otrosTratamientos);
+
+            if ($totalOtrosTratamientos > 0) {
+                $otroTratamiento = new OtroTratamiento($otrosTratamientos->idOtroTratamiento, $otrosTratamientos->OtroTratamiento, $otrosTratamientos->Costo);
+
+                return $otroTratamiento;
+            }
+
+            return null;
+
+        } catch (\PDOException $e) {
+            echo $e->getMessage();
+            return null;
+        }
+    }
 }

@@ -16,7 +16,7 @@
             <div class="innerAll">
                 <div class="form-group">
                     <label class="control-label">Otros tratamientos:</label>
-                    <select name="otrosTratamientos" class="form-control">
+                    <select name="otrosTratamientos" id="otrosTratamientos" class="form-control">
                         <option value="">Seleccione</option>
                         @foreach($listaOtrosTratamientos as $otroTratamiento)
                             <option value="{{ $otroTratamiento->getId() }}">{{ $otroTratamiento->getTratamiento() }}</option>
@@ -25,7 +25,7 @@
                 </div>
 
                 <div class="form-group">
-                    <a href="" class="btn btn-primary btn-small"><i class="fa fa-plus"></i> Agregar a plan</a>
+                    <a href="{{ url('consultas/plan/tratamientos/otros/agregar') }}" class="btn btn-primary btn-small" id="btnAgregarOtroTratamiento"><i class="fa fa-plus"></i> Agregar a plan</a>
                 </div>
             </div>
         </div>

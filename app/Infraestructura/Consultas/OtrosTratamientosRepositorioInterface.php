@@ -13,4 +13,10 @@ interface OtrosTratamientosRepositorioInterface
      * @return Collection
      */
     public function obtenerOtrosTratamientos();
+
+    /**
+     * @param int $id
+     * @return OtroTratamiento
+     */
+    public function obtenerOtroTratamientoPorId($id);
 }

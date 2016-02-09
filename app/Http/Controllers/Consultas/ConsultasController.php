@@ -176,8 +176,16 @@ class ConsultasController extends Controller
     {
         $odontograma = $request->session()->get('odontograma');
         $odontograma->borrarDientesTratamientos();
+
+        // obtener primeros dos otros tratamientos para el plan
+        $otroTratamiento1 = $otrosTratamientosRepositorio->obtenerOtroTratamientoPorId(1);
+        $otroTratamiento2 = $otrosTratamientosRepositorio->obtenerOtroTratamientoPorId(2);
+
         // obtener plan
         $plan = new PlanTratamiento();
+        $plan->agregarOtroTratamiento($otroTratamiento1->getId(), $otroTratamiento1);
+        $plan->agregarOtroTratamiento($otroTratamiento2->getId(), $otroTratamiento2);
+
         $request->session()->forget('plan');
 
         $plan->generarDeOdontograma($odontograma);
@@ -205,6 +213,29 @@ class ConsultasController extends Controller
         $plan              = $request->session()->get('plan');
 
         $plan->diente($numeroDiente)->agregarTratamiento($numeroElemento, new DientePlan($dienteTratamiento));
+
+        $listaDienteTratamientos = $dienteTratamientosRepositorio->obtenerDienteTratamientos();
+        $dibujadorPlan           = new DibujadorPlanTratamiento($plan, $listaDienteTratamientos);
+
+        $request->session()->put('plan', $plan);
+
+        return $dibujadorPlan->dibujar();
+    }
+
+    /**
+     * agregar nuevo "otro tratamiento"
+     * @param Request $request
+     * @param DienteTratamientosRepositorioInterface $dienteTratamientosRepositorio
+     * @param OtrosTratamientosRepositorioInterface $otrosTratamientosRepositorio
+     * @return string
+     */
+    public function agregarOtroTratamiento(Request $request, DienteTratamientosRepositorioInterface $dienteTratamientosRepositorio, OtrosTratamientosRepositorioInterface $otrosTratamientosRepositorio)
+    {
+        $idOtroTratamiento = (int)$request->get('idOtroTratamiento');
+        $plan              = $request->session()->get('plan');
+        $otroTratamiento   = $otrosTratamientosRepositorio->obtenerOtroTratamientoPorId($idOtroTratamiento);
+
+        $plan->agregarOtroTratamiento($otroTratamiento->getId(), $otroTratamiento);
 
         $listaDienteTratamientos = $dienteTratamientosRepositorio->obtenerDienteTratamientos();
         $dibujadorPlan           = new DibujadorPlanTratamiento($plan, $listaDienteTratamientos);

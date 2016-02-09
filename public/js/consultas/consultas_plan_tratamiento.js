@@ -24,4 +24,25 @@ $(function() {
 			});
 		}
 	});
+
+	// evento click para otros tratamientos
+	$('#btnAgregarOtroTratamiento').on('click', function(event) {
+		event.preventDefault();
+		if ($("#otrosTratamientos").val() !== '') {
+			var datos = {
+					_token: 	       $('#_token').val(),
+					idOtroTratamiento: $('#otrosTratamientos').val()
+				},
+				respuestaAjax = ajax($(this).attr('href'), 'post', 'html', datos, 'guardar');
+
+			respuestaAjax.done(function(resultado) {
+				console.log('éxito');
+
+				$('#dvPlanTratamiento').html(resultado);
+			})
+			.fail(function(XMLHttpRequest, textStatus, errorThrown) {
+				console.log(errorThrown);
+			});
+		}
+	});
 });
