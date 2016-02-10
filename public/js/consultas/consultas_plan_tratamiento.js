@@ -45,4 +45,9 @@ $(function() {
 			});
 		}
 	});
+
+	// cerrar ventana
+	$('#btnAceptar').on('click', function(event) {
+		window.close();
+	});
 });

@@ -94,4 +94,42 @@ $(function() {
 		event.preventDefault();
 		window.open($(this).attr('href'), '_blank', 'width=800, height=600, scrollbars=yes');
 	});
+
+	// change para mostrar receta
+	$('#receta').on('change', function() {
+		var receta = atob($('input[name="receta' + $(this).val() + '"]').val());
+
+		$('#txtReceta').val(receta);
+	});
+
+	// guardar receta
+	$('#btnGuardarReceta').on('click', function(event) {
+		event.preventDefault();
+
+		// objeto a enviar
+		var datos = {
+			_token:   $formConsulta.find('input[name="_token"]').val(),
+			idReceta: $('#receta').val(),
+			receta:   btoa($('#txtReceta').val())
+		};
+
+		var respuesta = ajax($(this).attr('href'), 'post', 'html', datos, 'guardar');
+		respuesta.done(function(resultado) {
+			console.log(resultado);
+
+			if(resultado === '0') {
+				bootbox.alert('Ocurrió un error al guardar la receta.');
+				return false;
+			}
+
+			bootbox.alert('Receta guardada', function() {
+				// cerrar modal
+				$('#dvRecetas').modal('hide');
+			});
+		})
+		.fail(function(XMLHttpRequest, textStatus, errorThrown) {
+			console.log(errorThrown);
+			bootbox.alert('Imposible realizar la operación solicitada');
+		});
+	});
 });

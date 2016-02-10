@@ -4,7 +4,7 @@
 
 		<a href="{{ url('consultas/plan/agregar') }}" id="btnGenerarPlan" class="btn btn-success btn-small" disabled="disabled"><i class="fa fa-money"></i> Generar plan</a>
 
-		<a href="{{ url('consultas/receta/agregar') }}" id="btnReceta" class="btn btn-danger btn-small"><i class="fa fa-edit"></i> Generar receta</a>
+		<a href="#dvRecetas" id="btnReceta" class="btn btn-danger btn-small" data-toggle="modal"><i class="fa fa-edit"></i> Generar receta</a>
 	</div>
 	<div class="separator"></div>
 	<div class="row">
@@ -102,4 +102,6 @@
 			</div>
 		</div>
 	</div>
+
+	@include('consultas.consultas_odontopediatria_receta')
 </div>

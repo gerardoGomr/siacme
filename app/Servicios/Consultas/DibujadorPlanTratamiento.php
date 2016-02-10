@@ -40,8 +40,13 @@ class DibujadorPlanTratamiento implements DibujadorInterface
     public function dibujar()
     {
         // TODO: Implement dibujar() method.
+        $otrosTratamientos = '';
+        foreach ($this->planTratamiento->getListaOtrosTratamientos() as $otroTratamiento) {
+            $otrosTratamientos .= $otroTratamiento->getTratamiento() . ' ($' . (string)number_format($otroTratamiento->getCosto(), 2) . ') - ';
+        }
         $html = '
             <p class="text-medium"><span class="strong">Costo total:</span> <span>$ '.(string) number_format($this->planTratamiento->costo(), 2).'</span></p>
+            <p><span class="strong">Otros:</span> <em>' . $otrosTratamientos . '</em></p>
             <table class="table table-bordered tablaPlan text-small">
                 <thead>
                     <tr>

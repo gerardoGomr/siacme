@@ -9,30 +9,35 @@ namespace Siacme\Dominio\Consultas;
 class Receta
 {
 	/**
-	 * id autonumerico
 	 * @var int
 	 */
 	protected $id;
 
-	/**
-	 * lista de indicaciones
-	 * @var array
-	 */
-	protected $listaIndicaciones;
-
-	/**
-	 * firma de la receta
-	 * @var string
-	 */
-	protected $firma;
-
-	function __construct()
-	{
-		# code...
-	}
+    /**
+     * @var string
+     */
+	protected $receta;
 
     /**
-     * Gets the id autonumerico.
+     * @var string
+     */
+	protected $nombre;
+
+    /**
+     * Receta constructor.
+     * @param int $id
+     * @param string $receta
+     * @param string $nombre
+     */
+    public function __construct($id = null, $receta = null, $nombre = null)
+    {
+        $this->id     = $id;
+        $this->receta = $receta;
+        $this->nombre = $nombre;
+    }
+
+
+    /**
      *
      * @return int
      */
@@ -42,8 +47,6 @@ class Receta
     }
 
     /**
-     * Sets the id autonumerico.
-     *
      * @param int $id the id
      */
     public function setId($id)
@@ -52,66 +55,34 @@ class Receta
     }
 
     /**
-     * Gets the lista de indicaciones.
-     *
-     * @return array
-     */
-    public function getListaIndicaciones()
-    {
-        return $this->listaIndicaciones;
-    }
-
-    /**
-     * Sets the lista de indicaciones.
-     *
-     * @param array $listaIndicaciones the lista indicaciones
-     */
-    public function setListaIndicaciones(array $listaIndicaciones)
-    {
-        $this->listaIndicaciones = $listaIndicaciones;
-    }
-
-    /**
-     * agregar indicación a la receta
-     * @param  Indicacion $indicacion
-     * @return void
-     */
-    public function agregaIndicacion(Indicacion $indicacion)
-    {
-    	$this->listaIndicaciones[] = $indicacion;
-    }
-
-    /**
-     * Gets the firma de la receta.
-     *
      * @return string
      */
-    public function getFirma()
+    public function getReceta()
     {
-        return $this->firma;
+        return $this->receta;
     }
 
     /**
-     * Sets the firma de la receta.
-     *
-     * @param string $firma the firma
+     * @param string $receta
      */
-    public function setFirma($firma)
+    public function setReceta($receta)
     {
-        $this->firma = $firma;
+        $this->receta = $receta;
     }
 
     /**
-     * verifica si la receta es valida
-     * cuando tiene al menos una indicación
-     * @return bool
+     * @return string
      */
-    public function valida()
+    public function getNombre()
     {
-    	if(is_null($this->listaIndicaciones) || count($this->listaIndicaciones) === 0) {
-    		return false;
-    	}
+        return $this->nombre;
+    }
 
-    	return true;
+    /**
+     * @param string $nombre
+     */
+    public function setNombre($nombre)
+    {
+        $this->nombre = $nombre;
     }
 }

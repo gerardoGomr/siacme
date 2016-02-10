@@ -6,13 +6,7 @@
 
 @section('contenido')
     <div class="row">
-        <div class="col-md-9">
-            <div class="innerAll border-right" id="dvPlanTratamiento">
-                {!! $dibujadorPlan->dibujar() !!}
-            </div>
-        </div>
-
-        <div class="col-md-3">
+        <div class="col-md-3 col-sm-12">
             <div class="innerAll">
                 <div class="form-group">
                     <label class="control-label">Otros tratamientos:</label>
@@ -27,6 +21,14 @@
                 <div class="form-group">
                     <a href="{{ url('consultas/plan/tratamientos/otros/agregar') }}" class="btn btn-primary btn-small" id="btnAgregarOtroTratamiento"><i class="fa fa-plus"></i> Agregar a plan</a>
                 </div>
+            </div>
+        </div>
+        <div class="col-md-9 col-sm-12 border-left">
+            <div class="innerAll">
+                <a href="javascript:;" id="btnAceptar" class="btn btn-success btn-lg pull-right"><i class="fa fa-check"></i> Aceptar</a>
+            </div>
+            <div class="innerAll" id="dvPlanTratamiento">
+                {!! $dibujadorPlan->dibujar() !!}
             </div>
         </div>
     </div>

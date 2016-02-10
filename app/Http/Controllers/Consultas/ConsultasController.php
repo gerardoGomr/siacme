@@ -5,11 +5,13 @@ use Illuminate\Http\Request;
 
 use Siacme\Dominio\Consultas\DientePlan;
 use Siacme\Dominio\Consultas\PlanTratamiento;
+use Siacme\Dominio\Consultas\Receta;
 use Siacme\Http\Requests;
 use Siacme\Http\Controllers\Controller;
 use Siacme\Infraestructura\Citas\CitasRepositorioInterface;
 use Siacme\Infraestructura\Consultas\DienteTratamientosRepositorioInterface;
 use Siacme\Infraestructura\Consultas\OtrosTratamientosRepositorioInterface;
+use Siacme\Infraestructura\Consultas\RecetasRepositorioInterface;
 use Siacme\Infraestructura\Expedientes\ExpedientesRepositorioInterface;
 use Siacme\Infraestructura\Pacientes\ComportamientosFranklRepositorioInterface;
 use Siacme\Infraestructura\Pacientes\PadecimientosDentalesRepositorioInterface;
@@ -100,10 +102,11 @@ class ConsultasController extends Controller
      * @param ComportamientosFranklRepositorioInterface $comportamientosRepositorio
      * @param PadecimientosDentalesRepositorioInterface $padecimientosRepositorio
      * @param Request $request
+     * @param RecetasRepositorioInterface $recetasRepositorio
      * @return \Siacme\Servicios\Consultas\ExpedienteOtorrino
      * @throws \Exception
      */
-    public function capturar($idPaciente, $userMedico, ComportamientosFranklRepositorioInterface $comportamientosRepositorio, PadecimientosDentalesRepositorioInterface $padecimientosRepositorio, Request $request)
+    public function capturar($idPaciente, $userMedico, ComportamientosFranklRepositorioInterface $comportamientosRepositorio, PadecimientosDentalesRepositorioInterface $padecimientosRepositorio, Request $request, RecetasRepositorioInterface $recetasRepositorio)
     {
         $idPaciente = (int)base64_decode($idPaciente);
         $userMedico = base64_decode($userMedico);
@@ -117,12 +120,13 @@ class ConsultasController extends Controller
         $dibujadorOdontograma = new DibujadorOdontogramas($odontograma);
         $listaComportamientos = $comportamientosRepositorio->obtenerComportamientos();
         $listaPadecimientos   = $padecimientosRepositorio->obtenerPadecimientos();
+        $listaRecetas         = $recetasRepositorio->obtenerRecetas();
 
         // guardar el odontograma creado en la sesión activa para procesamiento
         $request->session()->put('odontograma', $odontograma);
 
         // generar vista
-        return FabricaConsultasViews::construirVista($expediente, $dibujadorOdontograma, $listaComportamientos, $listaPadecimientos);
+        return FabricaConsultasViews::construirVista($expediente, $dibujadorOdontograma, $listaComportamientos, $listaPadecimientos, $listaRecetas);
     }
 
     /**
@@ -175,20 +179,23 @@ class ConsultasController extends Controller
     public function verPlan(Request $request, DienteTratamientosRepositorioInterface $dienteTratamientosRepositorio, OtrosTratamientosRepositorioInterface $otrosTratamientosRepositorio)
     {
         $odontograma = $request->session()->get('odontograma');
-        $odontograma->borrarDientesTratamientos();
+        if(is_null($request->session()->get('plan'))) {
+            $odontograma->borrarDientesTratamientos();
 
-        // obtener primeros dos otros tratamientos para el plan
-        $otroTratamiento1 = $otrosTratamientosRepositorio->obtenerOtroTratamientoPorId(1);
-        $otroTratamiento2 = $otrosTratamientosRepositorio->obtenerOtroTratamientoPorId(2);
+            // obtener primeros dos otros tratamientos para el plan
+            $otroTratamiento1 = $otrosTratamientosRepositorio->obtenerOtroTratamientoPorId(1);
+            $otroTratamiento2 = $otrosTratamientosRepositorio->obtenerOtroTratamientoPorId(2);
 
-        // obtener plan
-        $plan = new PlanTratamiento();
-        $plan->agregarOtroTratamiento($otroTratamiento1->getId(), $otroTratamiento1);
-        $plan->agregarOtroTratamiento($otroTratamiento2->getId(), $otroTratamiento2);
+            // obtener plan
+            $plan = new PlanTratamiento();
+            $plan->agregarOtroTratamiento($otroTratamiento1->getId(), $otroTratamiento1);
+            $plan->agregarOtroTratamiento($otroTratamiento2->getId(), $otroTratamiento2);
 
-        $request->session()->forget('plan');
+            $plan->generarDeOdontograma($odontograma);
+        } else {
+            $plan = $request->session()->get('plan');
+        }
 
-        $plan->generarDeOdontograma($odontograma);
         $listaDienteTratamientos = $dienteTratamientosRepositorio->obtenerDienteTratamientos();
         $listaOtrosTratamientos  = $otrosTratamientosRepositorio->obtenerOtrosTratamientos();
         $dibujadorPlan           = new DibujadorPlanTratamiento($plan, $listaDienteTratamientos);
@@ -246,11 +253,18 @@ class ConsultasController extends Controller
     }
 
     /**
-     * capturar receta
-     * @return View
+     * @param Request $request
+     * @return \Illuminate\Contracts\Routing\ResponseFactory|\Symfony\Component\HttpFoundation\Response
      */
-    public function capturaReceta()
+    public function agregarReceta(Request $request)
     {
-        return View::make('consultas.consultas_receta_agregar');
+        $idReceta = $request->get('receta');
+        $receta   = base64_decode($request->get('txtReceta'));
+
+        $receta = new Receta($idReceta, $receta);
+
+        $request->session()->put('receta', $receta);
+
+        return response(1);
     }
 }
