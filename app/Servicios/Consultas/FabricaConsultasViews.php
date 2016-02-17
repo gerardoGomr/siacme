@@ -16,15 +16,16 @@ class FabricaConsultasViews
 	 * @param null $listaComportamientosFrankl
 	 * @param null $listaPadecimientos
 	 * @param null $listaRecetas
+	 * @param null $listaMedicos
 	 * @return ExpedienteOtorrino
 	 * @throws \Exception
 	 */
-	public static function construirVista(Expediente $expediente, DibujadorInterface $dibujadorOdontograma = null, $listaComportamientosFrankl = null, $listaPadecimientos = null, $listaRecetas = null)
+	public static function construirVista(Expediente $expediente, DibujadorInterface $dibujadorOdontograma = null, $listaComportamientosFrankl = null, $listaPadecimientos = null, $listaRecetas = null, $listaMedicos = null)
 	{
 		switch ($expediente->getMedico()->getUsername()) {
 			case 'johanna.vazquez':
 				// odontopediatría
-				return View::make('consultas.consultas_odontopediatria_capturar', compact('expediente', 'dibujadorOdontograma', 'listaComportamientosFrankl', 'listaPadecimientos', 'listaRecetas'));
+				return View::make('consultas.consultas_odontopediatria_capturar', compact('expediente', 'dibujadorOdontograma', 'listaComportamientosFrankl', 'listaPadecimientos', 'listaRecetas', 'listaMedicos'));
 				break;
 
 			case 1:

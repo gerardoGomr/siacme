@@ -160,7 +160,8 @@ return [
         Siacme\Providers\PadecimientosDentalesRepositorioServiceProvider::class,
         Siacme\Providers\DienteTratamientosRepositorioServiceProvider::class,
         Siacme\Providers\OtrosTratamientosRepositorioServiceProvider::class,
-        Siacme\Providers\RecetasRepositorioServiceProvider::class
+        Siacme\Providers\RecetasRepositorioServiceProvider::class,
+        Siacme\Providers\MedicosReferenciaRepositorioServiceProvider::class
     ],
 
     /*

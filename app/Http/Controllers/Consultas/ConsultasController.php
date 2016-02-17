@@ -10,6 +10,7 @@ use Siacme\Http\Requests;
 use Siacme\Http\Controllers\Controller;
 use Siacme\Infraestructura\Citas\CitasRepositorioInterface;
 use Siacme\Infraestructura\Consultas\DienteTratamientosRepositorioInterface;
+use Siacme\Infraestructura\Consultas\MedicosReferenciaRepositorioInterface;
 use Siacme\Infraestructura\Consultas\OtrosTratamientosRepositorioInterface;
 use Siacme\Infraestructura\Consultas\RecetasRepositorioInterface;
 use Siacme\Infraestructura\Expedientes\ExpedientesRepositorioInterface;
@@ -103,10 +104,11 @@ class ConsultasController extends Controller
      * @param PadecimientosDentalesRepositorioInterface $padecimientosRepositorio
      * @param Request $request
      * @param RecetasRepositorioInterface $recetasRepositorio
+     * @param MedicosReferenciaRepositorioInterface $medicosRepositorio
      * @return \Siacme\Servicios\Consultas\ExpedienteOtorrino
      * @throws \Exception
      */
-    public function capturar($idPaciente, $userMedico, ComportamientosFranklRepositorioInterface $comportamientosRepositorio, PadecimientosDentalesRepositorioInterface $padecimientosRepositorio, Request $request, RecetasRepositorioInterface $recetasRepositorio)
+    public function capturar($idPaciente, $userMedico, ComportamientosFranklRepositorioInterface $comportamientosRepositorio, PadecimientosDentalesRepositorioInterface $padecimientosRepositorio, Request $request, RecetasRepositorioInterface $recetasRepositorio, MedicosReferenciaRepositorioInterface $medicosRepositorio)
     {
         $idPaciente = (int)base64_decode($idPaciente);
         $userMedico = base64_decode($userMedico);
@@ -121,12 +123,13 @@ class ConsultasController extends Controller
         $listaComportamientos = $comportamientosRepositorio->obtenerComportamientos();
         $listaPadecimientos   = $padecimientosRepositorio->obtenerPadecimientos();
         $listaRecetas         = $recetasRepositorio->obtenerRecetas();
+        $listaMedicos         = $medicosRepositorio->obtenerMedicosReferencia();
 
         // guardar el odontograma creado en la sesión activa para procesamiento
         $request->session()->put('odontograma', $odontograma);
 
         // generar vista
-        return FabricaConsultasViews::construirVista($expediente, $dibujadorOdontograma, $listaComportamientos, $listaPadecimientos, $listaRecetas);
+        return FabricaConsultasViews::construirVista($expediente, $dibujadorOdontograma, $listaComportamientos, $listaPadecimientos, $listaRecetas, $listaMedicos);
     }
 
     /**

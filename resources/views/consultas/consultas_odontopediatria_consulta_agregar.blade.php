@@ -5,6 +5,8 @@
 		<a href="{{ url('consultas/plan/agregar') }}" id="btnGenerarPlan" class="btn btn-success btn-small" disabled="disabled"><i class="fa fa-money"></i> Generar plan</a>
 
 		<a href="#dvRecetas" id="btnReceta" class="btn btn-danger btn-small" data-toggle="modal"><i class="fa fa-edit"></i> Generar receta</a>
+
+		<a href="#dvInterconsulta" id="btnInterconsulta" class="btn btn-warning btn-small" data-toggle="modal"><i class="fa fa-user-md"></i> Enviar a interconsulta</a>
 	</div>
 	<div class="separator"></div>
 	<div class="row">
@@ -103,5 +105,9 @@
 		</div>
 	</div>
 
+	<!-- receta médica -->
 	@include('consultas.consultas_odontopediatria_receta')
+
+	<!-- interconsulta -->
+	@include('consultas.consultas_odontopediatria_interconsulta')
 </div>

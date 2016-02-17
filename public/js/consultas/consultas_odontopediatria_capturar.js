@@ -6,7 +6,7 @@ $(function() {
 		$btnGuardarConsulta 		  = $('#btnGuardarConsulta'),
 		$btnInterconsulta   		  = $('#btnInterconsulta'),
 		$btnLaboratorio     		  = $('#btnLaboratorio'),
-		$btnReceta 					  = $('#btnReceta');
+		$btnGuardarReceta 			  = $('#btnGuardarReceta');
 
 	// inicializar form
 	init();
@@ -103,7 +103,7 @@ $(function() {
 	});
 
 	// guardar receta
-	$('#btnGuardarReceta').on('click', function(event) {
+	$btnGuardarReceta.on('click', function(event) {
 		event.preventDefault();
 
 		// objeto a enviar
@@ -132,4 +132,6 @@ $(function() {
 			bootbox.alert('Imposible realizar la operación solicitada');
 		});
 	});
+
+
 });
