@@ -1,5 +1,6 @@
 <?php
 namespace Siacme\Dominio\Consultas;
+use Siacme\Dominio\Pacientes\ComportamientoFrankl;
 
 /**
  * Class Consulta
@@ -8,99 +9,66 @@ namespace Siacme\Dominio\Consultas;
  */
 class Consulta
 {
-	/**
-	 * id autonumerico
-	 * @var int
-	 */
-	protected $id;
-
-	/**
-	 * descripcion del motivo de consulta
-	 * @var string
-	 */
-	protected $motivoConsulta;
-
-	/**
-	 * descripción de síntomas
-	 * @var string
-	 */
-	protected $sintomas;
-
-	/**
-	 * descripción de patologías
-	 * @var string
-	 */
-	protected $patologias;
-
-	/**
-	 * descripción de cirugías
-	 * @var string
-	 */
-	protected $cirugias;
-
-	/**
-	 * receta que se expide
-	 * @var Receta
-	 */
-	protected $receta;
-
-	/**
-	 * exploración física que se lleva a cabo
-	 * @var ExploracionFisica
-	 */
-	protected $exploracionFisica;
-
-	/**
-	 * el costo de la consulta
-	 * @var double
-	 */
-	protected $costo;
-
-	/**
-	 * el tratamiento que se llevará a cabo
-	 * @var Tratamiento
-	 */
-	protected $tratamiento;
-
-	/**
-	 * cuando se envía a consulta con otro especialista
-	 * @var Interconsulta
-	 */
-	protected $interconsulta;
-
-	/**
-	 * marcar como envío a interconsulta
-	 * @var bool
-	 */
-	protected $envioAInterconsulta;
-
-	/**
-	 * marcar como envío a estudios
-	 * @var bool
-	 */
-	protected $envioAEstudiosDeLaboratorio;
-
-	/**
-	 * cuando se genera una orden de estudio de laboratorio
-	 * @var EstudioLaboratorio
-	 */
-	protected $estudioLaboratorio;
-
-	/**
-	 * fecha de consulta
-	 * @var date
-	 */
-	protected $fecha;
-
-
-	public function __construct($id = null)
-	{
-        $this->id = $id;
-	}
+    /**
+     * @var int
+     */
+	private $id;
 
     /**
-     * Gets the id autonumerico.
-     *
+     * @var string
+     */
+    private $padecimientoActual;
+
+    /**
+     * @var string
+     */
+    private $interrogatorioAparatosSistemas;
+
+    /**
+     * @var ExploracionFisica
+     */
+    private $exploracionFisica;
+
+    /**
+     * @var string
+     */
+    private $notaMedica;
+
+    /**
+     * @var ComportamientoFrankl
+     */
+    private $comportamientoFrankl;
+
+    /**
+     * @var double
+     */
+    private $costo;
+
+    /**
+     * @var Receta
+     */
+    private $receta;
+
+    /**
+     * Consulta constructor.
+     * @param int $id
+     * @param string $padecimientoActual
+     * @param string $interrogatorioAparatosSistemas
+     * @param ExploracionFisica $exploracionFisica
+     * @param string $notaMedica
+     * @param ComportamientoFrankl $comportamientoFrankl
+     */
+    public function __construct($id = 0, $padecimientoActual, $interrogatorioAparatosSistemas, ExploracionFisica $exploracionFisica, $notaMedica, ComportamientoFrankl $comportamientoFrankl)
+    {
+        $this->id                             = $id;
+        $this->padecimientoActual             = $padecimientoActual;
+        $this->interrogatorioAparatosSistemas = $interrogatorioAparatosSistemas;
+        $this->exploracionFisica              = $exploracionFisica;
+        $this->notaMedica                     = $notaMedica;
+        $this->comportamientoFrankl           = $comportamientoFrankl;
+    }
+
+    /**
      * @return int
      */
     public function getId()
@@ -109,9 +77,7 @@ class Consulta
     }
 
     /**
-     * Sets the id autonumerico.
-     *
-     * @param int $id the id
+     * @param int $id
      */
     public function setId($id)
     {
@@ -119,108 +85,38 @@ class Consulta
     }
 
     /**
-     * Gets the descripcion del motivo de consulta.
-     *
      * @return string
      */
-    public function getMotivoConsulta()
+    public function getPadecimientoActual()
     {
-        return $this->motivoConsulta;
+        return $this->padecimientoActual;
     }
 
     /**
-     * Sets the descripcion del motivo de consulta.
-     *
-     * @param string $motivoConsulta the motivo consulta
+     * @param string $padecimientoActual
      */
-    public function setMotivoConsulta($motivoConsulta)
+    public function setPadecimientoActual($padecimientoActual)
     {
-        $this->motivoConsulta = $motivoConsulta;
+        $this->padecimientoActual = $padecimientoActual;
     }
 
     /**
-     * Gets the descripción de síntomas.
-     *
      * @return string
      */
-    public function getSintomas()
+    public function getInterrogatorioAparatosSistemas()
     {
-        return $this->sintomas;
+        return $this->interrogatorioAparatosSistemas;
     }
 
     /**
-     * Sets the descripción de síntomas.
-     *
-     * @param string $sintomas the sintomas
+     * @param string $interrogatorioAparatosSistemas
      */
-    public function setSintomas($sintomas)
+    public function setInterrogatorioAparatosSistemas($interrogatorioAparatosSistemas)
     {
-        $this->sintomas = $sintomas;
+        $this->interrogatorioAparatosSistemas = $interrogatorioAparatosSistemas;
     }
 
     /**
-     * Gets the descripción de patologías.
-     *
-     * @return string
-     */
-    public function getPatologias()
-    {
-        return $this->patologias;
-    }
-
-    /**
-     * Sets the descripción de patologías.
-     *
-     * @param string $patologias the patologias
-     */
-    public function setPatologias($patologias)
-    {
-        $this->patologias = $patologias;
-    }
-
-    /**
-     * Gets the descripción de cirugías.
-     *
-     * @return string
-     */
-    public function getCirugias()
-    {
-        return $this->cirugias;
-    }
-
-    /**
-     * Sets the descripción de cirugías.
-     *
-     * @param string $cirugias the cirugias
-     */
-    public function setCirugias($cirugias)
-    {
-        $this->cirugias = $cirugias;
-    }
-
-    /**
-     * Gets the receta que se expide.
-     *
-     * @return Receta
-     */
-    public function getReceta()
-    {
-        return $this->receta;
-    }
-
-    /**
-     * Sets the receta que se expide.
-     *
-     * @param Receta $receta the receta
-     */
-    public function setReceta(Receta $receta)
-    {
-        $this->receta = $receta;
-    }
-
-    /**
-     * Gets the exploración física que se lleva a cabo.
-     *
      * @return ExploracionFisica
      */
     public function getExploracionFisica()
@@ -229,9 +125,7 @@ class Consulta
     }
 
     /**
-     * Sets the exploración física que se lleva a cabo.
-     *
-     * @param ExploracionFisica $exploracionFisica the exploracion fisica
+     * @param ExploracionFisica $exploracionFisica
      */
     public function setExploracionFisica(ExploracionFisica $exploracionFisica)
     {
@@ -239,9 +133,39 @@ class Consulta
     }
 
     /**
-     * Gets the el costo de la consulta.
-     *
-     * @return double
+     * @return string
+     */
+    public function getNotaMedica()
+    {
+        return $this->notaMedica;
+    }
+
+    /**
+     * @param string $notaMedica
+     */
+    public function setNotaMedica($notaMedica)
+    {
+        $this->notaMedica = $notaMedica;
+    }
+
+    /**
+     * @return ComportamientoFrankl
+     */
+    public function getComportamientoFrankl()
+    {
+        return $this->comportamientoFrankl;
+    }
+
+    /**
+     * @param ComportamientoFrankl $comportamientoFrankl
+     */
+    public function setComportamientoFrankl(ComportamientoFrankl $comportamientoFrankl)
+    {
+        $this->comportamientoFrankl = $comportamientoFrankl;
+    }
+
+    /**
+     * @return float
      */
     public function getCosto()
     {
@@ -249,144 +173,63 @@ class Consulta
     }
 
     /**
-     * Sets the el costo de la consulta.
-     *
-     * @param double $costo the costo
+     * @param float $costo
      */
     public function setCosto($costo)
     {
+        if ($costo < 0) {
+            throw new \InvalidArgumentException('Por favor, especifique un costo mayor o igual a $0.00');
+        }
+
         $this->costo = $costo;
     }
 
     /**
-     * Gets the el tratamiento que se llevará a cabo.
-     *
-     * @return Tratamiento
+     * dar consulta de cortesia
      */
-    public function getTratamiento()
+    public function cortesia()
     {
-        return $this->tratamiento;
+        $this->costo = 0;
     }
 
     /**
-     * Sets the el tratamiento que se llevará a cabo.
-     *
-     * @param Tratamiento $tratamiento the tratamiento
+     * @return Receta
      */
-    public function setTratamiento(Tratamiento $tratamiento)
+    public function getReceta()
     {
-        $this->tratamiento = $tratamiento;
+        return $this->receta;
     }
 
     /**
-     * Gets the cuando se envía a consulta con otro especialista.
-     *
-     * @return Interconsulta
+     * @param Receta $receta
      */
-    public function getInterconsulta()
+    public function setReceta(Receta $receta)
     {
-        return $this->interconsulta;
+        $this->receta = $receta;
     }
 
     /**
-     * Sets the cuando se envía a consulta con otro especialista.
-     *
-     * @param Interconsulta $interconsulta the interconsulta
+     * indica si la consulta es nueva o ya existe
+     * @return string
      */
-    public function setInterconsulta(Interconsulta $interconsulta)
-    {
-        $this->interconsulta = $interconsulta;
+    public function nuevaOSubsecuente() {
+        if ($this->id === 0 || is_null($this->id)) {
+            return 'Nueva';
+        }
+
+        return 'Existente';
     }
 
     /**
-     * Gets the cuando se genera una orden de estudio de laboratorio.
-     *
-     * @return EstudioLaboratorio
-     */
-    public function getEstudioLaboratorio()
-    {
-        return $this->estudioLaboratorio;
-    }
-
-    /**
-     * Sets the cuando se genera una orden de estudio de laboratorio.
-     *
-     * @param EstudioLaboratorio $estudioLaboratorio the estudio laboratorio
-     */
-    public function setEstudioLaboratorio(EstudioLaboratorio $estudioLaboratorio)
-    {
-        $this->estudioLaboratorio = $estudioLaboratorio;
-    }
-
-    /**
-     * Gets the marcar como envío a interconsulta.
-     *
-     * @return bool
-     */
-    public function getEnvioAInterconsulta()
-    {
-        return $this->envioAInterconsulta;
-    }
-
-    /**
-     * Sets the marcar como envío a interconsulta.
-     *
-     * @param bool $envioAInterconsulta the envio ainterconsulta
-     */
-    public function setEnvioAInterconsulta($envioAInterconsulta)
-    {
-        $this->envioAInterconsulta = $envioAInterconsulta;
-    }
-
-    /**
-     * Gets the marcar como envío a estudios.
-     *
-     * @return bool
-     */
-    public function getEnvioAEstudiosDeLaboratorio()
-    {
-        return $this->envioAEstudiosDeLaboratorio;
-    }
-
-    /**
-     * Sets the marcar como envío a estudios.
-     *
-     * @param bool $envioAEstudiosDeLaboratorio the envio aestudios de laboratorio
-     */
-    public function setEnvioAEstudiosDeLaboratorio($envioAEstudiosDeLaboratorio)
-    {
-	}
-
-    /**
-     * Gets the fecha de consulta.
-     *
-     * @return date
-     */
-    public function getFecha()
-    {
-        return $this->fecha;
-    }
-
-    /**
-     * Sets the fecha de consulta.
-     *
-     * @param date $fecha the fecha
-     */
-    public function setFecha($fecha)
-    {
-        $this->fecha = $fecha;
-    }
-
-    /**
-     * verifica si la consulta generó receta
+     * indica si tiene receta generada
      * @return bool
      */
     public function tieneReceta()
     {
-    	if(is_null($this->receta)) {
-    		return false;
-    	}
+        if (!is_null($this->receta)) {
+            return true;
+        }
 
-    	return true;
+        return false;
     }
 }

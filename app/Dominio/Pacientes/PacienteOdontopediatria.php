@@ -537,7 +537,10 @@ class PacienteOdontopediatria extends Paciente
      * @var double
      */
     protected $medidaAlteracionColor;
-    
+
+    /**
+     * @var TraumatismoBucal
+     */
     protected $traumatismoBucal;
 
     /**

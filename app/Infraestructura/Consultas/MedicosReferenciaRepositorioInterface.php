@@ -13,4 +13,10 @@ interface MedicosReferenciaRepositorioInterface
      * @return Collection
      */
     public function obtenerMedicosReferencia();
+
+    /**
+     * @param int $id
+     * @return MedicoReferencia
+     */
+    public function obtenerMedicoPorId($id);
 }

@@ -49,4 +49,35 @@ class MedicosReferenciaRepositorioLaravelMySQL implements MedicosReferenciaRepos
             return null;
         }
     }
+
+    /**
+     * @param int $id
+     * @return MedicoReferencia
+     */
+    public function obtenerMedicoPorId($id)
+    {
+        try {
+            $medicos = DB::table('medico_referencia')
+                ->join('especialidad', 'especialidad.idEspecialidad', '=', 'medico_referencia.idEspecialidad')
+                ->where('medico_referencia.idMedicoReferencia', $id)
+                ->first();
+
+            $totalMedicos = count($medicos);
+
+            if ($totalMedicos > 0) {
+                $medicoReferencia = new MedicoReferencia($medicos->idMedicoReferencia, $medicos->Direccion, new Especialidad($medicos->idEspecialidad, $medicos->Especialidad));
+                $medicoReferencia->setNombre($medicos->Nombre);
+                $medicoReferencia->setPaterno($medicos->Paterno);
+                $medicoReferencia->setMaterno($medicos->Materno);
+
+                return $medicoReferencia;
+            }
+
+            return null;
+
+        } catch(\PDOException $e) {
+            echo $e->getMessage();
+            return null;
+        }
+    }
 }

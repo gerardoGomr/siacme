@@ -1,5 +1,6 @@
 <?php
 namespace Siacme\Dominio\Interconsultas;
+use Illuminate\Support\Collection;
 
 /**
  * Class Interconsulta
@@ -29,6 +30,16 @@ class Interconsulta
     private $respuesta;
 
     /**
+     * @var bool
+     */
+    private $respondida;
+
+    /**
+     * @var Collection
+     */
+    private $listaAnexos;
+
+    /**
      * Interconsulta constructor.
      * @param int $id
      * @param MedicoReferencia $medico
@@ -39,6 +50,10 @@ class Interconsulta
         $this->id         = $id;
         $this->medico     = $medico;
         $this->referencia = $referencia;
+
+        if (is_null($this->listaAnexos)) {
+            $this->listaAnexos = new Collection();
+        }
     }
 
     /**
@@ -103,5 +118,37 @@ class Interconsulta
     public function setRespuesta($respuesta)
     {
         $this->respuesta = $respuesta;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function respondida()
+    {
+        return $this->respondida;
+    }
+
+    /**
+     * @param boolean $respondida
+     */
+    public function setRespondida($respondida)
+    {
+        $this->respondida = $respondida;
+    }
+
+    /**
+     * @return Collection
+     */
+    public function getListaAnexos()
+    {
+        return $this->listaAnexos;
+    }
+
+    /**
+     * @param Collection $listaAnexos
+     */
+    public function setListaAnexos($listaAnexos)
+    {
+        $this->listaAnexos = $listaAnexos;
     }
 }

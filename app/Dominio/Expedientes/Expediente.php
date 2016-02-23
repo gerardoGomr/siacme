@@ -37,6 +37,21 @@ class Expediente
 	protected $medico;
 
 	/**
+	 * @var Collection
+	 */
+	protected $listaInterconsultas;
+
+	/**
+	 * @var Collection
+	 */
+	protected $listaPlanesTratamiento;
+
+	/**
+	 * @var Collection
+	 */
+	protected $listaOdontogramas;
+
+	/**
 	 * Expediente constructor.
 	 * @param null $id
 	 */

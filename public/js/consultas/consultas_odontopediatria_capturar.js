@@ -4,7 +4,7 @@ $(function() {
 		$btnGuardarPadecimientoDental = $('#btnGuardarPadecimientoDental'),
 		$btnGenerarPlan				  = $('#btnGenerarPlan'),
 		$btnGuardarConsulta 		  = $('#btnGuardarConsulta'),
-		$btnInterconsulta   		  = $('#btnInterconsulta'),
+		$btnGuardarInterconsulta      = $('#btnGuardarInterconsulta'),
 		$btnLaboratorio     		  = $('#btnLaboratorio'),
 		$btnGuardarReceta 			  = $('#btnGuardarReceta');
 
@@ -81,7 +81,7 @@ $(function() {
 			});
 		})
 		.fail(function(XMLHttpRequest, textStatus, errorThrown) {
-			console.log(errorThrown);
+			console.log(textStatus + ': ' + errorThrown);
 			bootbox.alert('Imposible realizar la operación solicitada');
 		});
 	});
@@ -128,10 +128,54 @@ $(function() {
 			});
 		})
 		.fail(function(XMLHttpRequest, textStatus, errorThrown) {
-			console.log(errorThrown);
+			console.log(textStatus + ': ' + errorThrown);
 			bootbox.alert('Imposible realizar la operación solicitada');
 		});
 	});
 
+	// interconsulta
+	$btnGuardarInterconsulta.on('click', function(event) {
+		event.preventDefault();
+		if ($('#txtReferencia').val() === '') {
+			bootbox.alert('Por favor, escriba una referencia');
+			return false;
+		}
 
+		if ($('#medico').val() === '') {
+			bootbox.alert('Por favor, seleccione a un médico');
+			return false;
+		}
+		// objeto a enviar
+		var datos = {
+			_token:   $formConsulta.find('input[name="_token"]').val(),
+			idMedico: $('#medico').val(),
+			referencia:   btoa($('#txtReferencia').val())
+		};
+
+		var respuesta = ajax($(this).attr('href'), 'post', 'html', datos, 'guardar');
+		respuesta.done(function(resultado) {
+			console.log(resultado);
+
+			if(resultado === '0') {
+				bootbox.alert('Ocurrió un error al generar la interconsulta.');
+				return false;
+			}
+
+			bootbox.alert('Interconsulta guardada', function() {
+				// cerrar modal
+				$('#dvInterconsulta').modal('hide');
+			});
+		})
+		.fail(function(XMLHttpRequest, textStatus, errorThrown) {
+			console.log(textStatus + ': ' + errorThrown);
+			bootbox.alert('Imposible realizar la operación solicitada');
+		});
+	});
+
+	//  guardar consulta
+	$btnGuardarConsulta.on('click', function(){
+		if ($formConsulta.valid() === true) {
+			// guardar form
+		}
+	});
 });

@@ -9,16 +9,16 @@
             <div class="modal-body" style="max-height: 500px; overflow-y: scroll;">
                 <div class="form-group">
                     <label class="control-label">Médico:</label>
-                    <select name="receta" id="receta" class="form-control">
+                    <select name="medico" id="medico" class="form-control">
                         <option value="">Seleccione</option>
                         @foreach($listaMedicos as $medicoReferencia)
-                            <option value="{{ $medicoReferencia->getId() }}">{{ $medicoReferencia->getNombreCompleto() }}</option>
+                            <option value="{{ $medicoReferencia->getId() }}">{{ $medicoReferencia->getNombreCompleto() }} - {{ $medicoReferencia->getEspecialidad()->getEspecialidad() }}</option>
                         @endforeach
                     </select>
                 </div>
                 <div class="form-group">
-                    <label class="control-label">Detalles</label>
-                    <textarea name="txtReceta" id="txtReceta" class="form-control" rows="15"></textarea>
+                    <label class="control-label">Referencia:</label>
+                    <textarea name="txtReferencia" id="txtReferencia" class="form-control" rows="15"></textarea>
                 </div>
                 <div class="form-group">
                     <a href="{{ url('consultas/capturar/interconsulta') }}" class="btn btn-success" id="btnGuardarInterconsulta"><i class="fa fa-check"></i> Aceptar</a>

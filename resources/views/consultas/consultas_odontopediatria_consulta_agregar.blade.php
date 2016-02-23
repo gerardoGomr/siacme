@@ -1,11 +1,7 @@
 <div class="tab-pane active" id="consulta">
 	<div class="form-group">
 		<a href="javascript:;" id="btnGuardarConsulta" class="btn btn-primary btn-small"><i class="fa fa-save"></i> Guardar consulta</a>
-
-		<a href="{{ url('consultas/plan/agregar') }}" id="btnGenerarPlan" class="btn btn-success btn-small" disabled="disabled"><i class="fa fa-money"></i> Generar plan</a>
-
 		<a href="#dvRecetas" id="btnReceta" class="btn btn-danger btn-small" data-toggle="modal"><i class="fa fa-edit"></i> Generar receta</a>
-
 		<a href="#dvInterconsulta" id="btnInterconsulta" class="btn btn-warning btn-small" data-toggle="modal"><i class="fa fa-user-md"></i> Enviar a interconsulta</a>
 	</div>
 	<div class="separator"></div>
@@ -71,16 +67,6 @@
 								</div>
 							</div>
 						</div>
-					</div>
-
-					<div class="form-group" style="display: none;">
-						<label class="control-label">Resultados de estudios de laboratorio:</label>
-						<textarea name="txtResultadosLaboratorio" rows="8" class="form-control"></textarea>
-					</div>
-
-					<div class="form-group" style="display: none;">
-						<label class="control-label">Resultados de interconsulta:</label>
-						<textarea name="txtResultadosInterconsulta" rows="8" class="form-control"></textarea>
 					</div>
 				</div>
 

@@ -93,4 +93,9 @@ Route::group(['middleware' => 'checaLogin'], function() {
 	Route::post('consultas/plan/tratamientos/otros/agregar', 'Consultas\ConsultasController@agregarOtroTratamiento');
 	// agregar receta
 	Route::post('consultas/capturar/receta', 'Consultas\ConsultasController@agregarReceta');
+	// agregar interconsulta
+	Route::post('consultas/capturar/interconsulta', 'Consultas\ConsultasController@agregarInterconsulta');
+
+	// guardar consulta
+	Route::post('consultas/guardar', 'Consultas\ConsultasController@guardar');
 });

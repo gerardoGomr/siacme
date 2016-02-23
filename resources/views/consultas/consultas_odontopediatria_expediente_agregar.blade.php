@@ -10,44 +10,52 @@
 						<div class="col-md-12 col-lg-6">
 							<div class="form-group">
 								<label class="control-label">Morfología craneofacial</label>
-								<div class="checkbox">
-									<label>
-										<input type="checkbox" name="craneofacial"> Doliocefálico
-									</label>
-								</div>
+								@foreach($listaMorfologiasCraneofacial as $morfologiaCraneofacial)
+									<div class="radio">
+										<label>
+											<input type="radio" name="craneofacial" value="{{ $morfologiaCraneofacial->getId() }}"> {{ $morfologiaCraneofacial->getMorfologiaCraneoFacial() }}
+										</label>
+									</div>
+								@endforeach
 							</div>
 						</div>
 
 						<div class="col-md-12 col-lg-6">
 							<div class="form-group">
 								<label class="control-label">Morfología facial</label>
-								<div class="checkbox">
-									<label>
-										<input type="checkbox" name="facial"> Doliocefálico
-									</label>
-								</div>
+								@foreach($listaMorfologiasFacial as $morfologiaFacial)
+									<div class="radio">
+										<label>
+											<input type="radio" name="facial" value="{{ $morfologiaFacial->getId() }}"> {{ $morfologiaFacial->getMorfologiaFacial() }}
+										</label>
+									</div>
+								@endforeach
 							</div>
 						</div>
 
 						<div class="col-md-12 col-lg-6">
 							<div class="form-group">
 								<label class="control-label">Convexividad facial</label>
-								<div class="checkbox">
-									<label>
-										<input type="checkbox" name="convexividad"> Doliocefálico
-									</label>
-								</div>
+								@foreach($listaConvexividades as $convexividadFacial)
+									<div class="radio">
+										<label>
+											<input type="radio" name="convexividad" value="{{ $convexividadFacial->getId() }}"> {{ $convexividadFacial->getConvexividadFacial() }}
+										</label>
+									</div>
+								@endforeach
 							</div>
 						</div>
 
 						<div class="col-md-12 col-lg-6">
 							<div class="form-group">
 								<label class="control-label">ATM</label>
-								<div class="checkbox">
-									<label>
-										<input type="checkbox" name="atm"> Doliocefálico
-									</label>
-								</div>
+								@foreach($listaAtms as $atm)
+									<div class="radio">
+										<label>
+											<input type="radio" name="atm" value="{{ $atm->getId() }}"> {{ $atm->getATM() }}
+										</label>
+									</div>
+								@endforeach
 							</div>
 						</div>
 					</div>

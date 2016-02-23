@@ -3,9 +3,14 @@ namespace Siacme\Http\Controllers\Consultas;
 
 use Illuminate\Http\Request;
 
+use Siacme\Dominio\Consultas\Consulta;
 use Siacme\Dominio\Consultas\DientePlan;
+use Siacme\Dominio\Consultas\ExploracionFisica;
 use Siacme\Dominio\Consultas\PlanTratamiento;
 use Siacme\Dominio\Consultas\Receta;
+use Siacme\Dominio\Interconsultas\Interconsulta;
+use Siacme\Dominio\Pacientes\ComportamientoFrankl;
+use Siacme\Dominio\Pacientes\TipoExamenExtraoral;
 use Siacme\Http\Requests;
 use Siacme\Http\Controllers\Controller;
 use Siacme\Infraestructura\Citas\CitasRepositorioInterface;
@@ -16,11 +21,14 @@ use Siacme\Infraestructura\Consultas\RecetasRepositorioInterface;
 use Siacme\Infraestructura\Expedientes\ExpedientesRepositorioInterface;
 use Siacme\Infraestructura\Pacientes\ComportamientosFranklRepositorioInterface;
 use Siacme\Infraestructura\Pacientes\PadecimientosDentalesRepositorioInterface;
+use Siacme\Servicios\Consultas\CatalogosExamenExtraoralFactory;
+use Siacme\Servicios\Consultas\ConsultasElementosServicio;
 use Siacme\Servicios\Consultas\DibujadorPlanTratamiento;
 use Siacme\Servicios\Consultas\FabricaConsultasViews;
 use Siacme\Servicios\Pacientes\DibujadorOdontogramas;
 use Siacme\Dominio\Pacientes\Odontograma;
 use Siacme\Infraestructura\Usuarios\UsuariosRepositorioInterface;
+use Siacme\Servicios\Pacientes\PacientesComplementoServicio;
 use Siacme\Servicios\Pacientes\PacientesRepositorioFactory;
 use View;
 
@@ -125,11 +133,23 @@ class ConsultasController extends Controller
         $listaRecetas         = $recetasRepositorio->obtenerRecetas();
         $listaMedicos         = $medicosRepositorio->obtenerMedicosReferencia();
 
+        // catálogos repositorios
+        $morfologiaCraneofacialRepositorio = CatalogosExamenExtraoralFactory::crearRepositorio(TipoExamenExtraoral::MORFOLOGIA_CRANEOFACIAL);
+        $morfologiaFacialRepositorio       = CatalogosExamenExtraoralFactory::crearRepositorio(TipoExamenExtraoral::MORFOLOGIA_FACIAL);
+        $convexividadFacialRepositorio     = CatalogosExamenExtraoralFactory::crearRepositorio(TipoExamenExtraoral::CONVEXIVIDAD_FACIAL);
+        $atmsRepositorio                   = CatalogosExamenExtraoralFactory::crearRepositorio(TipoExamenExtraoral::ATM);
+
+        // lista de catálogos
+        $listaMorfologiasCraneofacial = $morfologiaCraneofacialRepositorio->obtenerTodos();
+        $listaMorfologiasFacial       = $morfologiaFacialRepositorio->obtenerTodos();
+        $listaConvexividades          = $convexividadFacialRepositorio->obtenerTodos();
+        $listaAtms                    = $atmsRepositorio->obtenerTodos();
+
         // guardar el odontograma creado en la sesión activa para procesamiento
         $request->session()->put('odontograma', $odontograma);
 
-        // generar vista
-        return FabricaConsultasViews::construirVista($expediente, $dibujadorOdontograma, $listaComportamientos, $listaPadecimientos, $listaRecetas, $listaMedicos);
+        // generar vista de consulta por médico
+        return FabricaConsultasViews::construirVista($expediente, $dibujadorOdontograma, $listaComportamientos, $listaPadecimientos, $listaRecetas, $listaMedicos, $listaMorfologiasCraneofacial, $listaMorfologiasFacial, $listaConvexividades, $listaAtms);
     }
 
     /**
@@ -269,5 +289,66 @@ class ConsultasController extends Controller
         $request->session()->put('receta', $receta);
 
         return response(1);
+    }
+
+    /**
+     * @param Request $request
+     * @param MedicosReferenciaRepositorioInterface $medicosRepositorio
+     * @return \Illuminate\Contracts\Routing\ResponseFactory|\Symfony\Component\HttpFoundation\Response
+     */
+    public function agregarInterconsulta(Request $request, MedicosReferenciaRepositorioInterface $medicosRepositorio)
+    {
+        $idMedico      = (int)$request->get('idMedico');
+        $txtReferencia = base64_decode($request->get('txtReferencia'));
+
+        $medico        = $medicosRepositorio->obtenerMedicoPorId($idMedico);
+        $interconsulta = new Interconsulta(null, $medico, $txtReferencia);
+
+        $request->session()->put('interconsulta', $interconsulta);
+
+        return response(1);
+    }
+
+    /**
+     * guardar consulta
+     * @param Request $request
+     */
+    public function guardar(Request $request)
+    {
+        // parámetros de consulta
+        $idExpediente                   = (int)base64_decode($request->get('idExpediente'));
+        $padecimientoActual             = $request->get('txtPadecimiento');
+        $interrogatorioAparatosSistemas = $request->get('txtInterrogatorio');
+        $peso                           = $request->get('txtPeso');
+        $talla                          = $request->get('txtTalla');
+        $pulso                          = $request->get('txtPulso');
+        $temperatura                    = $request->get('txtTemperatura');
+        $tensionArterial                = $request->get('txtTension');
+        $notaMedica                     = $request->get('txtNota');
+        $comportamientoFrankl           = $request->get('comportamientoFrankl');
+        $exploracion                    = new ExploracionFisica($peso, $talla, $pulso, $temperatura, $tensionArterial);
+        $comportamiento                 = new ComportamientoFrankl($comportamientoFrankl);
+        $consulta                       = new Consulta(0, $padecimientoActual, $interrogatorioAparatosSistemas, $exploracion, $notaMedica, $comportamiento);
+
+        // expediente
+        $expediente = $this->expedientesRepositorio->obtenerExpedientePorId($idExpediente);
+
+        // verificar los elementos generados durante la consulta (odontograma, plan) y agregarlos al expediente del paciente x
+        $consultasElementosServicio = new ConsultasElementosServicio($this->expedientesRepositorio);
+        $consultasElementosServicio->verificarElementosCreadosEnConsulta($request, $expediente);
+
+        // verificar si hay receta
+        $receta = $request->session()->get('receta');
+        $consulta->setReceta($receta);
+
+        // verificar si es primera vez o subsecuente el expediente para completar la información
+        if ($expediente->primeraVez()) {
+            $pacientesRepositorio = PacientesRepositorioFactory::crear($expediente->getMedico());
+            $pacientesComplemento = new PacientesComplementoServicio($pacientesRepositorio);
+
+            $pacientesComplemento->crearDeHttp($request, $expediente->getPaciente());
+        }
+
+        // persistir consulta
     }
 }

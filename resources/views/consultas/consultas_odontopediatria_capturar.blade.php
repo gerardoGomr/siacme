@@ -48,7 +48,7 @@
 										<div class="widget-body">
 											{!!
 												Form::open([
-													'url'   => 'consultas/agregar',
+													'url'   => 'consultas/guardar',
 													'id'    => 'formConsulta'
 												])
 											!!}
@@ -60,6 +60,7 @@
 													@include('consultas.consultas_odontopediatria_odontograma')
 													@include('consultas.consultas_odontopediatria_historial')
 												</div>
+												<input type="hidden" name="expediente" value="{{ base64_encode($expediente->getId()) }}">
 											{!! Form::close() !!}
 										</div>
 									</div>
