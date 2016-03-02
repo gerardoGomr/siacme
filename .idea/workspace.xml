@@ -2,25 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="a984f4b5-9296-4603-b363-8e91b3e134b9" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/Servicios/Pacientes/PacientesJohannaComplementoServicio.php" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/app/Servicios/Pacientes/PacientesComplementoServicio.php" afterPath="" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/Dominio/Consultas/Consulta.php" afterPath="$PROJECT_DIR$/app/Dominio/Consultas/Consulta.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/Dominio/Consultas/PlanTratamiento.php" afterPath="$PROJECT_DIR$/app/Dominio/Consultas/PlanTratamiento.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/Dominio/Expedientes/Expediente.php" afterPath="$PROJECT_DIR$/app/Dominio/Expedientes/Expediente.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/Dominio/Pacientes/Odontograma.php" afterPath="$PROJECT_DIR$/app/Dominio/Pacientes/Odontograma.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/Dominio/Pacientes/PacienteOdontopediatria.php" afterPath="$PROJECT_DIR$/app/Dominio/Pacientes/PacienteOdontopediatria.php" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/Http/Controllers/Consultas/ConsultasController.php" afterPath="$PROJECT_DIR$/app/Http/Controllers/Consultas/ConsultasController.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/Infraestructura/Consultas/ConsultasRepositorioLaravelMySQL.php" afterPath="$PROJECT_DIR$/app/Infraestructura/Consultas/ConsultasRepositorioLaravelMySQL.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/Infraestructura/Consultas/RecetasRepositorioLaravelMySQL.php" afterPath="$PROJECT_DIR$/app/Infraestructura/Consultas/RecetasRepositorioLaravelMySQL.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/Infraestructura/Expedientes/ExpedientesRepositorioInterface.php" afterPath="$PROJECT_DIR$/app/Infraestructura/Expedientes/ExpedientesRepositorioInterface.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/Infraestructura/Expedientes/ExpedientesRepositorioLaravelMySQL.php" afterPath="$PROJECT_DIR$/app/Infraestructura/Expedientes/ExpedientesRepositorioLaravelMySQL.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/Infraestructura/Pacientes/PacientesJohannaRepositorioLaravelMySQL.php" afterPath="$PROJECT_DIR$/app/Infraestructura/Pacientes/PacientesJohannaRepositorioLaravelMySQL.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/Servicios/Consultas/ConsultasElementosServicio.php" afterPath="$PROJECT_DIR$/app/Servicios/Consultas/ConsultasElementosServicio.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/config/app.php" afterPath="$PROJECT_DIR$/config/app.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/js/consultas/consultas_odontopediatria_capturar.js" afterPath="$PROJECT_DIR$/public/js/consultas/consultas_odontopediatria_capturar.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/views/consultas/consultas_odontopediatria_capturar.blade.php" afterPath="$PROJECT_DIR$/resources/views/consultas/consultas_odontopediatria_capturar.blade.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/views/consultas/consultas_odontopediatria_expediente_agregar.blade.php" afterPath="$PROJECT_DIR$/resources/views/consultas/consultas_odontopediatria_expediente_agregar.blade.php" />
     </list>
     <ignored path="siacme.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -47,11 +29,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="ConsultasController.php" pinned="false" current-in-tab="false">
+      <file leaf-file-name="ConsultasController.php" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app/Http/Controllers/Consultas/ConsultasController.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-109.46154">
-              <caret line="363" column="10" selection-start-line="363" selection-start-column="10" selection-end-line="363" selection-end-column="10" />
+            <state vertical-scroll-proportion="0.752809">
+              <caret line="346" column="51" selection-start-line="346" selection-start-column="51" selection-end-line="346" selection-end-column="51" />
               <folding>
                 <element signature="e#52#80#0#PHP" expanded="true" />
               </folding>
@@ -59,30 +41,20 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="consultas_odontopediatria_capturar.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/public/js/consultas/consultas_odontopediatria_capturar.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="112" column="18" selection-start-line="112" selection-start-column="12" selection-end-line="112" selection-end-column="18" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file leaf-file-name="ConsultasRepositorioLaravelMySQL.php" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/Infraestructura/Consultas/ConsultasRepositorioLaravelMySQL.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-7.076923">
+            <state vertical-scroll-proportion="-22.307692">
               <caret line="37" column="46" selection-start-line="37" selection-start-column="46" selection-end-line="37" selection-end-column="46" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="ExpedientesRepositorioLaravelMySQL.php" pinned="false" current-in-tab="true">
+      <file leaf-file-name="ExpedientesRepositorioLaravelMySQL.php" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/Infraestructura/Expedientes/ExpedientesRepositorioLaravelMySQL.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.8394161">
+            <state vertical-scroll-proportion="-10.849056">
               <caret line="182" column="99" selection-start-line="182" selection-start-column="99" selection-end-line="182" selection-end-column="99" />
               <folding>
                 <element signature="e#53#60#0#PHP" expanded="true" />
@@ -91,31 +63,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Diente.php" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/Dominio/Pacientes/Diente.php">
+      <file leaf-file-name="CitasRepositorioLaravelMySQL.php" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/Infraestructura/Citas/CitasRepositorioLaravelMySQL.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-1.3076923">
-              <caret line="134" column="40" selection-start-line="134" selection-start-column="20" selection-end-line="134" selection-end-column="40" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="DienteTratamiento.php" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/Dominio/Pacientes/DienteTratamiento.php">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="17.76923">
+            <state vertical-scroll-proportion="175.15384">
               <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="ConsultasElementosServicio.php" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/Servicios/Consultas/ConsultasElementosServicio.php">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-35.0">
-              <caret line="55" column="41" selection-start-line="55" selection-start-column="41" selection-end-line="55" selection-end-column="41" />
               <folding />
             </state>
           </provider>
@@ -184,8 +136,8 @@
         <option value="$PROJECT_DIR$/app/Dominio/Consultas/PlanTratamiento.php" />
         <option value="$PROJECT_DIR$/app/Dominio/Consultas/Consulta.php" />
         <option value="$PROJECT_DIR$/app/Infraestructura/Consultas/ConsultasRepositorioLaravelMySQL.php" />
-        <option value="$PROJECT_DIR$/app/Http/Controllers/Consultas/ConsultasController.php" />
         <option value="$PROJECT_DIR$/app/Infraestructura/Expedientes/ExpedientesRepositorioLaravelMySQL.php" />
+        <option value="$PROJECT_DIR$/app/Http/Controllers/Consultas/ConsultasController.php" />
       </list>
     </option>
   </component>
@@ -638,6 +590,28 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
+              <option name="myItemId" value="Infraestructura" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Citas" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="siacme" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="siacme" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="app" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
               <option name="myItemId" value="Http" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
@@ -890,7 +864,7 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1616" height="876" extended-state="7" />
+    <frame x="-8" y="-8" width="1616" height="876" extended-state="6" />
     <editor active="true" />
     <layout>
       <window_info id="Gulp" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="1" side_tool="true" content_ui="tabs" />
@@ -959,14 +933,6 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/app/Infraestructura/Consultas/MedicosReferenciaRepositorioInterface.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.6469761">
-          <caret line="20" column="43" selection-start-line="16" selection-start-column="4" selection-end-line="20" selection-end-column="43" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/Infraestructura/Consultas/MedicosReferenciaRepositorioLaravelMySQL.php">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.9676512">
@@ -1291,14 +1257,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/Infraestructura/Consultas/ConsultasRepositorioLaravelMySQL.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-7.076923">
-          <caret line="37" column="46" selection-start-line="37" selection-start-column="46" selection-end-line="37" selection-end-column="46" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/Dominio/Pacientes/Diente.php">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="-1.3076923">
@@ -1331,16 +1289,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/Http/Controllers/Consultas/ConsultasController.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-109.46154">
-          <caret line="363" column="10" selection-start-line="363" selection-start-column="10" selection-end-line="363" selection-end-column="10" />
-          <folding>
-            <element signature="e#52#80#0#PHP" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/Dominio/Consultas/DientePlan.php">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="24.23077">
@@ -1351,10 +1299,36 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/app/Infraestructura/Expedientes/ExpedientesRepositorioLaravelMySQL.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.8394161">
+        <state vertical-scroll-proportion="-10.849056">
           <caret line="182" column="99" selection-start-line="182" selection-start-column="99" selection-end-line="182" selection-end-column="99" />
           <folding>
             <element signature="e#53#60#0#PHP" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/Infraestructura/Consultas/ConsultasRepositorioLaravelMySQL.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-22.307692">
+          <caret line="37" column="46" selection-start-line="37" selection-start-column="46" selection-end-line="37" selection-end-column="46" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/Infraestructura/Citas/CitasRepositorioLaravelMySQL.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="175.15384">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/Http/Controllers/Consultas/ConsultasController.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.752809">
+          <caret line="346" column="51" selection-start-line="346" selection-start-column="51" selection-end-line="346" selection-end-column="51" />
+          <folding>
+            <element signature="e#52#80#0#PHP" expanded="true" />
           </folding>
         </state>
       </provider>

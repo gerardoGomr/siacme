@@ -3,6 +3,7 @@ namespace Siacme\Http\Controllers\Consultas;
 
 use Illuminate\Http\Request;
 
+use Siacme\Dominio\Citas\CitaEstatus;
 use Siacme\Dominio\Consultas\Consulta;
 use Siacme\Dominio\Consultas\DientePlan;
 use Siacme\Dominio\Consultas\ExploracionFisica;
@@ -312,10 +313,12 @@ class ConsultasController extends Controller
     }
 
     /**
+     * guardar consulta
      * @param Request $request
      * @param ConsultasRepositorioInterface $consultasRepositorio
+     * @param CitasRepositorioInterface $citasRepositorio
      */
-    public function guardar(Request $request, ConsultasRepositorioInterface $consultasRepositorio)
+    public function guardar(Request $request, ConsultasRepositorioInterface $consultasRepositorio, CitasRepositorioInterface $citasRepositorio)
     {
         // parámetros de consulta
         $idPaciente                     = (int)base64_decode($request->get('idPaciente'));
@@ -339,12 +342,16 @@ class ConsultasController extends Controller
         $paciente             = $pacientesRepositorio->obtenerPacientePorId($idPaciente);
         $expediente           = $this->expedientesRepositorio->obtenerExpedientePorPacienteMedico($paciente, $medico);
 
+        $cita                 = $citasRepositorio->obtenerCitaPorPacienteMedico($paciente, $medico);
+        $cita->setEstatus(new CitaEstatus(4));
+        $citasRepositorio->actualizaEstatus($cita);
+
         // verificar los elementos generados durante la consulta (odontograma, plan) y agregarlos al expediente del paciente x
         $consultasElementosServicio = new ConsultasElementosServicio($this->expedientesRepositorio);
         $consultasElementosServicio->verificarElementosCreadosEnConsulta($request, $expediente);
 
         // verificar si hay receta
-        $receta = $request->session()->get('receta');//dd($receta);
+        $receta = $request->session()->get('receta');
         $consulta->setReceta($receta);
 
         // verificar si es primera vez o subsecuente el expediente para completar la información
@@ -359,8 +366,5 @@ class ConsultasController extends Controller
 
         // persistir consulta
         $consultasRepositorio->persistir($consulta);
-
-        // actualizar informacion del expediente en base a odontograma y plan de tratamiento
-        //$this->expedientesRepositorio->guardarElementosDeConsulta($expediente);
     }
 }
