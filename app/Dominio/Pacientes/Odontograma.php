@@ -10,6 +10,11 @@ use Illuminate\Support\Collection;
 class Odontograma
 {
 	/**
+	 * @var int
+	 */
+	protected $id;
+
+	/**
 	 * lista de dientes
 	 * @var Collection
 	 */
@@ -45,6 +50,22 @@ class Odontograma
 			$this->agregarDientes(81, 85);
 
 		}
+	}
+
+	/**
+	 * @return int
+	 */
+	public function getId()
+	{
+		return $this->id;
+	}
+
+	/**
+	 * @param int $id
+	 */
+	public function setId($id)
+	{
+		$this->id = $id;
 	}
 
 	/**

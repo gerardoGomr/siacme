@@ -85,6 +85,122 @@ class ExpedientesRepositorioLaravelMySQL implements ExpedientesRepositorioInterf
 	 */
 	public function obtenerExpedientePorId($idExpediente)
 	{
+		try {
+			$expedientes = DB::table('expediente')
+				->where('expediente.idExpediente', $idExpediente)
+				->first();
 
+		} catch (\PDOException $e) {
+			echo $e->getMessage();
+			return null;
+		}
+	}
+
+	/**
+	 * @param Expediente $expediente
+	 * @return bool
+	 */
+	public function guardarElementosDeConsulta(Expediente $expediente)
+	{
+		try {
+			// actualizar el expediente
+			$operacion = DB::table('expediente')
+				->where('idExpediente', $expediente->getId())
+				->update([
+					'PrimeraVez' 		 => 0,
+					'FechaActualizacion' => date('Y-m-d H:m:i')
+				]);
+			
+			// insertar nuevo odontograma
+			foreach ($expediente->getListaOdontogramas() as $odontograma) {
+				$idOdontograma = DB::table('odontograma')
+					->insertGetId([
+						'idExpediente'  => $expediente->getId(),
+						'FechaCreacion' => date('Y-m-d H:m:i')
+					]);
+
+				$odontograma->setId($idOdontograma);
+
+				// insertar la lista de dientes
+				foreach ($odontograma->getListaDientes() as $diente) {
+
+					$operacion = DB::table('odontograma_diente')
+						->insert([
+							'idOdontograma'     => $odontograma->getId(),
+							'Numero'            => $diente->getNumero(),
+							'FechaModificacion' => date('Y-m-d H:m:i')
+						]);
+				}
+			}
+
+			// insertar interconsulta
+			foreach ($expediente->getListaInterconsultas() as $interconsulta) {
+				$operacion = DB::table('interconsulta')
+					->insert([
+						'idMedicoReferencia' => $interconsulta->getMedico()->getId(),
+						'idExpediente'		 => $expediente->getId(),
+						'Referencia'		 => $interconsulta->getReferencia(),
+						'Respondida'		 => 0,
+						'FechaModificacion'  => date('Y-m-d H:m:i')
+					]);
+			}
+
+			// insertar nuevo plan de tratamiento
+			foreach ($expediente->getListaPlanesTratamiento() as $plan) {
+				$idPlan = DB::table('plan_tratamiento')
+					->insertGetId([
+						'idExpediente'      => $expediente->getId(),
+						'Activo'            => 1,
+						'Costo'             => $plan->costo(),
+						'FechaCreacion'     => date('Y-m-d H:m:i'),
+						'FechaModificacion' => date('Y-m-d H:m:i')
+					]);
+
+				$plan->setId($idPlan);
+
+				// insertar la lista de dientes y
+				foreach ($plan->getListaDientes() as $diente) {
+					// nuevo padecimiento por diente
+					if (!is_null($diente->getListaPadecimientos())) {
+						foreach ($diente->getListaPadecimientos() as $padecimiento) {
+							$operacion = DB::table('diente_diente_padecimiento')
+								->insert([
+									'idPlanTratamiento'    => $plan->getId(),
+									'Numero'			   => $diente->getNumero(),
+									'idDientePadecimiento' => $padecimiento->getId(),
+									'FechaModificacion'    => date('Y-m-d H:m:i')
+								]);
+						}
+					}
+
+					// nuevo tratamiento por diente
+					if (!is_null($diente->getListaTratamientos())) {
+						foreach ($diente->getListaTratamientos() as $tratamiento) {
+							$operacion = DB::table('diente_diente_tratamiento')
+								->insert([
+									'idPlanTratamiento'   => $plan->getId(),
+									'Numero'			  => $diente->getNumero(),
+									'idDienteTratamiento' => $tratamiento->getDienteTratamiento()->getId(),
+									'FechaModificacion'   => date('Y-m-d H:m:i')
+								]);
+						}
+					}
+				}
+
+				// insertar otros tratamientos
+				foreach ($plan->getListaOtrosTratamientos() as $otrosTratamientos) {
+					$operacion = DB::table('plan_tratamiento_otros')
+						->insert([
+							'idPlanTratamiento' => $plan->getId(),
+							'idOtroTratamiento' => $otrosTratamientos->getId(),
+							'FechaModificacion' => date('Y-m-d H:m:i')
+						]);
+				}
+			}
+
+		} catch(\PDOException $e) {
+			echo $e->getMessage();
+			return null;
+		}
 	}
 }

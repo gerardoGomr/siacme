@@ -60,7 +60,8 @@
 													@include('consultas.consultas_odontopediatria_odontograma')
 													@include('consultas.consultas_odontopediatria_historial')
 												</div>
-												<input type="hidden" name="expediente" value="{{ base64_encode($expediente->getId()) }}">
+												<input type="hidden" name="userMedico" value="{{ base64_encode($expediente->getMedico()->getUsername()) }}">
+												<input type="hidden" name="idPaciente" value="{{ base64_encode($expediente->getPaciente()->getId()) }}">
 											{!! Form::close() !!}
 										</div>
 									</div>

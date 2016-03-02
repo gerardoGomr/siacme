@@ -1,5 +1,6 @@
 <?php
 namespace Siacme\Dominio\Consultas;
+use Siacme\Dominio\Expedientes\Expediente;
 use Siacme\Dominio\Pacientes\ComportamientoFrankl;
 
 /**
@@ -48,6 +49,11 @@ class Consulta
      * @var Receta
      */
     private $receta;
+
+    /**
+     * @var Expediente
+     */
+    private $expediente;
 
     /**
      * Consulta constructor.
@@ -231,5 +237,21 @@ class Consulta
         }
 
         return false;
+    }
+
+    /**
+     * @return Expediente
+     */
+    public function getExpediente()
+    {
+        return $this->expediente;
+    }
+
+    /**
+     * @param Expediente $expediente
+     */
+    public function setExpediente(Expediente $expediente)
+    {
+        $this->expediente = $expediente;
     }
 }

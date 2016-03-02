@@ -10,6 +10,11 @@ use Siacme\Dominio\Pacientes\Odontograma;
 class PlanTratamiento
 {
 	/**
+	 * @var int
+	 */
+	private $id;
+
+	/**
 	 * @var bool
 	 */
 	private $atendido;
@@ -44,6 +49,22 @@ class PlanTratamiento
 		$this->atendido               = $atendido;
 		$this->listaDientes           = $listaDientes;
 		$this->listaOtrosTratamientos = new Collection();
+	}
+
+	/**
+	 * @return int
+	 */
+	public function getId()
+	{
+		return $this->id;
+	}
+
+	/**
+	 * @param int $id
+	 */
+	public function setId($id)
+	{
+		$this->id = $id;
 	}
 
 	/**

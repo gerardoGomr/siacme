@@ -28,4 +28,10 @@ interface ExpedientesRepositorioInterface
 	 * @return Expediente
 	 */
 	public function obtenerExpedientePorId($idExpediente);
+
+	/**
+	 * @param Expediente $expediente
+	 * @return bool
+	 */
+	public function guardarElementosDeConsulta(Expediente $expediente);
 }

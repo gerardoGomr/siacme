@@ -273,6 +273,11 @@ class PacientesJohannaRepositorioLaravelMySQL implements PacientesRepositorioInt
 		return true;
 	}
 
+
+	/**
+	 * @param PacienteJohanna $paciente
+	 * @param $pacientes
+	 */
 	private function alimentar(PacienteJohanna $paciente, $pacientes)
 	{
 		$paciente->setMarcaPasta(new MarcaPasta($pacientes->idMarcaPasta, $pacientes->MarcaPasta));
@@ -321,5 +326,80 @@ class PacientesJohannaRepositorioLaravelMySQL implements PacientesRepositorioInt
 		$paciente->setChupon($pacientes->Chupon);
 		$paciente->setOtroHabito($pacientes->OtroHabito);
 		$paciente->setDescripcionHabito($pacientes->DescripcionHabito);
+	}
+
+	public function completarDatos(Paciente $paciente)
+	{
+		try {
+			$operacion = DB::table('paciente_johanna')
+				->where('idPaciente', $paciente->getId())
+				->update([
+					'Labios'                        => $paciente->getLabios(),
+					'Carrillos'                     => $paciente->getCarrillos(),
+					'Frenillos'                     => $paciente->getFrenillos(),
+					'Paladar'                       => $paciente->getPaladar(),
+					'Lengua'                        => $paciente->getLengua(),
+					'PisoDeBoca'                    => $paciente->getPisoDeBoca(),
+					'Parodonto'                     => $paciente->getParodonto(),
+					'Uvula'                         => $paciente->getUvula(),
+					'Amigdalas'                     => $paciente->getAmigdalas(),
+					'MordidaBordeBorde'             => $paciente->getMordidaBordeBorde() ? 1 : 0,
+					'MedidaMordidaBordeBorde'       => $paciente->getMedidaBordeBorde(),
+					'SobremordidaVertical'          => $paciente->getSobremordidaVertical() ? 1 : 0,
+					'MedidaSobremordidaVertical'    => $paciente->getMedidaSobremordidaVertical(),
+					'SobremordidaHorizontal'        => $paciente->getSobremordidaHorizontal() ? 1 : 0,
+					'MedidaSobremordidaHorizontal'  => $paciente->getMedidaSobremordidaHorizontal(),
+					'MordidaAbiertaAnterior'        => $paciente->getMordidaAbiertaAnterior() ? 1 : 0,
+					'MedidaMordidaAbiertaAnterior'  => $paciente->getMedidaMordidaAbiertaAnterior(),
+					'MordidaCruzadaAnterior'        => $paciente->getMordidaCruzadaAnterior() ? 1 : 0,
+					'MedidaMordidaCruzadaAnterior'  => $paciente->getMedidaMordidaCruzadaAnterior(),
+					'MordidaCruzadaPosterior'       => $paciente->getMordidaCruzadaPosterior() ? 1 : 0,
+					'MedidaMordidaCruzadaPosterior' => $paciente->getMedidaMordidaCruzadaPosterior(),
+					'LineaMediaDental'              => $paciente->getLineaMediaDental() ? 1 : 0,
+					'MedidaLineaMediaDental'        => $paciente->getMedidaLineaMediaDental(),
+					'LineaMediaEsqueletica'         => $paciente->getLineaMediaEsqueletica() ? 1 : 0,
+					'MedidaLineaMediaEsqueletica'   => $paciente->getMedidaLineaMediaEsqueletica(),
+					'AlteracionesTamanio'           => $paciente->getAlteracionesTamanio() ? 1 : 0,
+					'MedidaAlteracionesTamanio'     => $paciente->getMedidaAlteracionesTamanio(),
+					'AlteracionesForma'             => $paciente->getAlteracionesForma() ? 1 : 0,
+					'MedidaAlteracionesForma'       => $paciente->getMedidaAlteracionesForma(),
+					'AlteracionesNumero'            => $paciente->getAlteracionesNumero() ? 1 : 0,
+					'MedidaAlteracionesNumero'      => $paciente->getMedidaAlteracionesNumero(),
+					'AlteracionesEstructura'        => $paciente->getAlteracionesEstructura() ? 1 : 0,
+					'MedidaAlteracionesEstructura'  => $paciente->getMedidaAlteracionesEstructura(),
+					'AlteracionesTextura'           => $paciente->getAlteracionesTextura() ? 1 : 0,
+					'MedidaAlteracionesTextura'     => $paciente->getMedidaAlteracionesTextura(),
+					'AlteracionesColor'             => $paciente->getAlteracionesColor() ? 1 : 0,
+					'MedidaAlteracionesColor'       => $paciente->getMedidaAlteracionesColor(),
+					'TipoArcoI'                     => $paciente->getTipoArcoI() ? 1 : 0,
+					'EscalonMesialDerecho'          => $paciente->getEscalonMesialDerecho() ? 1 : 0,
+					'EscalonMesialIzquierdo'        => $paciente->getEscalonMesialIzquierdo() ? 1 : 0,
+					'EscalonDistalDerecho'          => $paciente->getEscalonDistalDerecho() ? 1 : 0,
+					'EscalonDistalIzquierdo'        => $paciente->getEscalonDistalIzquierdo() ? 1 : 0,
+					'EscalonRectoDerecho'           => $paciente->getEscalonRectoDerecho() ? 1 : 0,
+					'EscalonRectoIzquierdo'         => $paciente->getEscalonRectoIzquierdo() ? 1 : 0,
+					'MesialExageradoDerecho'        => $paciente->getMesialExageradoDerecho() ? 1 : 0,
+					'MesialExageradoIzquierdo'      => $paciente->getMesialExageradoIzquierdo() ? 1 : 0,
+					'NoDeterminadoDerecho'          => $paciente->getNoDeterminadoDerecho() ? 1 : 0,
+					'NoDeterminadoIzquierdo'        => $paciente->getNoDeterminadoIzquierdo() ? 1 : 0,
+					//'RelacionCaninaDerecha'         => $paciente->getRelacionCaninaDerecha() ? 1 : 0,
+					//'RelacionCaninaIzquierda'       => $paciente->getRelacionCaninaIzquierda() ? 1 : 0,
+					'RelacionMolarDerechaI'         => $paciente->getRelacionMolarDerechaI() ? 1 : 0,
+					'RelacionMolarDerechaII'        => $paciente->getRelacionMolarDerechaII() ? 1 : 0,
+					'RelacionMolarDerechaIII'       => $paciente->getRelacionMolarDerechaIII() ? 1 : 0,
+					'RelacionMolarIzquierdaI'       => $paciente->getRelacionMolarIzquierdaI() ? 1 : 0,
+					'RelacionMolarIzquierdaII'      => $paciente->getRelacionMolarIzquierdaII() ? 1 : 0,
+					'RelacionMolarIzquierdaIII'     => $paciente->getRelacionMolarIzquierdaIII() ? 1 : 0,
+					'RelacionCaninaDerechaI'        => $paciente->getRelacionCaninaDerechaI() ? 1 : 0,
+					'RelacionCaninaDerechaII'       => $paciente->getRelacionCaninaDerechaII() ? 1 : 0,
+					'RelacionCaninaDerechaIII'      => $paciente->getRelacionCaninaDerechaIII() ? 1 : 0,
+					'RelacionCaninaIzquierdaI'      => $paciente->getRelacionCaninaIzquierdaI() ? 1 : 0,
+					'RelacionCaninaIzquierdaII'     => $paciente->getRelacionCaninaIzquierdaII() ? 1 : 0,
+					'RelacionCaninaIzquierdaIII'    => $paciente->getRelacionCaninaIzquierdaIII() ? 1 : 0,
+					'FechaActualizacion'            => date('Y-m-d H:m:i')
+				]);
+		} catch (\PDOException $e) {
+			echo $e->getMessage();
+		}
 	}
 }

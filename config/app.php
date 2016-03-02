@@ -161,7 +161,8 @@ return [
         Siacme\Providers\DienteTratamientosRepositorioServiceProvider::class,
         Siacme\Providers\OtrosTratamientosRepositorioServiceProvider::class,
         Siacme\Providers\RecetasRepositorioServiceProvider::class,
-        Siacme\Providers\MedicosReferenciaRepositorioServiceProvider::class
+        Siacme\Providers\MedicosReferenciaRepositorioServiceProvider::class,
+        Siacme\Providers\ConsultasRepositorioServiceProvider::class
     ],
 
     /*
@@ -179,7 +180,7 @@ return [
 
         'App'       => Illuminate\Support\Facades\App::class,
         'Artisan'   => Illuminate\Support\Facades\Artisan::class,
-        'Usuarios'      => Illuminate\Support\Facades\Auth::class,
+        'Usuarios'  => Illuminate\Support\Facades\Auth::class,
         'Blade'     => Illuminate\Support\Facades\Blade::class,
         'Bus'       => Illuminate\Support\Facades\Bus::class,
         'Cache'     => Illuminate\Support\Facades\Cache::class,

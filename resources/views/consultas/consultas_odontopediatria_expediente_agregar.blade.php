@@ -258,114 +258,234 @@
 							<div class="form-group">
 								<div class="checkbox">
 									<label>
-										<input type="checkbox" name="mordidaBordeBorde"> Mordida borde a borde
+										<input type="checkbox" name="mordidaBordeBorde" class="medidas" data-id="medidaMordida"> Mordida borde a borde
 									</label>
 								</div>
+								<div class="row">
+									<div class="col-md-6 col-sm-12">
+										<div class="input-group">
+											<input type="text" name="medidaMordida" id="medidaMordida" class="form-control" readonly="readonly">
+											<span class="input-group-addon">mm</span>
+										</div>
+									</div>
+								</div>
 							</div>
+							<div class="separator"></div>
+							<div class="form-group">
+								<div class="checkbox">
+									<label>
+										<input type="checkbox" name="sobremordidaVertical" class="medidas" data-id="medidaSobremordidaVertical"> Sobremordida vertical (overbite)
+									</label>
+								</div>
+								<div class="row">
+									<div class="col-md-6 col-sm-12">
+										<div class="input-group">
+											<input type="text" name="medidaSobremordidaVertical" id="medidaSobremordidaVertical" class="form-control" readonly="readonly">
+											<span class="input-group-addon">mm</span>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="separator"></div>
+							<div class="form-group">
+								<div class="checkbox">
+									<label>
+										<input type="checkbox" name="sobremordidaHorizontal" class="medidas" data-id="medidaSobremordidaHorizontal"> Sobremordida horizontal (overjet)
+									</label>
+								</div>
+								<div class="row">
+									<div class="col-md-6 col-sm-12">
+										<div class="input-group">
+											<input type="text" name="medidaSobremordidaHorizontal" id="medidaSobremordidaHorizontal" class="form-control" readonly="readonly">
+											<span class="input-group-addon">mm</span>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="separator"></div>
+							<div class="form-group">
+								<div class="checkbox">
+									<label>
+										<input type="checkbox" name="mordidaAbiertaAnterior" class="medidas" data-id="medidaMordidaAbierta"> Mordida abierta anterior
+									</label>
+								</div>
+								<div class="row">
+									<div class="col-md-6 col-sm-12">
+										<div class="input-group">
+											<input type="text" name="medidaMordidaAbierta" id="medidaMordidaAbierta" class="form-control" readonly="readonly">
+											<span class="input-group-addon">mm</span>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="separator"></div>
+							<div class="form-group">
+								<div class="checkbox">
+									<label>
+										<input type="checkbox" name="mordidaCruzadaAnterior" class="medidas" data-id="medidaMordidaCruzadaAnterior"> Mordida cruzada anterior
+									</label>
+								</div>
+								<div class="row">
+									<div class="col-md-6 col-sm-12">
+										<div class="input-group">
+											<input type="text" name="medidaMordidaCruzadaAnterior" id="medidaMordidaCruzadaAnterior" class="form-control" readonly="readonly">
+											<span class="input-group-addon">mm</span>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="separator"></div>
+							<div class="form-group">
+								<div class="checkbox">
+									<label>
+										<input type="checkbox" name="mordidaCruzadaPosterior" class="medidas" data-id="medidaMordidaCruzadaPosterior"> Mordida cruzada posterior
+									</label>
+								</div>
+								<div class="row">
+									<div class="col-md-6 col-sm-12">
+										<div class="input-group">
+											<input type="text" name="medidaMordidaCruzadaPosterior" id="medidaMordidaCruzadaPosterior" class="form-control" readonly="readonly">
+											<span class="input-group-addon">mm</span>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="separator"></div>
 
 							<div class="form-group">
 								<div class="checkbox">
 									<label>
-										<input type="checkbox" name="sobremordidaVertical"> Sobremordida vertical (overbite)
+										<input type="checkbox" name="lineaMediaDental" class="medidas" data-id="medidaLineaMediaDental"> Línea media dental
 									</label>
 								</div>
+								<div class="row">
+									<div class="col-md-6 col-sm-12">
+										<div class="input-group">
+											<input type="text" name="medidaLineaMediaDental" id="medidaLineaMediaDental" class="form-control" readonly="readonly">
+											<span class="input-group-addon">mm</span>
+										</div>
+									</div>
+								</div>
 							</div>
+							<div class="separator"></div>
 
 							<div class="form-group">
 								<div class="checkbox">
 									<label>
-										<input type="checkbox" name="sobremordidaHorizontal"> Sobremordida horizontal (overjet)
+										<input type="checkbox" name="lineaMediaEsqueletica" class="medidas" data-id="medidaLineaMediaEsqueletica"> Línea media esquelética
 									</label>
 								</div>
-							</div>
-
-							<div class="form-group">
-								<div class="checkbox">
-									<label>
-										<input type="checkbox" name="mordidaAbiertaAnterior"> Mordida abierta anterior en mm
-									</label>
+								<div class="row">
+									<div class="col-md-6 col-sm-12">
+										<div class="input-group">
+											<input type="text" name="medidaLineaMediaEsqueletica" id="medidaLineaMediaEsqueletica" class="form-control" readonly="readonly">
+											<span class="input-group-addon">mm</span>
+										</div>
+									</div>
 								</div>
 							</div>
-
-							<div class="form-group">
-								<div class="checkbox">
-									<label>
-										<input type="checkbox" name="mordidaCruzadaAnterior"> Mordida cruzada anterior
-									</label>
-								</div>
-							</div>
-
-							<div class="form-group">
-								<div class="checkbox">
-									<label>
-										<input type="checkbox" name="mordidaCruzadaPosterior"> Mordida cruzada posterior
-									</label>
-								</div>
-							</div>
-
-							<div class="form-group">
-								<div class="checkbox">
-									<label>
-										<input type="checkbox" name="lineaMediaDental"> Línea media dental
-									</label>
-								</div>
-							</div>
-
-							<div class="form-group">
-								<div class="checkbox">
-									<label>
-										<input type="checkbox" name="lineaMediaEsqueletica"> Línea media esquelética
-									</label>
-								</div>
-							</div>
+							<div class="separator"></div>
 						</div>
 
 						<div class="col-md-12 col-lg-6">
 							<div class="form-group">
 								<div class="checkbox">
 									<label>
-										<input type="checkbox" name="alteracionTamanio"> Alteraciones de tamaño
+										<input type="checkbox" name="alteracionTamanio" class="medidas" data-id="medidaAlteracionTamanio"> Alteraciones de tamaño
 									</label>
 								</div>
+								<div class="row">
+									<div class="col-md-6 col-sm-12">
+										<div class="input-group">
+											<input type="text" name="medidaAlteracionTamanio" id="medidaAlteracionTamanio" class="form-control" readonly="readonly">
+											<span class="input-group-addon">mm</span>
+										</div>
+									</div>
+								</div>
 							</div>
+							<div class="separator"></div>
 
 							<div class="form-group">
 								<div class="checkbox">
 									<label>
-										<input type="checkbox" name="alteracionForma"> Alteraciones de forma
+										<input type="checkbox" name="alteracionForma" class="medidas" data-id="medidaAlteracionForma"> Alteraciones de forma
 									</label>
 								</div>
+								<div class="row">
+									<div class="col-md-6 col-sm-12">
+										<div class="input-group">
+											<input type="text" name="medidaAlteracionForma" id="medidaAlteracionForma" class="form-control" readonly="readonly">
+											<span class="input-group-addon">mm</span>
+										</div>
+									</div>
+								</div>
 							</div>
+							<div class="separator"></div>
 
 							<div class="form-group">
 								<div class="checkbox">
 									<label>
-										<input type="checkbox" name="alteracionNumero"> Alteraciones de número
+										<input type="checkbox" name="alteracionNumero" class="medidas" data-id="medidaAlteracionNumero"> Alteraciones de número
 									</label>
 								</div>
+								<div class="row">
+									<div class="col-md-6 col-sm-12">
+										<div class="input-group">
+											<input type="text" name="medidaAlteracionNumero" id="medidaAlteracionNumero" class="form-control" readonly="readonly">
+											<span class="input-group-addon">mm</span>
+										</div>
+									</div>
+								</div>
 							</div>
+							<div class="separator"></div>
 
 							<div class="form-group">
 								<div class="checkbox">
 									<label>
-										<input type="checkbox" name="alteracionEstructura"> Alteraciones de estructura
+										<input type="checkbox" name="alteracionEstructura" class="medidas" data-id="medidaAlteracionEstructura"> Alteraciones de estructura
 									</label>
 								</div>
+								<div class="row">
+									<div class="col-md-6 col-sm-12">
+										<div class="input-group">
+											<input type="text" name="medidaAlteracionEstructura" id="medidaAlteracionEstructura" class="form-control" readonly="readonly">
+											<span class="input-group-addon">mm</span>
+										</div>
+									</div>
+								</div>
 							</div>
+							<div class="separator"></div>
 
 							<div class="form-group">
 								<div class="checkbox">
 									<label>
-										<input type="checkbox" name="alteracionTextura"> Alteraciones de textura
+										<input type="checkbox" name="alteracionTextura" class="medidas" data-id="medidaAlteracionTextura"> Alteraciones de textura
 									</label>
 								</div>
+								<div class="row">
+									<div class="col-md-6 col-sm-12">
+										<div class="input-group">
+											<input type="text" name="medidaAlteracionTextura" id="medidaAlteracionTextura" class="form-control" readonly="readonly">
+											<span class="input-group-addon">mm</span>
+										</div>
+									</div>
+								</div>
 							</div>
+							<div class="separator"></div>
 
 							<div class="form-group">
 								<div class="checkbox">
 									<label>
-										<input type="checkbox" name="alteracionColor"> Alteraciones de color
+										<input type="checkbox" name="alteracionColor" class="medidas" data-id="medidaAlteracionColor"> Alteraciones de color
 									</label>
+								</div>
+								<div class="row">
+									<div class="col-md-6 col-sm-12">
+										<div class="input-group">
+											<input type="text" name="medidaAlteracionColor" id="medidaAlteracionColor" class="form-control" readonly="readonly">
+											<span class="input-group-addon">mm</span>
+										</div>
+									</div>
 								</div>
 							</div>
 						</div>

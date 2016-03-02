@@ -21,22 +21,26 @@ class ConsultasRepositorioLaravelMySQL implements ConsultasRepositorioInterface
             if ($consulta->nuevaOSubsecuente() === 'Nueva') {
                 $idConsulta = DB::table('consulta')
                     ->insertGetId([
-                        'Fecha'              => 'NOW()',
-                        'PadecimientoActual' => $consulta->getPadecimientoActual(),
-                        'Interrogatorio'     => $consulta->getInterrogatorioAparatosSistemas(),
-                        'Nota'               => $consulta->getNotaMedica(),
-                        'Peso'               => $consulta->getExploracionFisica()->getPeso(),
-                        'Talla'              => $consulta->getExploracionFisica()->getTalla(),
-                        'Pulso'              => $consulta->getExploracionFisica()->getPulso(),
-                        'Temperatura'        => $consulta->getExploracionFisica()->getTemperatura(),
-                        'TensionArterial'    => $consulta->getExploracionFisica()->getTensionArterial(),
-                        'FechaModificacion'  => 'NOW()'
+                        'Fecha'                  => date('Y-m-d H:m:i'),
+                        'idExpediente'           => $consulta->getExpediente()->getId(),
+                        'idComportamientoFrankl' => $consulta->getComportamientoFrankl()->getId(),
+                        'PadecimientoActual'     => $consulta->getPadecimientoActual(),
+                        'Interrogatorio'         => $consulta->getInterrogatorioAparatosSistemas(),
+                        'Nota'                   => $consulta->getNotaMedica(),
+                        'Peso'                   => $consulta->getExploracionFisica()->getPeso(),
+                        'Talla'                  => $consulta->getExploracionFisica()->getTalla(),
+                        'Pulso'                  => $consulta->getExploracionFisica()->getPulso(),
+                        'Temperatura'            => $consulta->getExploracionFisica()->getTemperatura(),
+                        'TensionArterial'        => $consulta->getExploracionFisica()->getTensionArterial(),
+                        'FechaModificacion'      => date('Y-m-d H:m:i')
                     ]);
+
+                $consulta->setId($idConsulta);
 
                 // persistir la receta si tiene
                 if ($consulta->tieneReceta()) {
                     $operacion = DB::table('consulta')
-                        ->where('idReceta', $consulta->getReceta()->getId())
+                        ->where('idConsulta', $consulta->getId())
                         ->update([
                             'idReceta' => $consulta->getReceta()->getId()
                         ]);

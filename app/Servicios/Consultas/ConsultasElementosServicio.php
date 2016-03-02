@@ -60,6 +60,6 @@ class ConsultasElementosServicio
         }
 
         // guardar la información
-        $this->expedientesRepositorio->persistir($expediente);
+        $this->expedientesRepositorio->guardarElementosDeConsulta($expediente);
     }
 }

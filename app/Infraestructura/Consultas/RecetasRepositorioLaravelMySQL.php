@@ -19,7 +19,7 @@ class RecetasRepositorioLaravelMySQL implements RecetasRepositorioInterface
     {
         try {
 
-            $recetas = DB::table('receta_odontopediatria')
+            $recetas = DB::table('receta')
                 ->orderBy('Nombre')
                 ->get();
 

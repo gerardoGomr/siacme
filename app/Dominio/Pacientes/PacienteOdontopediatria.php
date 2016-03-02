@@ -109,6 +109,11 @@ class PacienteOdontopediatria extends Paciente
     protected $amigdalas;
 
     /**
+     * @var string
+     */
+    protected $orofaringe;
+
+    /**
      * @var int
      */
     protected $edadErupcionoPrimerDiente;
@@ -481,62 +486,62 @@ class PacienteOdontopediatria extends Paciente
     /**
      * @var bool
      */
-    protected $alteracionTamanio;
+    protected $alteracionesTamanio;
 
     /**
      * @var double
      */
-    protected $medidaAlteracionTamanio;
+    protected $medidaAlteracionesTamanio;
 
     /**
      * @var bool
      */
-    protected $alteracionForma;
+    protected $alteracionesForma;
 
     /**
      * @var double
      */
-    protected $medidaAlteracionForma;
+    protected $medidaAlteracionesForma;
 
     /**
      * @var bool
      */
-    protected $alteracionNumero;
+    protected $alteracionesNumero;
 
     /**
      * @var double
      */
-    protected $medidaAlteracionNumero;
+    protected $medidaAlteracionesNumero;
 
     /**
      * @var bool
      */
-    protected $alteracionEstructura;
+    protected $alteracionesEstructura;
 
     /**
      * @var double
      */
-    protected $medidaAlteracionEstructura;
+    protected $medidaAlteracionesEstructura;
 
     /**
      * @var bool
      */
-    protected $alteracionTextura;
+    protected $alteracionesTextura;
 
     /**
      * @var double
      */
-    protected $medidaAlteracionTextura;
+    protected $medidaAlteracionesTextura;
 
     /**
      * @var bool
      */
-    protected $alteracionColor;
+    protected $alteracionesColor;
 
     /**
      * @var double
      */
-    protected $medidaAlteracionColor;
+    protected $medidaAlteracionesColor;
 
     /**
      * @var TraumatismoBucal
@@ -910,6 +915,22 @@ class PacienteOdontopediatria extends Paciente
     public function setAmigdalas($amigdalas)
     {
         $this->amigdalas = $amigdalas;
+    }
+
+    /**
+     * @return string
+     */
+    public function getOrofaringe()
+    {
+        return $this->orofaringe;
+    }
+
+    /**
+     * @param string $orofaringe
+     */
+    public function setOrofaringe($orofaringe)
+    {
+        $this->orofaringe = $orofaringe;
     }
 
     /**
@@ -1955,7 +1976,7 @@ class PacienteOdontopediatria extends Paciente
     /**
      * @return float
      */
-    public function getMedidaMedidaAbiertaAnterior()
+    public function getMedidaMordidaAbiertaAnterior()
     {
         return $this->medidaMedidaAbiertaAnterior;
     }
@@ -1963,7 +1984,7 @@ class PacienteOdontopediatria extends Paciente
     /**
      * @param float $medidaMedidaAbiertaAnterior
      */
-    public function setMedidaMedidaAbiertaAnterior($medidaMedidaAbiertaAnterior)
+    public function setMedidaMordidaAbiertaAnterior($medidaMedidaAbiertaAnterior)
     {
         $this->medidaMedidaAbiertaAnterior = $medidaMedidaAbiertaAnterior;
     }
@@ -2099,193 +2120,193 @@ class PacienteOdontopediatria extends Paciente
     /**
      * @return boolean
      */
-    public function getAlteracionTamanio()
+    public function getAlteracionesTamanio()
     {
-        return $this->alteracionTamanio;
+        return $this->alteracionesTamanio;
     }
 
     /**
      * @param boolean $alteracionTamanio
      */
-    public function setAlteracionTamanio($alteracionTamanio)
+    public function setAlteracionesTamanio($alteracionTamanio)
     {
-        $this->alteracionTamanio = $alteracionTamanio;
+        $this->alteracionesTamanio = $alteracionTamanio;
     }
 
     /**
      * @return float
      */
-    public function getMedidaAlteracionTamanio()
+    public function getMedidaAlteracionesTamanio()
     {
-        return $this->medidaAlteracionTamanio;
+        return $this->medidaAlteracionesTamanio;
     }
 
     /**
      * @param float $medidaAlteracionTamanio
      */
-    public function setMedidaAlteracionTamanio($medidaAlteracionTamanio)
+    public function setMedidaAlteracionesTamanio($medidaAlteracionTamanio)
     {
-        $this->medidaAlteracionTamanio = $medidaAlteracionTamanio;
+        $this->medidaAlteracionesTamanio = $medidaAlteracionTamanio;
     }
 
     /**
      * @return boolean
      */
-    public function getAlteracionForma()
+    public function getAlteracionesForma()
     {
-        return $this->alteracionForma;
+        return $this->alteracionesForma;
     }
 
     /**
      * @param boolean $alteracionForma
      */
-    public function setAlteracionForma($alteracionForma)
+    public function setAlteracionesForma($alteracionForma)
     {
-        $this->alteracionForma = $alteracionForma;
+        $this->alteracionesForma = $alteracionForma;
     }
 
     /**
      * @return float
      */
-    public function getMedidaAlteracionForma()
+    public function getMedidaAlteracionesForma()
     {
-        return $this->medidaAlteracionForma;
+        return $this->medidaAlteracionesForma;
     }
 
     /**
      * @param float $medidaAlteracionForma
      */
-    public function setMedidaAlteracionForma($medidaAlteracionForma)
+    public function setMedidaAlteracionesForma($medidaAlteracionForma)
     {
-        $this->medidaAlteracionForma = $medidaAlteracionForma;
+        $this->medidaAlteracionesForma = $medidaAlteracionForma;
     }
 
     /**
      * @return boolean
      */
-    public function getAlteracionNumero()
+    public function getAlteracionesNumero()
     {
-        return $this->alteracionNumero;
+        return $this->alteracionesNumero;
     }
 
     /**
      * @param boolean $alteracionNumero
      */
-    public function setAlteracionNumero($alteracionNumero)
+    public function setAlteracionesNumero($alteracionNumero)
     {
-        $this->alteracionNumero = $alteracionNumero;
+        $this->alteracionesNumero = $alteracionNumero;
     }
 
     /**
      * @return float
      */
-    public function getMedidaAlteracionNumero()
+    public function getMedidaAlteracionesNumero()
     {
-        return $this->medidaAlteracionNumero;
+        return $this->medidaAlteracionesNumero;
     }
 
     /**
      * @param float $medidaAlteracionNumero
      */
-    public function setMedidaAlteracionNumero($medidaAlteracionNumero)
+    public function setMedidaAlteracionesNumero($medidaAlteracionNumero)
     {
-        $this->medidaAlteracionNumero = $medidaAlteracionNumero;
+        $this->medidaAlteracionesNumero = $medidaAlteracionNumero;
     }
 
     /**
      * @return boolean
      */
-    public function getAlteracionEstructura()
+    public function getAlteracionesEstructura()
     {
-        return $this->alteracionEstructura;
+        return $this->alteracionesEstructura;
     }
 
     /**
      * @param boolean $alteracionEstructura
      */
-    public function setAlteracionEstructura($alteracionEstructura)
+    public function setAlteracionesEstructura($alteracionEstructura)
     {
-        $this->alteracionEstructura = $alteracionEstructura;
+        $this->alteracionesEstructura = $alteracionEstructura;
     }
 
     /**
      * @return float
      */
-    public function getMedidaAlteracionEstructura()
+    public function getMedidaAlteracionesEstructura()
     {
-        return $this->medidaAlteracionEstructura;
+        return $this->medidaAlteracionesEstructura;
     }
 
     /**
      * @param float $medidaAlteracionEstructura
      */
-    public function setMedidaAlteracionEstructura($medidaAlteracionEstructura)
+    public function setMedidaAlteracionesEstructura($medidaAlteracionEstructura)
     {
-        $this->medidaAlteracionEstructura = $medidaAlteracionEstructura;
+        $this->medidaAlteracionesEstructura = $medidaAlteracionEstructura;
     }
 
     /**
      * @return boolean
      */
-    public function getAlteracionTextura()
+    public function getAlteracionesTextura()
     {
-        return $this->alteracionTextura;
+        return $this->alteracionesTextura;
     }
 
     /**
      * @param boolean $alteracionTextura
      */
-    public function setAlteracionTextura($alteracionTextura)
+    public function setAlteracionesTextura($alteracionTextura)
     {
-        $this->alteracionTextura = $alteracionTextura;
+        $this->alteracionesTextura = $alteracionTextura;
     }
 
     /**
      * @return float
      */
-    public function getMedidaAlteracionTextura()
+    public function getMedidaAlteracionesTextura()
     {
-        return $this->medidaAlteracionTextura;
+        return $this->medidaAlteracionesTextura;
     }
 
     /**
      * @param float $medidaAlteracionTextura
      */
-    public function setMedidaAlteracionTextura($medidaAlteracionTextura)
+    public function setMedidaAlteracionesTextura($medidaAlteracionTextura)
     {
-        $this->medidaAlteracionTextura = $medidaAlteracionTextura;
+        $this->medidaAlteracionesTextura = $medidaAlteracionTextura;
     }
 
     /**
      * @return boolean
      */
-    public function getAlteracionColor()
+    public function getAlteracionesColor()
     {
-        return $this->alteracionColor;
+        return $this->alteracionesColor;
     }
 
     /**
      * @param boolean $alteracionColor
      */
-    public function setAlteracionColor($alteracionColor)
+    public function setAlteracionesColor($alteracionColor)
     {
-        $this->alteracionColor = $alteracionColor;
+        $this->alteracionesColor = $alteracionColor;
     }
 
     /**
      * @return float
      */
-    public function getMedidaAlteracionColor()
+    public function getMedidaAlteracionesColor()
     {
-        return $this->medidaAlteracionColor;
+        return $this->medidaAlteracionesColor;
     }
 
     /**
      * @param float $medidaAlteracionColor
      */
-    public function setMedidaAlteracionColor($medidaAlteracionColor)
+    public function setMedidaAlteracionesColor($medidaAlteracionColor)
     {
-        $this->medidaAlteracionColor = $medidaAlteracionColor;
+        $this->medidaAlteracionesColor = $medidaAlteracionColor;
     }
 
     /**

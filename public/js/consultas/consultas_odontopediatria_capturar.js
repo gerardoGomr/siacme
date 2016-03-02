@@ -172,10 +172,41 @@ $(function() {
 		});
 	});
 
+	// activar y desactivar elementos de medida
+	$('input.medidas').on('click', function(event) {
+		var idInputText = $(this).data('id');
+
+		if ($(this).is(':checked')) {
+			$('#' + idInputText).attr('readonly', false);
+		} else {
+			$('#' + idInputText).attr('readonly', true);
+			$('#' + idInputText).val('');
+		}
+	});
+
 	//  guardar consulta
 	$btnGuardarConsulta.on('click', function(){
 		if ($formConsulta.valid() === true) {
 			// guardar form
+			var respuesta = ajax($formConsulta.attr('action'), 'post', 'html', $formConsulta.serialize(), 'guardar');
+			respuesta.done(function(resultado) {
+				console.log(resultado);
+
+				if(resultado === '0') {
+					bootbox.alert('Ocurrió un error al generar la consulta.');
+					return false;
+				}
+
+				bootbox.alert('Consulta generada con éxito', function() {
+					// se guardó con éxito, retornar a pantalla de consultas agendadas
+				});
+			})
+			.fail(function(XMLHttpRequest, textStatus, errorThrown) {
+				console.log(textStatus + ': ' + errorThrown);
+				bootbox.alert('Imposible realizar la operación solicitada');
+			});
 		}
 	});
+
+
 });
