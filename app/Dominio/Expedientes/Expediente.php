@@ -267,4 +267,16 @@ class Expediente
 	{
 		$this->listaInterconsultas->push($interconsulta);
 	}
+
+	/**
+	 * @return boolean
+	 */
+	public function tieneInterconsultas()
+	{
+		if (count($this->listaInterconsultas) > 0 ) {
+			return true;
+		}
+
+		return false;
+	}
 }

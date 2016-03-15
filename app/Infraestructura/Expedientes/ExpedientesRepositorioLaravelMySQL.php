@@ -5,6 +5,9 @@ use DB;
 use Siacme\Dominio\Expedientes\Expediente;
 use Siacme\Dominio\Pacientes\Paciente;
 use Siacme\Dominio\Usuarios\Usuario;
+use Siacme\Dominio\Usuarios\Especialidad;
+use Siacme\Dominio\Interconsultas\Interconsulta;
+use Siacme\Dominio\Interconsultas\MedicoReferencia;
 
 /**
  * Class ExpedientesRepositorioLaravelMySQL
@@ -70,6 +73,33 @@ class ExpedientesRepositorioLaravelMySQL implements ExpedientesRepositorioInterf
 				$expediente->setPaciente($paciente);
 				$expediente->setMedico($medico);
 				$expediente->setPrimeraVez($expedientes->PrimeraVez);
+
+				$interconsultas = DB::table('interconsulta')
+					->join('medico_referencia', 'medico_referencia.idMedicoReferencia', '=', 'interconsulta.idMedicoReferencia')
+					->where('interconsulta.idExpediente', $expediente->getId())
+					->orderBy('interconsulta.idInterconsulta', 'desc')
+					->limit(50)
+					->get();
+
+				if (count($interconsultas) > 0) {
+
+					foreach ($interconsultas as $interconsultas) {
+						$interconsulta = new Interconsulta(
+							$interconsultas->idInterconsulta,
+							new MedicoReferencia(
+								$interconsultas->idMedicoReferencia,
+								$interconsultas->Direccion,
+								new Especialidad(
+									$interconsultas->idEspecialidad,
+									$interconsultas->Especialidad
+								)
+							),
+							$interconsultas->Referencia
+						);
+
+						$expediente->agregarInterconsulta($interconsulta);
+					}
+				}
 				return $expediente;
 			}
 
@@ -110,7 +140,7 @@ class ExpedientesRepositorioLaravelMySQL implements ExpedientesRepositorioInterf
 					'PrimeraVez' 		 => 0,
 					'FechaActualizacion' => date('Y-m-d H:m:i')
 				]);
-			
+
 			// insertar nuevo odontograma
 			foreach ($expediente->getListaOdontogramas() as $odontograma) {
 				$idOdontograma = DB::table('odontograma')
@@ -198,9 +228,11 @@ class ExpedientesRepositorioLaravelMySQL implements ExpedientesRepositorioInterf
 				}
 			}
 
+			return true;
+
 		} catch(\PDOException $e) {
 			echo $e->getMessage();
-			return null;
+			return false;
 		}
 	}
 }

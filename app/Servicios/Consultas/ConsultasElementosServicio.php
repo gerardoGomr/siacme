@@ -29,6 +29,7 @@ class ConsultasElementosServicio
      * verificar la creación de elementos durante una consulta
      * @param Request $request
      * @param Expediente $expediente
+     * @return bool
      */
     public function verificarElementosCreadosEnConsulta(Request $request, Expediente $expediente)
     {
@@ -60,6 +61,6 @@ class ConsultasElementosServicio
         }
 
         // guardar la información
-        $this->expedientesRepositorio->guardarElementosDeConsulta($expediente);
+        return $this->expedientesRepositorio->guardarElementosDeConsulta($expediente);
     }
 }

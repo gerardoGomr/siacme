@@ -13,7 +13,7 @@ class ConsultasRepositorioLaravelMySQL implements ConsultasRepositorioInterface
 {
     /**
      * @param Consulta $consulta
-     * @return void
+     * @return bool
      */
     public function persistir(Consulta $consulta)
     {
@@ -49,8 +49,11 @@ class ConsultasRepositorioLaravelMySQL implements ConsultasRepositorioInterface
 
             }
 
+            return true;
+
         } catch(\PDOException $e) {
             echo $e->getMessage();
+            return false;
         }
     }
 }

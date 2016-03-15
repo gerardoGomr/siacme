@@ -125,7 +125,7 @@ class Cita
 	}
 
 	/**
-	 * @param Medico
+	 * @param Usuario $medico
 	 */
 	public function setMedico(Usuario $medico)
 	{
@@ -187,4 +187,16 @@ class Cita
 
 		return $fecha;
     }
+
+	/**
+	 * verificar si una cita está o no atendida
+	 * @return bool
+	 */
+	public function estaAtendida()
+	{
+		if ($this->estatus->getId() === 4) {
+			return true;
+		}
+		return false;
+	}
 }

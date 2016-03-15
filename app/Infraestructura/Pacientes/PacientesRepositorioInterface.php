@@ -2,7 +2,6 @@
 namespace Siacme\Infraestructura\Pacientes;
 
 use Siacme\Dominio\Pacientes\Paciente;
-use Siacme\Dominio\Pacientes\PacienteJohanna;
 
 /**
  * @author Gerardo Adrián Gómez Ruiz
@@ -29,4 +28,11 @@ interface PacientesRepositorioInterface
 	 * @return bool
 	 */
 	public function persistir(Paciente $paciente);
+
+	/**
+	 * actualizar datos faltantes
+	 * @param Paciente $paciente
+	 * @return bool
+	 */
+	public function completarDatos(Paciente $paciente);
 }

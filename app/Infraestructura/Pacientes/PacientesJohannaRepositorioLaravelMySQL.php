@@ -328,6 +328,11 @@ class PacientesJohannaRepositorioLaravelMySQL implements PacientesRepositorioInt
 		$paciente->setDescripcionHabito($pacientes->DescripcionHabito);
 	}
 
+	/**
+	 * actualizar datos faltantes
+	 * @param Paciente $paciente
+	 * @return bool
+	 */
 	public function completarDatos(Paciente $paciente)
 	{
 		try {
@@ -398,8 +403,11 @@ class PacientesJohannaRepositorioLaravelMySQL implements PacientesRepositorioInt
 					'RelacionCaninaIzquierdaIII'    => $paciente->getRelacionCaninaIzquierdaIII() ? 1 : 0,
 					'FechaActualizacion'            => date('Y-m-d H:m:i')
 				]);
+
+			return true;
 		} catch (\PDOException $e) {
 			echo $e->getMessage();
+			return false;
 		}
 	}
 }

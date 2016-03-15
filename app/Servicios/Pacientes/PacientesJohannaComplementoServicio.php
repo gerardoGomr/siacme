@@ -33,6 +33,7 @@ class PacientesJohannaComplementoServicio
     /**
      * @param Request $request
      * @param Paciente $paciente
+     * @return bool
      */
     public function crearDeHttp(Request $request, Paciente $paciente)
     {
@@ -174,6 +175,6 @@ class PacientesJohannaComplementoServicio
         $paciente->setMedidaAlteracionesColor($medidaAlteracionColor);
 
         // persistir datos de paciente
-        $this->pacientesRepositorio->completarDatos($paciente);
+        return $this->pacientesRepositorio->completarDatos($paciente);
     }
 }

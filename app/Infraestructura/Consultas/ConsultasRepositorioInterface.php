@@ -12,7 +12,7 @@ interface ConsultasRepositorioInterface
 {
     /**
      * @param Consulta $consulta
-     * @return void
+     * @return bool
      */
     public function persistir(Consulta $consulta);
 }

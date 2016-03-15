@@ -317,6 +317,7 @@ class ConsultasController extends Controller
      * @param Request $request
      * @param ConsultasRepositorioInterface $consultasRepositorio
      * @param CitasRepositorioInterface $citasRepositorio
+     * @return \Illuminate\Contracts\Routing\ResponseFactory|\Symfony\Component\HttpFoundation\Response
      */
     public function guardar(Request $request, ConsultasRepositorioInterface $consultasRepositorio, CitasRepositorioInterface $citasRepositorio)
     {
@@ -344,11 +345,15 @@ class ConsultasController extends Controller
 
         $cita                 = $citasRepositorio->obtenerCitaPorPacienteMedico($paciente, $medico);
         $cita->setEstatus(new CitaEstatus(4));
-        $citasRepositorio->actualizaEstatus($cita);
+        if (!$citasRepositorio->actualizaEstatus($cita)) {
+            return response(0);
+        }
 
         // verificar los elementos generados durante la consulta (odontograma, plan) y agregarlos al expediente del paciente x
         $consultasElementosServicio = new ConsultasElementosServicio($this->expedientesRepositorio);
-        $consultasElementosServicio->verificarElementosCreadosEnConsulta($request, $expediente);
+        if (!$consultasElementosServicio->verificarElementosCreadosEnConsulta($request, $expediente)) {
+            return response(0);
+        }
 
         // verificar si hay receta
         $receta = $request->session()->get('receta');
@@ -359,12 +364,18 @@ class ConsultasController extends Controller
             $pacientesRepositorio = PacientesRepositorioFactory::crear($expediente->getMedico());
             $pacientesComplemento = PacientesComplementoFactory::crear($expediente->getMedico(), $pacientesRepositorio);
 
-            $pacientesComplemento->crearDeHttp($request, $expediente->getPaciente());
+            if (!$pacientesComplemento->crearDeHttp($request, $expediente->getPaciente())) {
+                return response(0);
+            }
         }
 
         $consulta->setExpediente($expediente);
 
         // persistir consulta
-        $consultasRepositorio->persistir($consulta);
+        if (!$consultasRepositorio->persistir($consulta) ) {
+            return response(0);
+        }
+
+        return response(1);
     }
 }
