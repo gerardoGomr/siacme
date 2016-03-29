@@ -172,15 +172,17 @@ class CitasController extends Controller
      * obtener un arreglo de citas
      * @param  Request $request
      * @param  string  $med
+     * @param  string  $fecha
      * @return Response
      */
-    public function verCitas(Request $request, $med)
+    public function verCitas(Request $request, $med, $fecha)
     {
         $medico         = base64_decode($med);
+        $fecha          = !is_null($fecha) ? base64_decode($fecha) : null;
         $listaCitas     = null;
         $listaCitasJson = null;
 
-        $listaCitas = $this->citasRepositorio->obtenerCitasPorMedico($medico);
+        $listaCitas = $this->citasRepositorio->obtenerCitasPorMedico($medico, $fecha);
 
         // hay citas
         if($listaCitas !== null) {

@@ -166,13 +166,16 @@ class ExpedientesRepositorioLaravelMySQL implements ExpedientesRepositorioInterf
 			// insertar interconsulta
 			foreach ($expediente->getListaInterconsultas() as $interconsulta) {
 				$operacion = DB::table('interconsulta')
-					->insert([
+					->insertGetId([
 						'idMedicoReferencia' => $interconsulta->getMedico()->getId(),
 						'idExpediente'		 => $expediente->getId(),
 						'Referencia'		 => $interconsulta->getReferencia(),
 						'Respondida'		 => 0,
 						'FechaModificacion'  => date('Y-m-d H:m:i')
 					]);
+
+				// setear id de la interconsulta
+				$interconsulta->setId($operacion);
 			}
 
 			// insertar nuevo plan de tratamiento

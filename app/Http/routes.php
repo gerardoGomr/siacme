@@ -25,7 +25,7 @@ Route::group(['middleware' => 'checaLogin'], function() {
 	// pagina principal
 	Route::get('citas/{med}', 'Citas\CitasController@index');
 	// ver eventos
-	Route::get('citas/citas/{med}', 'Citas\CitasController@verCitas');
+	Route::get('citas/citas/{med}/{fecha?}', 'Citas\CitasController@verCitas');
 	// ver formulario de alta
 	Route::get('citas/agregar/{fecha}/{hora}/{med}', 'Citas\CitasController@agregar');
 	// guardar cita

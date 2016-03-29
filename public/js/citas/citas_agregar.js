@@ -119,7 +119,7 @@ function agendarCita(data, url)
 
 			bootbox.alert('Cita agendada con éxito', function() {
 				// refresh events
-				// window.parent.recargarCitas();
+				window.opener.recargarCitas();
 				// cerrar ventana
 				window.close();
 			});
