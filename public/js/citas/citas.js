@@ -5,7 +5,8 @@ $(function() {
         m           = date.getMonth(),
         y           = date.getFullYear(),
         med         = $('#medico').val(),
-        rutaCitas   = $('#rutaCitas').val();
+        fecha       = y + '-' + m + '-' + d,
+        rutaCitas   = $('#rutaCitas').val() + '/citas/' + btoa(med) + '/' + btoa(fecha);
 
     // configuración del calendario
 	$calendario.fullCalendar({
@@ -34,8 +35,9 @@ $(function() {
         selectable:      true,
         allDaySlot:      false,
         editable:        true,
-        events:          rutaCitas + '/citas/' + btoa(med),
+        events:          rutaCitas,
 		dayClick: function(date, allDay, jsEvent, view) {
+			//verificarEventos();
             //prevenir la seleccion en el horario de comida
             if(date.getHours() >= "14:0" && date.getHours() < "17:0") {
 				bootbox.alert("No se puede agendar una cita en este horario.");
@@ -85,20 +87,31 @@ $(function() {
 				});
           	} else {
           		// curso normal
-          		window.open(rutaCitas + '/agregar/' + btoa(date.getFullYear()+"-"+(date.getMonth() + 1)+"-"+date.getDate()) + '/' + btoa(date.getHours()+":"+date.getMinutes()) + '/' + btoa(med), '_blank', 'scrollbars=yes, width=700, height=500');
+          		window.open($('#rutaCitas').val() + '/agregar/' + btoa(date.getFullYear()+"-"+(date.getMonth() + 1)+"-"+date.getDate()) + '/' + btoa(date.getHours()+":"+date.getMinutes()) + '/' + btoa(med), '_blank', 'scrollbars=yes, width=700, height=500');
           	}
        	},
         eventClick: function(calEvent, jsEvent, view){
-        	window.open(rutaCitas + '/detalle/' + btoa(calEvent.id) + '/' + btoa(med), '_blank', 'scrollbars=yes, width=700, height=500');
+        	window.open($('#rutaCitas').val() + '/detalle/' + btoa(calEvent.id) + '/' + btoa(med), '_blank', 'scrollbars=yes, width=700, height=500');
         }
 	});
 
 	$calendario.find('span.fc-button-prev').click(function(){
 		verificarFechas();
+		$calendario.fullCalendar('removeEventSource', rutaCitas);
+		fecha = $.fullCalendar.formatDate($('#calendario').fullCalendar('getDate'), 'yyyy-MM-dd');
+		rutaCitas = $('#rutaCitas').val() + '/citas/' + btoa(med) + '/' + btoa(fecha);
+		$calendario.fullCalendar('addEventSource', rutaCitas);
+
+		setTimeout(verificarEventos, 500);
 	});
 
 	$calendario.find('span.fc-button-next').click(function(){
 		verificarFechas();
+		$calendario.fullCalendar('removeEventSource', rutaCitas);
+		fecha = $.fullCalendar.formatDate($('#calendario').fullCalendar('getDate'), 'yyyy-MM-dd');
+		rutaCitas = $('#rutaCitas').val() + '/citas/' + btoa(med) + '/' + btoa(fecha);
+		$calendario.fullCalendar('addEventSource', rutaCitas);
+		setTimeout(verificarEventos, 500);
 	});
 
 	verificarFechas();
@@ -108,6 +121,18 @@ $(function() {
 function recargarCitas()
 {
     $('#calendario').fullCalendar('refetchEvents');
+    verificarEventos();
+}
+
+function verificarEventos()
+{
+	var eventos = $('#calendario').fullCalendar('clientEvents');
+
+    if (eventos.length > 0) {
+    	$('#generarLista').attr('disabled', false);
+    } else {
+    	$('#generarLista').attr('disabled', true);
+    }
 }
 
 /**
@@ -120,7 +145,3 @@ function verificarFechas()
 	// por default no se puede
 	$('#generarLista').attr('href', $('#rutaPdf').val() + '/' + btoa($('#medico').val()) + '/' + btoa(fecha));
 }
-
-setInterval(function(){
-    recargarCitas();
-}, 12000);

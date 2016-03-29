@@ -16,7 +16,7 @@
 			<div class="widget">
 				<div class="widget-body innerAll inner-2x">
 					<div data-component>
-						<div><a href="javascript:;" class="btn btn-success" id="generarLista" target="_blank"><i class="fa fa-file"></i>&nbsp;<i class="fa fa-print"></i> Generar lista</a></div>
+						<div><a href="javascript:;" class="btn btn-success" id="generarLista" target="_blank" disabled="disabled"><i class="fa fa-file"></i>&nbsp;<i class="fa fa-print"></i> Generar lista</a></div>
 						<div class="separator bottom"></div>
 						<div id="calendario"></div>
 						<input type="hidden" id="medico" value="{{ $medico->getUsername() }}" />

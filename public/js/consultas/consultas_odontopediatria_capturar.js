@@ -188,17 +188,28 @@ $(function() {
 	$btnGuardarConsulta.on('click', function(){
 		if ($formConsulta.valid() === true) {
 			// guardar form
-			var respuesta = ajax($formConsulta.attr('action'), 'post', 'html', $formConsulta.serialize(), 'guardar');
+			var respuesta = ajax($formConsulta.attr('action'), 'post', 'json', $formConsulta.serialize(), 'guardar');
 			respuesta.done(function(resultado) {
 				console.log(resultado);
 
-				if(resultado === '0') {
+				if(resultado.respuesta === '0') {
 					bootbox.alert('Ocurrió un error al generar la consulta.');
 					return false;
 				}
 
 				bootbox.alert('Consulta generada con éxito', function() {
 					// se guardó con éxito, retornar a pantalla de consultas agendadas
+					if (resultado.idPlan !== null) {
+						// abrir PDF de plan
+					}
+
+					if (resultado.idInterconsulta !== null) {
+						// abrir PDF de interconsulta
+					}
+
+					if (resultado.idReceta !== null) {
+						// abrir PDF de receta
+					}
 				});
 			})
 			.fail(function(XMLHttpRequest, textStatus, errorThrown) {

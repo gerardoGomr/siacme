@@ -26,7 +26,7 @@ class DientePadecimiento
 	 */
 	private $imagen;
 
-	public function __construct($id = 1, $nombre = 'Sano', $imagen = 'public/img/dientes/sano.png')
+	public function __construct($id = 1, $nombre = 'Sin Estatus', $imagen = 'public/img/dientes/x.png')
 	{
 		$this->id     = $id;
 		$this->nombre = $nombre;

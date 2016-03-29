@@ -321,6 +321,9 @@ class ConsultasController extends Controller
      */
     public function guardar(Request $request, ConsultasRepositorioInterface $consultasRepositorio, CitasRepositorioInterface $citasRepositorio)
     {
+        // variable de respuesta
+        $respuesta = '';
+
         // parámetros de consulta
         $idPaciente                     = (int)base64_decode($request->get('idPaciente'));
         $userMedico                     = base64_decode($request->get('userMedico'));
@@ -376,6 +379,14 @@ class ConsultasController extends Controller
             return response(0);
         }
 
-        return response(1);
+        // devolver elementos
+        $respuesta['respuesta'] = 1;
+        // id Plan
+        $respuesta['idPlan'] = $expediente->obtenerPlanActivo()->getId();
+        // id interconsulta
+        $respuesta['idInterconsulta'] = $expediente->obtenerUltimaIntercosulta()->getId();
+        // id receta
+        $respuesta['idReceta'] = $consulta->getReceta()->getId();
+        return response($respuesta);
     }
 }
