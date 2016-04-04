@@ -100,17 +100,17 @@ class PacientesJohannaRepositorioLaravelMySQL implements PacientesRepositorioInt
 
 			if($totalPacientes > 0) {
 				$paciente = new PacienteJohanna($pacientes->idPaciente);
-				// cargar datos básicos
-				$this->repositorio->obtenerPacientePorId($paciente);
-
 				// obtener datos específicos
 				$this->alimentar($paciente, $pacientes);
-
-				// devolver paciente
-				return $paciente;
+			} else {
+				$paciente = new PacienteJohanna($id);
 			}
 
-			return null;
+			// cargar datos básicos
+			$this->repositorio->obtenerPacientePorId($paciente);
+
+			// devolver paciente
+			return $paciente;
 
 
 		} catch (\Exception $e) {

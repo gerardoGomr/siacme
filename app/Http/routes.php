@@ -98,6 +98,15 @@ Route::group(['middleware' => 'checaLogin'], function() {
 	// guardar consulta
 	Route::post('consultas/guardar', 'Consultas\ConsultasController@guardar');
 
+	// imprimir receta
+	Route::get('consultas/receta/{med}/{id}', 'Consultas\ConsultasController@receta');
+
+	// imprimir interconsulta
+	Route::get('consultas/interconsulta/{id}/{med}', 'Consultas\ConsultasController@interconsulta');
+
+	// imprimir plan
+	Route::get('consultas/plan/{id}/{med}', 'Consultas\ConsultasController@plan');
+
 	/////////////////////////////////////////// PACIENTES //////////////////////////////////////////////
 	Route::get('pacientes/{med}', 'Pacientes\PacientesController@index');
 	// buscar pacientes

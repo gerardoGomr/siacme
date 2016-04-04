@@ -1,4 +1,7 @@
 $(function() {
+	// bandera padre
+	window.opener.$('#generoPlan').val(1);
+
 	// variables
 	var $dvPlanTratamiento = $('#dvPlanTratamiento');
 

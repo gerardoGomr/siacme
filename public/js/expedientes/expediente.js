@@ -1,16 +1,16 @@
 $(function() {
 	// variables
-	var $formExpediente    	   = $('#formExpediente'),
-		$formSubirImagen       = $('#formSubirImagen'),
-		$txtNumHermanos        = $('#txtNumHermanos'),
+	var $formExpediente    	  = $('#formExpediente'),
+		$formSubirImagen        = $('#formSubirImagen'),
+		$txtNumHermanos         = $('#txtNumHermanos'),
 		$txtNumHermanosVivos   = $('#txtNumHermanosVivos'),
 		$txtNumHermanosFinados = $('#txtNumHermanosFinados'),
-		$adjuntarFoto          = $('#adjuntarFoto'),
-		$btnAbrirCamara 	   = $('#btnAbrirCamara'),
-		$btnRecortarImagen     = $('#btnRecortarImagen'),
-		$btnAceptarRecorte     = $('#btnAceptarRecorte'),
-		$fotografia		       = $('#fotografiaAgregada'),
-		_token                 = $('input[name="_token"]').val();
+		$adjuntarFoto           = $('#adjuntarFoto'),
+		$btnAbrirCamara 	      = $('#btnAbrirCamara'),
+		$btnRecortarImagen      = $('#btnRecortarImagen'),
+		$btnAceptarRecorte      = $('#btnAceptarRecorte'),
+		$fotografia		      = $('#fotografiaAgregada'),
+		_token                   = $('input[name="_token"]').val();
 
 	// datepicker
 	$formExpediente.find('input.fecha').datepicker({
@@ -213,6 +213,8 @@ $(function() {
 
 				bootbox.alert('Expediente generado con éxito', function(){
 					$('#modo').val('2');
+					window.opener.location.reload(true);
+					window.close();
 				});
 			})
 			.fail(function(XMLHttpRequest, textStatus, errorThrown) {

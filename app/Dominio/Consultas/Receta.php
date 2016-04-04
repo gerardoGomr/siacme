@@ -1,5 +1,6 @@
 <?php
 namespace Siacme\Dominio\Consultas;
+use Siacme\Dominio\Fecha;
 
 /**
  * Class Receta
@@ -84,5 +85,15 @@ class Receta
     public function setNombre($nombre)
     {
         $this->nombre = $nombre;
+    }
+
+    /**
+     * convertir la fecha
+     * @param string $fecha
+     * @return string
+     */
+    public function fechaReceta($fecha)
+    {
+        return Fecha::convertir($fecha);
     }
 }

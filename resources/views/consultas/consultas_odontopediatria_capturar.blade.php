@@ -40,9 +40,9 @@
 												<li>
 													<a href="#odontograma" data-toggle="tab"><i class="fa fa-search"></i> Odontograma</a>
 												</li>
-												<li>
+												<!--<li>
 													<a href="#historial" data-toggle="tab"><i class="fa fa-clock-o"></i> Historial</a>
-												</li>
+												</li>-->
 											</ul>
 										</div>
 										<div class="widget-body">
@@ -58,10 +58,15 @@
 														@include('consultas.consultas_odontopediatria_expediente_agregar')
 													@endif
 													@include('consultas.consultas_odontopediatria_odontograma')
-													@include('consultas.consultas_odontopediatria_historial')
+													<?php // @include('consultas.consultas_odontopediatria_historial') ?>
 												</div>
-												<input type="hidden" name="userMedico" value="{{ base64_encode($expediente->getMedico()->getUsername()) }}">
-												<input type="hidden" name="idPaciente" value="{{ base64_encode($expediente->getPaciente()->getId()) }}">
+												<input type="hidden" name="userMedico" id="userMedico" value="{{ base64_encode($expediente->getMedico()->getUsername()) }}">
+												<input type="hidden" name="idPaciente" id="idPaciente" value="{{ base64_encode($expediente->getPaciente()->getId()) }}">
+
+												<input type="hidden" id="generoReceta" value="0">
+												<input type="hidden" id="generoPlan" value="0">
+												<input type="hidden" id="generoInterconsulta" value="0">
+												<input type="hidden" id="url" value="{{ url('consultas') }}">
 											{!! Form::close() !!}
 										</div>
 									</div>

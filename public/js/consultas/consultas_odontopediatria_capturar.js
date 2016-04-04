@@ -98,7 +98,6 @@ $(function() {
 	// change para mostrar receta
 	$('#receta').on('change', function() {
 		var receta = atob($('input[name="receta' + $(this).val() + '"]').val());
-
 		$('#txtReceta').val(receta);
 	});
 
@@ -125,6 +124,7 @@ $(function() {
 			bootbox.alert('Receta guardada', function() {
 				// cerrar modal
 				$('#dvRecetas').modal('hide');
+				$('#generoReceta').val(1);
 			});
 		})
 		.fail(function(XMLHttpRequest, textStatus, errorThrown) {
@@ -164,6 +164,7 @@ $(function() {
 			bootbox.alert('Interconsulta guardada', function() {
 				// cerrar modal
 				$('#dvInterconsulta').modal('hide');
+				$('#generoInterconsulta').val(1);
 			});
 		})
 		.fail(function(XMLHttpRequest, textStatus, errorThrown) {
@@ -187,6 +188,19 @@ $(function() {
 	//  guardar consulta
 	$btnGuardarConsulta.on('click', function(){
 		if ($formConsulta.valid() === true) {
+			// generar elementos
+			if ($('#generoReceta').val() === '1') {
+				window.open($('#url').val() + '/receta/' + $('#userMedico').val() + '/' + $('#idPaciente').val());
+			}
+
+			if ($('#generoInterconsulta').val() === '1') {
+				window.open($('#url').val() + '/interconsulta/' + $('#userMedico').val() + '/' + $('#idPaciente').val());
+			}
+
+			if ($('#generoPlan').val() === '1') {
+				window.open($('#url').val() + '/plan/' + $('#userMedico').val() + '/' + $('#idPaciente').val());
+			}
+
 			// guardar form
 			var respuesta = ajax($formConsulta.attr('action'), 'post', 'json', $formConsulta.serialize(), 'guardar');
 			respuesta.done(function(resultado) {
@@ -199,17 +213,7 @@ $(function() {
 
 				bootbox.alert('Consulta generada con éxito', function() {
 					// se guardó con éxito, retornar a pantalla de consultas agendadas
-					if (resultado.idPlan !== null) {
-						// abrir PDF de plan
-					}
 
-					if (resultado.idInterconsulta !== null) {
-						// abrir PDF de interconsulta
-					}
-
-					if (resultado.idReceta !== null) {
-						// abrir PDF de receta
-					}
 				});
 			})
 			.fail(function(XMLHttpRequest, textStatus, errorThrown) {

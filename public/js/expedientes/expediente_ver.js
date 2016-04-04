@@ -10,6 +10,8 @@ $(function() {
 
 					bootbox.alert('Expediente firmado con éxito', function() {
 						//window.location.href = $('#urlDetalles').val();
+						window.opener.location.reload(true);
+						window.close();
 					});
 				})
 				.fail(function(XMLHttpRequest, textStatus, errorThrown) {

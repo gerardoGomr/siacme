@@ -316,6 +316,11 @@ class Paciente extends Persona
     protected $tensionArterial;
 
     /**
+     * @var bool
+     */
+    protected $nuevoPaciente;
+
+    /**
      * Paciente constructor.
      * @param int $id
      */
@@ -1364,5 +1369,13 @@ class Paciente extends Persona
     public function edadCompleta()
     {
 
+    }
+
+    /**
+     * @param bool $nuevoPaciente
+     */
+    public function setNuevoPaciente($nuevoPaciente)
+    {
+        $this->nuevoPaciente = $nuevoPaciente;
     }
 }

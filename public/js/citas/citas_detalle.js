@@ -42,7 +42,8 @@ $(function() {
                     especialidad = '/otorr/';
                 }
 
-                window.location.href = $('#urlExpediente').val() + especialidad + $('#idPaciente').val() + '/' + $('#userMedico').val();
+                //window.location.href = $('#urlExpediente').val() + especialidad + $('#idPaciente').val() + '/' + $('#userMedico').val();
+                window.open($('#urlExpediente').val() + especialidad + $('#idPaciente').val() + '/' + $('#userMedico').val(), '_blank', 'scrollbars=yes')
             });
         }
     });
@@ -60,7 +61,8 @@ $(function() {
         }
 
         // redirigir
-        window.location.href = $('#urlVerExpediente').val() + especialidad + $('#idPaciente').val() + '/' + $('#userMedico').val();
+        //window.location.href = $('#urlVerExpediente').val() + especialidad + $('#idPaciente').val() + '/' + $('#userMedico').val();
+        window.open($('#urlVerExpediente').val() + especialidad + $('#idPaciente').val() + '/' + $('#userMedico').val(), '_blank', 'scrollbars=yes')
     });
 
     // reprogramar cita
