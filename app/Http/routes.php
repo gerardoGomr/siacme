@@ -102,7 +102,7 @@ Route::group(['middleware' => 'checaLogin'], function() {
 	Route::get('consultas/receta/{med}/{id}', 'Consultas\ConsultasController@receta');
 
 	// imprimir interconsulta
-	Route::get('consultas/interconsulta/{id}/{med}', 'Consultas\ConsultasController@interconsulta');
+	Route::get('consultas/interconsulta/{med}/{id}', 'Consultas\ConsultasController@interconsulta');
 
 	// imprimir plan
 	Route::get('consultas/plan/{id}/{med}', 'Consultas\ConsultasController@plan');

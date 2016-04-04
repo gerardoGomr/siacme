@@ -23,6 +23,7 @@ use Siacme\Infraestructura\Consultas\RecetasRepositorioInterface;
 use Siacme\Infraestructura\Expedientes\ExpedientesRepositorioInterface;
 use Siacme\Infraestructura\Pacientes\ComportamientosFranklRepositorioInterface;
 use Siacme\Infraestructura\Pacientes\PadecimientosDentalesRepositorioInterface;
+use Siacme\Reportes\Consultas\InterconsultaJohanna;
 use Siacme\Reportes\Consultas\RecetaJohanna;
 use Siacme\Servicios\Consultas\CatalogosExamenExtraoralFactory;
 use Siacme\Servicios\Consultas\ConsultasElementosServicio;
@@ -302,11 +303,11 @@ class ConsultasController extends Controller
      */
     public function agregarInterconsulta(Request $request, MedicosReferenciaRepositorioInterface $medicosRepositorio)
     {
-        $idMedico      = (int)$request->get('idMedico');
-        $txtReferencia = base64_decode($request->get('txtReferencia'));
+        $idMedico   = (int)$request->get('idMedico');
+        $referencia = base64_decode($request->get('referencia'));
 
         $medico        = $medicosRepositorio->obtenerMedicoPorId($idMedico);
-        $interconsulta = new Interconsulta(null, $medico, $txtReferencia);
+        $interconsulta = new Interconsulta(null, $medico, $referencia);
 
         $request->session()->put('interconsulta', $interconsulta);
 
@@ -404,6 +405,23 @@ class ConsultasController extends Controller
         $receta               = $request->session()->get('receta');
 
         $reporte = new RecetaJohanna($receta, $expediente);
+        $reporte->SetHeaderMargin(10);
+        $reporte->SetAutoPageBreak(true);
+        $reporte->SetMargins(15, 25);
+        $reporte->generar();
+    }
+
+    public function interconsulta(Request $request, $userMedico, $idPaciente)
+    {
+        $idPaciente           = (int)base64_decode($idPaciente);
+        $userMedico           = base64_decode($userMedico);
+        $medico               = $this->usuariosRepositorio->obtenerUsuarioPorUsername($userMedico);
+        $pacientesRepositorio = PacientesRepositorioFactory::crear($medico);
+        $paciente             = $pacientesRepositorio->obtenerPacientePorId($idPaciente);
+        $expediente           = $this->expedientesRepositorio->obtenerExpedientePorPacienteMedico($paciente, $medico);
+        $interconsulta        = $request->session()->get('interconsulta');//dd($interconsulta);
+
+        $reporte = new InterconsultaJohanna($interconsulta, $expediente);
         $reporte->SetHeaderMargin(10);
         $reporte->SetAutoPageBreak(true);
         $reporte->SetMargins(15, 25);

@@ -1,6 +1,7 @@
 <?php
 namespace Siacme\Dominio\Interconsultas;
 use Illuminate\Support\Collection;
+use Siacme\Dominio\Fecha;
 
 /**
  * Class Interconsulta
@@ -150,5 +151,10 @@ class Interconsulta
     public function setListaAnexos($listaAnexos)
     {
         $this->listaAnexos = $listaAnexos;
+    }
+
+    public function fechaInterconsulta($fecha)
+    {
+        return Fecha::convertir($fecha);
     }
 }
