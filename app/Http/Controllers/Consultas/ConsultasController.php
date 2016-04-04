@@ -343,7 +343,7 @@ class ConsultasController extends Controller
         $consulta                       = new Consulta(0, $padecimientoActual, $interrogatorioAparatosSistemas, $exploracion, $notaMedica, $comportamiento);
 
         // expediente
-        /*$medico               = $this->usuariosRepositorio->obtenerUsuarioPorUsername($userMedico);
+        $medico               = $this->usuariosRepositorio->obtenerUsuarioPorUsername($userMedico);
         $pacientesRepositorio = PacientesRepositorioFactory::crear($medico);
         $paciente             = $pacientesRepositorio->obtenerPacientePorId($idPaciente);
         $expediente           = $this->expedientesRepositorio->obtenerExpedientePorPacienteMedico($paciente, $medico);
@@ -384,7 +384,7 @@ class ConsultasController extends Controller
         // devolver elementos
         $respuesta['respuesta']  = 1;
         // id Plan
-        $respuesta['expediente'] = $expediente->getId();*/
+        $respuesta['expediente'] = $expediente->getId();
 
         return response($respuesta);
     }
