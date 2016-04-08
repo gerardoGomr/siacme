@@ -32,6 +32,7 @@ class ConsultasRepositorioLaravelMySQL implements ConsultasRepositorioInterface
                         'Pulso'                  => $consulta->getExploracionFisica()->getPulso(),
                         'Temperatura'            => $consulta->getExploracionFisica()->getTemperatura(),
                         'TensionArterial'        => $consulta->getExploracionFisica()->getTensionArterial(),
+                        'Costo'                  => $consulta->getCosto(),
                         'FechaModificacion'      => date('Y-m-d H:m:i')
                     ]);
 

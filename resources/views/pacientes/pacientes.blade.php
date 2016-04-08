@@ -50,6 +50,9 @@
 @stop
 
 @section('js')
+	<script type="text/javascript" src="{{ asset('public/assets/components/common/forms/validator/assets/lib/jquery-validation/dist/jquery.validate.js') }}"></script>
+	<script type="text/javascript" src="{{ asset('public/assets/components/common/forms/validator/assets/lib/jquery-validation/dist/additional-methods.js') }}"></script>
+	<script type="text/javascript" src="{{ asset('public/js/validaciones.js') }}"></script>
 	<script type="text/javascript" src="{{ asset('public/js/ajax.js') }}"></script>
 	<script type="text/javascript" src="{{ asset('public/js/pacientes/pacientes.js') }}"></script>
 @stop

@@ -31,6 +31,24 @@ $(function() {
 				'username'  : $('#username').val(),
 				'_token'    : $formPaciente.find('input[name="_token"]').val()
 			};
-			ajax(url, 'post', 'html', datos, 'cargar', 'detalleLoading', 'dvDetalles');
+
+		var respuesta = ajax(url, 'post', 'html', datos, 'guardar');
+
+		respuesta.done(function(respuesta){
+			$('#dvDetalles').html(respuesta);
+			var idForm = $('#dvDetalles').find('form').attr('id');alert(idForm);
+
+			// validación básica
+			$('#' + idForm).validate();
+
+			// validar formulario
+			agregaValidacionesElementos($('#' + idForm));
+		})
+		.fail(function(XMLHttpRequest, textStatus, errorThrown){
+			console.log(textStatus + ': ' + errorThrown);
+		});
 	});
+
+	// inicializar form validación
+	init();
 });

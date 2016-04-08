@@ -86,7 +86,7 @@ Route::group(['middleware' => 'checaLogin'], function() {
 	// asignar padecimientos al diente
 	Route::post('consultas/capturar/diente/padecimiento', 'Consultas\ConsultasController@agregaDientePadecimiento');
 	// abrir ventana para plan de tratamiento
-	Route::get('consultas/plan/agregar', 'Consultas\ConsultasController@verPlan');
+	Route::get('consultas/plan/agregar/{med}/{id}', 'Consultas\ConsultasController@verPlan');
 	// agregar un tratamiento a un diente
 	Route::post('consultas/plan/tratamientos/agregar', 'Consultas\ConsultasController@agregarTratamiento');
 	// agregar otro tratamiento al plan
@@ -105,7 +105,7 @@ Route::group(['middleware' => 'checaLogin'], function() {
 	Route::get('consultas/interconsulta/{med}/{id}', 'Consultas\ConsultasController@interconsulta');
 
 	// imprimir plan
-	Route::get('consultas/plan/{id}/{med}', 'Consultas\ConsultasController@plan');
+	Route::get('consultas/plan/{med}/{id}', 'Consultas\ConsultasController@plan');
 
 	/////////////////////////////////////////// PACIENTES //////////////////////////////////////////////
 	Route::get('pacientes/{med}', 'Pacientes\PacientesController@index');
