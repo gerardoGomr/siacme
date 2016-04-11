@@ -113,4 +113,8 @@ Route::group(['middleware' => 'checaLogin'], function() {
 	Route::post('pacientes/buscar', 'Pacientes\PacientesController@buscar');
 	// detalles de un paciente
 	Route::post('pacientes/detalle', 'Pacientes\PacientesController@detalle');
+	// agregar anexos al expediente del paciente
+	Route::post('pacientes/anexo/agregar', 'Pacientes\PacientesController@agregarAnexo');
+	// borrar anexos
+	Route::post('pacientes/anexo/eliminar', 'Pacientes\PacientesController@eliminarAnexo');
 });
