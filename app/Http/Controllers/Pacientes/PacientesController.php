@@ -105,6 +105,11 @@ class PacientesController extends Controller
         }
     }
 
+    /**
+     * eliminar anexo
+     * @param Request $request
+     * @return \Illuminate\Contracts\Routing\ResponseFactory|\Symfony\Component\HttpFoundation\Response
+     */
     public function eliminarAnexo(Request $request)
     {
         $idPaciente = (int)base64_decode($request->get('idPaciente'));
@@ -118,5 +123,18 @@ class PacientesController extends Controller
         }
 
         return response('1');
+    }
+
+    /**
+     * generar nuevo tratamiento de ortopedia - ortodoncia
+     * @param Request $request
+     */
+    public function agregarTratamiento(Request $request)
+    {
+        $ortopedia  = $request->get('ortopedia') ? true : false;
+        $ortodoncia = $request->get('ortodoncia') ? true : false;
+
+        $tratamiento = new TratamientoOdontologia($request->get('dx'), $request->get('costo'), $request->get('duracion'), $request->get('mensualidades'));
+        $tratamiento->generarTratamientos($ortopedia, $ortodoncia);
     }
 }

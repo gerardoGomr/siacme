@@ -1,4 +1,7 @@
 <div class="tab-pane active" id="expediente">
+	<a href="#dvOtroTratamiento" class="btn btn-primary" data-toggle="modal">Generar tratamiento de ortodoncia / ortopedia</a>
+	<a href="" class="btn btn-primary">Generar tratamiento bajo anestesia general</a>
+	<div class="separator bottom"></div>
 	<div class="row">
 		<div class="col-md-12 col-lg-6">
 			<div class="box-generic">

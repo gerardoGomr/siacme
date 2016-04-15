@@ -1,7 +1,8 @@
 $(function() {
-	var $txtPaciente  = $('#txtPaciente'),
-		$formPaciente = $('#formPaciente')
-		idForm        = '';
+	var $txtPaciente         = $('#txtPaciente'),
+		$formPaciente        = $('#formPaciente'),
+		$formOtroTratamiento = $('#formOtroTratamiento'),
+		idForm               = '';
 
 	setTimeout(function(){
 		$txtPaciente.focus();
@@ -86,6 +87,37 @@ $(function() {
 
 	// inicializar form validación
 	init();
+
+	// validación vacía
+	$formOtroTratamiento.validate();
+
+	// validar formulario de otros tratamientos
+	agregaValidacionesElementos($formOtroTratamiento);
+
+	// guardar formulario otros tratamientos
+	$('#guardarFormOtros').on('click', function(event) {
+		if ($formOtroTratamiento.valid() === true) {
+			// guardar
+			var respuesta = ajax($formOtroTratamiento.attr('action'), 'post', 'html', $formOtroTratamiento.serialize(), 'guardar');
+			respuesta.done(function(respuesta){
+				if(respuesta === '0') {
+					bootbox.alert('Ocurrió un error al generar el tratamiento. Intente de nuevo');
+					return false;
+				}
+
+				var idForm     = $('#dvDetalles').find('form').attr('id'),
+					idPaciente = $('#' + idForm).find('input[name="idPaciente"]').val();
+
+				bootbox.alert('Tratamiento generado con éxito', function () {
+					// refrescar detalles del paciente seleccionado
+					recargarDetalles(idPaciente);
+				});
+			})
+			.fail(function(XMLHttpRequest, textStatus, errorThrown){
+				console.log(textStatus + ': ' + errorThrown);
+			});
+		}
+	});
 
 	/**
 	 * funcion para generar un formulario ajax

@@ -117,4 +117,6 @@ Route::group(['middleware' => 'checaLogin'], function() {
 	Route::post('pacientes/anexo/agregar', 'Pacientes\PacientesController@agregarAnexo');
 	// borrar anexos
 	Route::post('pacientes/anexo/eliminar', 'Pacientes\PacientesController@eliminarAnexo');
+	// generar tratamientos ortopedia - ortodoncia
+	Route::post('pacientes/tratamiento/agregar', 'Pacientes\PacientesController@agregarTratamiento');
 });
