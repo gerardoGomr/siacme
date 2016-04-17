@@ -348,7 +348,7 @@ class ConsultasController extends Controller
         $paciente             = $pacientesRepositorio->obtenerPacientePorId($idPaciente);
         $expediente           = $this->expedientesRepositorio->obtenerExpedientePorPacienteMedico($paciente, $medico);
 
-        $cita                 = $citasRepositorio->obtenerCitaPorPacienteMedico($paciente, $medico);
+        /*$cita                 = $citasRepositorio->obtenerCitaPorPacienteMedico($paciente, $medico);
         $cita->setEstatus(new CitaEstatus(4));
         if (!$citasRepositorio->actualizaEstatus($cita)) {
             return response(0);
@@ -384,7 +384,7 @@ class ConsultasController extends Controller
         // devolver elementos
         $respuesta['respuesta']  = 1;
         // id Plan
-        $respuesta['expediente'] = $expediente->getId();
+        $respuesta['expediente'] = $expediente->getId();*/
 
         return response($respuesta);
     }
