@@ -26,6 +26,7 @@
         <div class="col-md-9 col-sm-12 border-left">
             <div class="innerAll">
                 <a href="javascript:;" id="btnAceptar" class="btn btn-success btn-lg pull-right"><i class="fa fa-check"></i> Aceptar</a>
+                <a href="{{ url("consultas/plan/$userMed/$idPaciente") }}" id="generarPlan" class="btn btn-success pull-right" disabled="disabled" target="_blank"><i class="fa fa-print"></i> Generar</a>
             </div>
             <div class="innerAll" id="dvPlanTratamiento">
                 {!! $dibujadorPlan->dibujar() !!}

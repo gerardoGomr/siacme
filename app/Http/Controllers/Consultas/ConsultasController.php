@@ -15,6 +15,7 @@ use Siacme\Dominio\Pacientes\TipoExamenExtraoral;
 use Siacme\Http\Requests;
 use Siacme\Http\Controllers\Controller;
 use Siacme\Infraestructura\Citas\CitasRepositorioInterface;
+use Siacme\Infraestructura\Consultas\ConsultasCostosRepositorioInterface;
 use Siacme\Infraestructura\Consultas\ConsultasRepositorioInterface;
 use Siacme\Infraestructura\Consultas\DienteTratamientosRepositorioInterface;
 use Siacme\Infraestructura\Consultas\MedicosReferenciaRepositorioInterface;
@@ -24,6 +25,7 @@ use Siacme\Infraestructura\Expedientes\ExpedientesRepositorioInterface;
 use Siacme\Infraestructura\Pacientes\ComportamientosFranklRepositorioInterface;
 use Siacme\Infraestructura\Pacientes\PadecimientosDentalesRepositorioInterface;
 use Siacme\Reportes\Consultas\InterconsultaJohanna;
+use Siacme\Reportes\Consultas\PlanTratamientoJohanna;
 use Siacme\Reportes\Consultas\RecetaJohanna;
 use Siacme\Servicios\Consultas\CatalogosExamenExtraoralFactory;
 use Siacme\Servicios\Consultas\ConsultasElementosServicio;
@@ -118,10 +120,10 @@ class ConsultasController extends Controller
      * @param Request $request
      * @param RecetasRepositorioInterface $recetasRepositorio
      * @param MedicosReferenciaRepositorioInterface $medicosRepositorio
+     * @param ConsultasCostosRepositorioInterface $consultasCostosRepositorio
      * @return \Siacme\Servicios\Consultas\ExpedienteOtorrino
-     * @throws \Exception
      */
-    public function capturar($idPaciente, $userMedico, ComportamientosFranklRepositorioInterface $comportamientosRepositorio, PadecimientosDentalesRepositorioInterface $padecimientosRepositorio, Request $request, RecetasRepositorioInterface $recetasRepositorio, MedicosReferenciaRepositorioInterface $medicosRepositorio)
+    public function capturar($idPaciente, $userMedico, ComportamientosFranklRepositorioInterface $comportamientosRepositorio, PadecimientosDentalesRepositorioInterface $padecimientosRepositorio, Request $request, RecetasRepositorioInterface $recetasRepositorio, MedicosReferenciaRepositorioInterface $medicosRepositorio, ConsultasCostosRepositorioInterface $consultasCostosRepositorio)
     {
         $idPaciente = (int)base64_decode($idPaciente);
         $userMedico = base64_decode($userMedico);
@@ -150,11 +152,14 @@ class ConsultasController extends Controller
         $listaConvexividades          = $convexividadFacialRepositorio->obtenerTodos();
         $listaAtms                    = $atmsRepositorio->obtenerTodos();
 
+        // lista de costos de consulta
+        $listaCostosConsulta = $consultasCostosRepositorio->obtenerCostos();
+
         // guardar el odontograma creado en la sesión activa para procesamiento
         $request->session()->put('odontograma', $odontograma);
 
         // generar vista de consulta por médico
-        return FabricaConsultasViews::construirVista($expediente, $dibujadorOdontograma, $listaComportamientos, $listaPadecimientos, $listaRecetas, $listaMedicos, $listaMorfologiasCraneofacial, $listaMorfologiasFacial, $listaConvexividades, $listaAtms);
+        return FabricaConsultasViews::construirVista($expediente, $dibujadorOdontograma, $listaComportamientos, $listaPadecimientos, $listaRecetas, $listaMedicos, $listaMorfologiasCraneofacial, $listaMorfologiasFacial, $listaConvexividades, $listaAtms, $listaCostosConsulta);
     }
 
     /**
@@ -200,11 +205,13 @@ class ConsultasController extends Controller
     /**
      * generar vista para el plan de tratamiento
      * @param Request $request
+     * @param string $userMed
+     * @param string $idPaciente
      * @param DienteTratamientosRepositorioInterface $dienteTratamientosRepositorio
      * @param OtrosTratamientosRepositorioInterface $otrosTratamientosRepositorio
-     * @return View
+     * @return \Illuminate\View\View
      */
-    public function verPlan(Request $request, DienteTratamientosRepositorioInterface $dienteTratamientosRepositorio, OtrosTratamientosRepositorioInterface $otrosTratamientosRepositorio)
+    public function verPlan(Request $request, $userMed, $idPaciente, DienteTratamientosRepositorioInterface $dienteTratamientosRepositorio, OtrosTratamientosRepositorioInterface $otrosTratamientosRepositorio)
     {
         $odontograma = $request->session()->get('odontograma');
         if(is_null($request->session()->get('plan'))) {
@@ -229,7 +236,7 @@ class ConsultasController extends Controller
         $dibujadorPlan           = new DibujadorPlanTratamiento($plan, $listaDienteTratamientos);
 
         $request->session()->put('plan', $plan);
-        return View::make('consultas.consultas_plan_tratamiento', compact('dibujadorPlan', 'listaOtrosTratamientos'));
+        return View::make('consultas.consultas_plan_tratamiento', compact('dibujadorPlan', 'listaOtrosTratamientos','userMed', 'idPaciente'));
     }
 
     /**
@@ -338,9 +345,10 @@ class ConsultasController extends Controller
         $tensionArterial                = $request->get('txtTension');
         $notaMedica                     = $request->get('txtNota');
         $comportamientoFrankl           = $request->get('comportamientoFrankl');
+        $costoConsulta                  = $request->get('costoAsignadoConsulta');
         $exploracion                    = new ExploracionFisica($peso, $talla, $pulso, $temperatura, $tensionArterial);
         $comportamiento                 = new ComportamientoFrankl($comportamientoFrankl);
-        $consulta                       = new Consulta(0, $padecimientoActual, $interrogatorioAparatosSistemas, $exploracion, $notaMedica, $comportamiento);
+        $consulta                       = new Consulta(0, $padecimientoActual, $interrogatorioAparatosSistemas, $exploracion, $notaMedica, $comportamiento, $costoConsulta);
 
         // expediente
         $medico               = $this->usuariosRepositorio->obtenerUsuarioPorUsername($userMedico);
@@ -390,6 +398,7 @@ class ConsultasController extends Controller
     }
 
     /**
+     * generar la receta en PDF
      * @param Request $request
      * @param string $userMedico
      * @param string $idPaciente
@@ -411,6 +420,12 @@ class ConsultasController extends Controller
         $reporte->generar();
     }
 
+    /**
+     * generar la receta en PDF
+     * @param Request $request
+     * @param $userMedico
+     * @param $idPaciente
+     */
     public function interconsulta(Request $request, $userMedico, $idPaciente)
     {
         $idPaciente           = (int)base64_decode($idPaciente);
@@ -425,6 +440,28 @@ class ConsultasController extends Controller
         $reporte->SetHeaderMargin(10);
         $reporte->SetAutoPageBreak(true);
         $reporte->SetMargins(15, 25);
+        $reporte->generar();
+    }
+
+    /**
+     * generar Plan de tratamiento en PDF
+     * @param Request $request
+     * @param $userMedico
+     * @param $idPaciente
+     */
+    public function plan(Request $request, $userMedico, $idPaciente)
+    {
+        $idPaciente           = (int)base64_decode($idPaciente);
+        $userMedico           = base64_decode($userMedico);
+        $medico               = $this->usuariosRepositorio->obtenerUsuarioPorUsername($userMedico);
+        $pacientesRepositorio = PacientesRepositorioFactory::crear($medico);
+        $paciente             = $pacientesRepositorio->obtenerPacientePorId($idPaciente);
+        $expediente           = $this->expedientesRepositorio->obtenerExpedientePorPacienteMedico($paciente, $medico);
+        $plan                 = $request->session()->get('plan');
+
+        $reporte = new PlanTratamientoJohanna($plan, $expediente);
+        $reporte->SetMargins(15, PDF_MARGIN_TOP-15);
+        $reporte->SetAutoPageBreak(true, PDF_MARGIN_BOTTOM-15);
         $reporte->generar();
     }
 }

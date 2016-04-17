@@ -20,6 +20,7 @@
                 </div>
                 <div class="form-group">
                     <a href="{{ url('consultas/capturar/receta') }}" class="btn btn-success" id="btnGuardarReceta"><i class="fa fa-check"></i> Aceptar</a>
+                    <a href="{{ url('consultas/receta/' . base64_encode($expediente->getMedico()->getUsername()) . '/' . base64_encode($expediente->getPaciente()->getId())) }}" class="btn btn-primary" id="generarReceta" target="_blank" disabled="disabled"><i class="fa fa-print"></i> Generar</a>
                     <input type="hidden" name="diente" id="diente" value="">
 
                     @foreach($listaRecetas as $receta)

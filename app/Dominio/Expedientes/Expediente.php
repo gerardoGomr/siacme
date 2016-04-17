@@ -4,6 +4,7 @@ namespace Siacme\Dominio\Expedientes;
 use Illuminate\Support\Collection;
 use Siacme\Dominio\Consultas\PlanTratamiento;
 use Siacme\Dominio\Interconsultas\Interconsulta;
+use Siacme\Dominio\Pacientes\Anexo;
 use Siacme\Dominio\Pacientes\Odontograma;
 use Siacme\Dominio\Pacientes\Paciente;
 use Siacme\Dominio\Usuarios\Usuario;
@@ -54,6 +55,11 @@ class Expediente
 	 * @var Collection
 	 */
 	protected $listaOdontogramas;
+
+	/**
+	 * @var Array
+	 */
+	protected $listaAnexos;
 
 	/**
 	 * Expediente constructor.
@@ -278,5 +284,24 @@ class Expediente
 		}
 
 		return false;
+	}
+
+	public function obtenerAnexos($listaAnexos)
+	{
+		if(!is_null($listaAnexos )) {
+			foreach ($listaAnexos as $anexo) {
+				$this->listaAnexos[] = new Anexo($anexo);
+			}
+		}
+	}
+
+	public function anexos()
+	{
+		return $this->listaAnexos;
+	}
+
+	public function tieneAnexos()
+	{
+		return count($this->listaAnexos) > 0 ? true : false;
 	}
 }

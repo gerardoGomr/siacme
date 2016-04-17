@@ -9,70 +9,26 @@ use Illuminate\Support\Collection;
  */
 class Anexo
 {
-    /**
-     * @var int
-     */
-    private $id;
+    private $nombre;
+    private $anexo;
 
-    /**
-     * @var Collection
-     */
-    private $listaArchivos;
-
-    /**
-     * @var int
-     */
-    private $numeroArchivos;
-
-    /**
-     * Anexo constructor.
-     * @param int $id
-     */
-    public function __construct($id = null)
+    public function __construct($nombre)
     {
-        $this->id             = $id;
-        $this->numeroArchivos = 0;
-
-        if (is_null($this->listaArchivos)) {
-            $this->listaArchivos = new Collection();
-        }
+        $this->nombre = $nombre;
     }
 
-    /**
-     * @return int
-     */
-    public function getId()
+    public function preparar()
     {
-        return $this->id;
+        return str_replace(' ', '_', $this->nombre);
     }
 
-    /**
-     * @param int $id
-     */
-    public function setId($id)
+    public function nombre()
     {
-        $this->id = $id;
+        return $this->nombre;
     }
 
-    /**
-     * @return Collection
-     */
-    public function getListaArchivos()
+    public function nombreFormal()
     {
-        return $this->listaArchivos;
-    }
-
-    /**
-     * @param Collection $listaArchivos
-     */
-    public function setListaArchivos(Collection $listaArchivos)
-    {
-        $this->listaArchivos = $listaArchivos;
-    }
-
-    public function agregarArchivo(Archivo $archivo)
-    {
-        $this->numeroArchivos += 1;
-        $this->listaArchivos->put($this->numeroArchivos, $archivo);
+        return str_replace('_', ' ', $this->nombre);
     }
 }

@@ -1,5 +1,6 @@
 <?php
 namespace Siacme\Dominio\Consultas;
+
 use Siacme\Dominio\Expedientes\Expediente;
 use Siacme\Dominio\Pacientes\ComportamientoFrankl;
 
@@ -56,6 +57,11 @@ class Consulta
     private $expediente;
 
     /**
+     * @var ConsultaCosto
+     */
+    private $consultaCosto;
+
+    /**
      * Consulta constructor.
      * @param int $id
      * @param string $padecimientoActual
@@ -63,8 +69,9 @@ class Consulta
      * @param ExploracionFisica $exploracionFisica
      * @param string $notaMedica
      * @param ComportamientoFrankl $comportamientoFrankl
+     * @param double $costo
      */
-    public function __construct($id = 0, $padecimientoActual, $interrogatorioAparatosSistemas, ExploracionFisica $exploracionFisica, $notaMedica, ComportamientoFrankl $comportamientoFrankl)
+    public function __construct($id = 0, $padecimientoActual, $interrogatorioAparatosSistemas, ExploracionFisica $exploracionFisica, $notaMedica, ComportamientoFrankl $comportamientoFrankl, $costo)
     {
         $this->id                             = $id;
         $this->padecimientoActual             = $padecimientoActual;
@@ -72,6 +79,7 @@ class Consulta
         $this->exploracionFisica              = $exploracionFisica;
         $this->notaMedica                     = $notaMedica;
         $this->comportamientoFrankl           = $comportamientoFrankl;
+        $this->costo                          = $costo;
     }
 
     /**
@@ -253,5 +261,21 @@ class Consulta
     public function setExpediente(Expediente $expediente)
     {
         $this->expediente = $expediente;
+    }
+
+    /**
+     * @return ConsultaCosto
+     */
+    public function getConsultaCosto()
+    {
+        return $this->consultaCosto;
+    }
+
+    /**
+     * @param ConsultaCosto $consultaCosto
+     */
+    public function setConsultaCosto(ConsultaCosto $consultaCosto)
+    {
+        $this->consultaCosto = $consultaCosto;
     }
 }

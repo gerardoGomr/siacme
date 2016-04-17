@@ -5,8 +5,8 @@ $(function() {
 		$btnGenerarPlan				  = $('#btnGenerarPlan'),
 		$btnGuardarConsulta 		  = $('#btnGuardarConsulta'),
 		$btnGuardarInterconsulta      = $('#btnGuardarInterconsulta'),
-		$btnLaboratorio     		  = $('#btnLaboratorio'),
-		$btnGuardarReceta 			  = $('#btnGuardarReceta');
+		$btnGuardarReceta 			  = $('#btnGuardarReceta'),
+		costoTotalConsulta            = 0;
 
 	// inicializar form
 	init();
@@ -123,7 +123,8 @@ $(function() {
 
 			bootbox.alert('Receta guardada', function() {
 				// cerrar modal
-				$('#dvRecetas').modal('hide');
+				//$('#dvRecetas').modal('hide');
+				$('#generarReceta').attr('disabled', false);
 				$('#generoReceta').val(1);
 			});
 		})
@@ -163,7 +164,8 @@ $(function() {
 
 			bootbox.alert('Interconsulta guardada', function() {
 				// cerrar modal
-				$('#dvInterconsulta').modal('hide');
+				//$('#dvInterconsulta').modal('hide');
+				$('#generarInterconsulta').attr('disabled', false);
 				$('#generoInterconsulta').val(1);
 			});
 		})
@@ -188,19 +190,6 @@ $(function() {
 	//  guardar consulta
 	$btnGuardarConsulta.on('click', function(){
 		if ($formConsulta.valid() === true) {
-			// generar elementos
-			if ($('#generoReceta').val() === '1') {
-				window.open($('#url').val() + '/receta/' + $('#userMedico').val() + '/' + $('#idPaciente').val());
-			}
-
-			if ($('#generoInterconsulta').val() === '1') {
-				window.open($('#url').val() + '/interconsulta/' + $('#userMedico').val() + '/' + $('#idPaciente').val());
-			}
-
-			if ($('#generoPlan').val() === '1') {
-				window.open($('#url').val() + '/plan/' + $('#userMedico').val() + '/' + $('#idPaciente').val());
-			}
-
 			// guardar form
 			var respuesta = ajax($formConsulta.attr('action'), 'post', 'json', $formConsulta.serialize(), 'guardar');
 			respuesta.done(function(resultado) {
@@ -223,5 +212,14 @@ $(function() {
 		}
 	});
 
+	// costos de consulta
+	$formConsulta.on('click', 'input.costoConsulta', function(event) {
+		if($(this).is(':checked')) {
+			costoTotalConsulta += Number($(this).val());
+		} else {
+			costoTotalConsulta -= Number($(this).val());
+		}
 
+		$('#costoAsignadoConsulta').val(costoTotalConsulta);
+	});
 });

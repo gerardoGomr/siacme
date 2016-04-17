@@ -21,6 +21,7 @@ $(function() {
 				console.log('éxito');
 
 				$('#dvPlanTratamiento').html(resultado);
+				$('#generarPlan').attr('disabled', false);
 			})
 			.fail(function(XMLHttpRequest, textStatus, errorThrown) {
 				console.log(errorThrown);

@@ -86,7 +86,7 @@ Route::group(['middleware' => 'checaLogin'], function() {
 	// asignar padecimientos al diente
 	Route::post('consultas/capturar/diente/padecimiento', 'Consultas\ConsultasController@agregaDientePadecimiento');
 	// abrir ventana para plan de tratamiento
-	Route::get('consultas/plan/agregar', 'Consultas\ConsultasController@verPlan');
+	Route::get('consultas/plan/agregar/{med}/{id}', 'Consultas\ConsultasController@verPlan');
 	// agregar un tratamiento a un diente
 	Route::post('consultas/plan/tratamientos/agregar', 'Consultas\ConsultasController@agregarTratamiento');
 	// agregar otro tratamiento al plan
@@ -105,7 +105,7 @@ Route::group(['middleware' => 'checaLogin'], function() {
 	Route::get('consultas/interconsulta/{med}/{id}', 'Consultas\ConsultasController@interconsulta');
 
 	// imprimir plan
-	Route::get('consultas/plan/{id}/{med}', 'Consultas\ConsultasController@plan');
+	Route::get('consultas/plan/{med}/{id}', 'Consultas\ConsultasController@plan');
 
 	/////////////////////////////////////////// PACIENTES //////////////////////////////////////////////
 	Route::get('pacientes/{med}', 'Pacientes\PacientesController@index');
@@ -113,4 +113,10 @@ Route::group(['middleware' => 'checaLogin'], function() {
 	Route::post('pacientes/buscar', 'Pacientes\PacientesController@buscar');
 	// detalles de un paciente
 	Route::post('pacientes/detalle', 'Pacientes\PacientesController@detalle');
+	// agregar anexos al expediente del paciente
+	Route::post('pacientes/anexo/agregar', 'Pacientes\PacientesController@agregarAnexo');
+	// borrar anexos
+	Route::post('pacientes/anexo/eliminar', 'Pacientes\PacientesController@eliminarAnexo');
+	// generar tratamientos ortopedia - ortodoncia
+	Route::post('pacientes/tratamiento/agregar', 'Pacientes\PacientesController@agregarTratamiento');
 });

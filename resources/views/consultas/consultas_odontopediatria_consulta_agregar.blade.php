@@ -19,11 +19,7 @@
 						<textarea name="txtInterrogatorio" id="txtInterrogatorio" class="required form-control" rows="8"></textarea>
 					</div>
 				</div>
-			</div>
-		</div>
 
-		<div class="col-md-6 col-lg-6">
-			<div class="innerAll">
 				<div class="box-generic">
 					<div class="form-group">
 						<label class="control-label">Exploración física:</label>
@@ -69,7 +65,11 @@
 						</div>
 					</div>
 				</div>
+			</div>
+		</div>
 
+		<div class="col-md-6 col-lg-6">
+			<div class="innerAll">
 				<div class="box-generic">
 					<div class="form-group">
 						<label class="control-label">Nota médica:</label>
@@ -85,6 +85,30 @@
 								</label>
 							</div>
 						@endforeach
+					</div>
+				</div>
+
+				<div class="box-generic">
+					<h5>Costo de consulta</h5>
+					<div class="form-group">
+						@foreach($listaCostosConsultas as $costoConsulta)
+							<div class="checkbox">
+								<label>
+									<input type="checkbox" name="costoConsulta" class="costoConsulta" data-id="{{ $costoConsulta->getId() }}" value="{{ $costoConsulta->getCosto() }}"> {{ $costoConsulta->getConcepto() }}
+								</label>
+							</div>
+						@endforeach
+					</div>
+					<div class="form-group">
+						<label class="control-label">Costo Total:</label>
+						<div class="row">
+							<div class="col-md-3">
+								<div class="input-group">
+									<span class="input-group-addon">$</span>
+									<input type="text" name="costoAsignadoConsulta" id="costoAsignadoConsulta" placeholder="0.00" class="form-control required number" value="0">
+								</div>
+							</div>
+						</div>
 					</div>
 				</div>
 			</div>
