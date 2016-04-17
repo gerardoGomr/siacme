@@ -103,6 +103,8 @@
 												<div class="form-group">
 													<div class="col-md-9 col-md-offset-3">
 														<input type="button" id="guardarFormOtros" class="btn btn-primary" value="Generar tratamiento">
+														<input type="hidden" name="username" id="userOtroTratamiento">
+														<input type="hidden" name="idPaciente" id="idPacienteOtroTratamiento">
 													</div>
 												</div>
 												{!! Form::close() !!}

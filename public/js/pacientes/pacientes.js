@@ -48,6 +48,11 @@ $(function() {
 
 			// generar ajax form
 			generarAjaxForm(idForm);
+
+			// asignar valores a form de otros tratamientos
+			//$('#userOtroTratamiento').val(btoa($('#' + idForm).find('input[name="idPaciente"]').val()));
+			$('#userOtroTratamiento').val($('#' + idForm).find('input[name="userMedico"]').val());
+			$('#idPacienteOtroTratamiento').val($('#' + idForm).find('input[name="idPaciente"]').val());
 		})
 		.fail(function(XMLHttpRequest, textStatus, errorThrown){
 			console.log(textStatus + ': ' + errorThrown);

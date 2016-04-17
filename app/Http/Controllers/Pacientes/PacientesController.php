@@ -2,9 +2,11 @@
 namespace Siacme\Http\Controllers\Pacientes;
 
 use Illuminate\Http\Request;
+use Siacme\Dominio\Expedientes\TratamientoOdontologia;
 use Siacme\Dominio\Pacientes\Anexo;
 use Siacme\Http\Requests;
 use Siacme\Http\Controllers\Controller;
+use Siacme\Infraestructura\Pacientes\ITratamientoOrtopediaOrtodonciaRepositorio;
 use Siacme\Infraestructura\Usuarios\UsuariosRepositorioInterface;
 use Siacme\Servicios\Expedientes\AnexosUploader;
 use Siacme\Servicios\Pacientes\PacientesRepositorioFactory;
@@ -128,13 +130,28 @@ class PacientesController extends Controller
     /**
      * generar nuevo tratamiento de ortopedia - ortodoncia
      * @param Request $request
+     * @param ExpedientesRepositorioInterface $expedientesRepositorio
+     * @param ITratamientoOrtopediaOrtodonciaRepositorio $tratamientosRepositorio
+     * @return \Illuminate\Contracts\Routing\ResponseFactory|\Symfony\Component\HttpFoundation\Response
      */
-    public function agregarTratamiento(Request $request)
+    public function agregarTratamiento(Request $request, ExpedientesRepositorioInterface $expedientesRepositorio, ITratamientoOrtopediaOrtodonciaRepositorio $tratamientosRepositorio)
     {
-        $ortopedia  = $request->get('ortopedia') ? true : false;
-        $ortodoncia = $request->get('ortodoncia') ? true : false;
+        $ortopedia            = $request->get('ortopedia') ? true : false;
+        $ortodoncia           = $request->get('ortodoncia') ? true : false;
+        $idPaciente           = (int)base64_decode($request->get('idPaciente'));
+        $username             = base64_decode($request->get('username'));
+        $medico               = $this->usuariosRepositorio->obtenerUsuarioPorUsername($username);
+        $pacientesRepositorio = PacientesRepositorioFactory::crear($medico);
+        $paciente             = $pacientesRepositorio->obtenerPacientePorId($idPaciente);
+        $expediente           = $expedientesRepositorio->obtenerExpedientePorPacienteMedico($paciente, $medico);
 
         $tratamiento = new TratamientoOdontologia($request->get('dx'), $request->get('costo'), $request->get('duracion'), $request->get('mensualidades'));
         $tratamiento->generarTratamientos($ortopedia, $ortodoncia);
+
+        if (!$tratamientosRepositorio->guardar($tratamiento, $expediente)) {
+            return response('0');
+        }
+
+        return response('1');
     }
 }
