@@ -2,6 +2,7 @@
 namespace Siacme\Dominio\Expedientes;
 
 use Illuminate\Support\Collection;
+use Siacme\Dominio\Consultas\Consulta;
 use Siacme\Dominio\Consultas\PlanTratamiento;
 use Siacme\Dominio\Interconsultas\Interconsulta;
 use Siacme\Dominio\Pacientes\Anexo;
@@ -62,6 +63,11 @@ class Expediente
 	protected $listaAnexos;
 
 	/**
+	 * @var Array
+	 */
+	protected $listaConsultas;
+
+	/**
 	 * Expediente constructor.
 	 * @param null $id
 	 */
@@ -79,6 +85,10 @@ class Expediente
 
 		if (is_null($this->listaInterconsultas)) {
 			$this->listaInterconsultas = new Collection();
+		}
+
+		if (is_null($this->listaConsultas)) {
+			$this->listaConsultas = new Collection();
 		}
 	}
 
@@ -286,6 +296,9 @@ class Expediente
 		return false;
 	}
 
+	/**
+	 * @param $listaAnexos
+	 */
 	public function obtenerAnexos($listaAnexos)
 	{
 		if(!is_null($listaAnexos )) {
@@ -295,13 +308,73 @@ class Expediente
 		}
 	}
 
+	/**
+	 * @return Array
+	 */
 	public function anexos()
 	{
 		return $this->listaAnexos;
 	}
 
+	/**
+	 * @return bool
+	 */
 	public function tieneAnexos()
 	{
 		return count($this->listaAnexos) > 0 ? true : false;
+	}
+
+	/**
+	 * @return Array
+	 */
+	public function consultas()
+	{
+		return $this->listaConsultas;
+	}
+
+	/**
+	 * @param Consulta $consulta
+	 */
+	public function agregarConsulta(Consulta $consulta)
+	{
+		$this->listaConsultas->push($consulta);
+	}
+
+	/**
+	 * @return bool
+	 */
+	public function tieneConsultas()
+	{
+		return count($this->listaConsultas) > 0 ? true : false;
+	}
+
+	/**
+	 * @return bool
+	 */
+	public function tienePlanesTratamiento()
+	{
+		return count($this->listaPlanesTratamiento) > 0 ? true : false;
+	}
+
+	/**
+	 * @return bool
+	 */
+	public function tieneOdontogramas()
+	{
+		return count($this->listaOdontogramas) > 0 ? true : false;
+	}
+
+	/**
+	 * @return PlanTratamiento|null
+	 */
+	public function obtenerPlanActivo()
+	{
+		foreach ( $this->listaPlanesTratamiento as $plan ) {
+			if (!$plan->atendido()) {
+				return $plan;
+			}
+		}
+
+		return null;
 	}
 }

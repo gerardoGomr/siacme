@@ -62,6 +62,11 @@ class Consulta
     private $consultaCosto;
 
     /**
+     * @var string
+     */
+    private $fecha;
+
+    /**
      * Consulta constructor.
      * @param int $id
      * @param string $padecimientoActual
@@ -71,7 +76,7 @@ class Consulta
      * @param ComportamientoFrankl $comportamientoFrankl
      * @param double $costo
      */
-    public function __construct($id = 0, $padecimientoActual, $interrogatorioAparatosSistemas, ExploracionFisica $exploracionFisica, $notaMedica, ComportamientoFrankl $comportamientoFrankl, $costo)
+    public function __construct($id = 0, $padecimientoActual, $interrogatorioAparatosSistemas, ExploracionFisica $exploracionFisica, $notaMedica, ComportamientoFrankl $comportamientoFrankl, $costo, $fecha = '')
     {
         $this->id                             = $id;
         $this->padecimientoActual             = $padecimientoActual;
@@ -80,6 +85,7 @@ class Consulta
         $this->notaMedica                     = $notaMedica;
         $this->comportamientoFrankl           = $comportamientoFrankl;
         $this->costo                          = $costo;
+        $this->fecha                          = $fecha;
     }
 
     /**
@@ -277,5 +283,21 @@ class Consulta
     public function setConsultaCosto(ConsultaCosto $consultaCosto)
     {
         $this->consultaCosto = $consultaCosto;
+    }
+
+    /**
+     * @return string
+     */
+    public function getFecha()
+    {
+        return $this->fecha;
+    }
+
+    /**
+     * @param string $fecha
+     */
+    public function setFecha($fecha)
+    {
+        $this->fecha = $fecha;
     }
 }

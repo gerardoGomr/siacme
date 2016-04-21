@@ -11,9 +11,9 @@
 			<tbody>
 				@foreach ($expediente->getListaInterconsultas() as $interconsulta)
 					<tr>
-						<th>Fecha</th>
-						<th>$interconsulta->getMedico()->getNombre()</th>
-						<th>$interconsulta->getReferencia()</th>
+						<td>Fecha</td>
+						<td>{{ $interconsulta->getMedico()->getNombreCompleto() }}</td>
+						<td>{{ $interconsulta->getReferencia() }}</td>
 					</tr>
 				@endforeach
 			</tbody>

@@ -30,6 +30,7 @@ use Siacme\Reportes\Consultas\RecetaJohanna;
 use Siacme\Servicios\Consultas\CatalogosExamenExtraoralFactory;
 use Siacme\Servicios\Consultas\ConsultasElementosServicio;
 use Siacme\Servicios\Consultas\DibujadorPlanTratamiento;
+use Siacme\Servicios\Consultas\DibujadorPlanTratamientoAtencion;
 use Siacme\Servicios\Consultas\FabricaConsultasViews;
 use Siacme\Servicios\Pacientes\DibujadorOdontogramas;
 use Siacme\Dominio\Pacientes\Odontograma;
@@ -158,8 +159,11 @@ class ConsultasController extends Controller
         // guardar el odontograma creado en la sesión activa para procesamiento
         $request->session()->put('odontograma', $odontograma);
 
+        $plan = $expediente->obtenerPlanActivo();
+        $plan !== null ? $dibujadorPlan = new DibujadorPlanTratamientoAtencion($plan) : $dibujadorPlan  = null;
+
         // generar vista de consulta por médico
-        return FabricaConsultasViews::construirVista($expediente, $dibujadorOdontograma, $listaComportamientos, $listaPadecimientos, $listaRecetas, $listaMedicos, $listaMorfologiasCraneofacial, $listaMorfologiasFacial, $listaConvexividades, $listaAtms, $listaCostosConsulta);
+        return FabricaConsultasViews::construirVista($expediente, $dibujadorOdontograma, $listaComportamientos, $listaPadecimientos, $listaRecetas, $listaMedicos, $listaMorfologiasCraneofacial, $listaMorfologiasFacial, $listaConvexividades, $listaAtms, $listaCostosConsulta, $dibujadorPlan);
     }
 
     /**
@@ -356,7 +360,7 @@ class ConsultasController extends Controller
         $paciente             = $pacientesRepositorio->obtenerPacientePorId($idPaciente);
         $expediente           = $this->expedientesRepositorio->obtenerExpedientePorPacienteMedico($paciente, $medico);
 
-        /*$cita                 = $citasRepositorio->obtenerCitaPorPacienteMedico($paciente, $medico);
+        $cita                 = $citasRepositorio->obtenerCitaPorPacienteMedico($paciente, $medico);
         $cita->setEstatus(new CitaEstatus(4));
         if (!$citasRepositorio->actualizaEstatus($cita)) {
             return response(0);
@@ -392,7 +396,7 @@ class ConsultasController extends Controller
         // devolver elementos
         $respuesta['respuesta']  = 1;
         // id Plan
-        $respuesta['expediente'] = $expediente->getId();*/
+        $respuesta['expediente'] = $expediente->getId();
 
         return response($respuesta);
     }

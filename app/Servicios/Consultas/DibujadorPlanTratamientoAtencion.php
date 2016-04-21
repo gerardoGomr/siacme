@@ -1,17 +1,10 @@
 <?php
 namespace Siacme\Servicios\Consultas;
 
-use Illuminate\Support\Collection;
-use Siacme\Dominio\Consultas\DientePlan;
 use Siacme\Dominio\Consultas\PlanTratamiento;
 use Siacme\Servicios\DibujadorInterface;
 
-/**
- * Class DibujadorPlanTratamiento
- * @package Siacme\Servicios\Consultas
- * @author  Gerardo Adrián Gomez Ruiz
- */
-class DibujadorPlanTratamiento implements DibujadorInterface
+class DibujadorPlanTratamientoAtencion implements DibujadorInterface
 {
     /**
      * @var PlanTratamiento
@@ -19,23 +12,16 @@ class DibujadorPlanTratamiento implements DibujadorInterface
     protected $planTratamiento;
 
     /**
-     * @var Collection
-     */
-    protected $listaDienteTratamientos;
-
-    /**
      * DibujadorPlanTratamiento constructor.
      * @param PlanTratamiento $planTratamiento
-     * @param Collection $listaDienteTratamientos
      */
-    public function __construct(PlanTratamiento $planTratamiento, Collection $listaDienteTratamientos)
+    public function __construct(PlanTratamiento $planTratamiento)
     {
-        $this->planTratamiento         = $planTratamiento;
-        $this->listaDienteTratamientos = $listaDienteTratamientos;
+        $this->planTratamiento = $planTratamiento;
     }
 
     /**
-     * dibujar la representación del plan
+     * dibujar una representación
      * @return string
      */
     public function dibujar()
@@ -63,15 +49,17 @@ class DibujadorPlanTratamiento implements DibujadorInterface
         foreach ($this->planTratamiento->getListaDientes() as $diente) {
             $dientePlan1 = $dientePlan2 = null;
             if (!is_null($diente->getListaTratamientos())) {
-                $dientePlan1 = $diente->getListaTratamientos()->get('1');
-                $dientePlan2 = $diente->getListaTratamientos()->get('2');
+                $dientePlan1 = $diente->getListaTratamientos()->get('1')->getDienteTratamiento()->getTratamiento();
+                $dientePlan2 = !is_null($diente->getListaTratamientos()->get('2')) ? $diente->getListaTratamientos()->get('2')->getDienteTratamiento()->getTratamiento() : '-';
+            } else {
+                $dientePlan1 = $dientePlan2 = '';
             }
             $html .= '
                 <tr>
                     <td class="diente">' . $diente->getNumero() . '</td>
                     <td>' . $this->dibujarPadecimientos($diente->getListaPadecimientos()) . '</td>
-                    <td>' . $this->dibujarComboTratamientos('1', $this->listaDienteTratamientos, $dientePlan1) .'</td>
-                    <td>' . $this->dibujarComboTratamientos('2', $this->listaDienteTratamientos, $dientePlan2) .'</td>
+                    <td>' . $dientePlan1 .'</td>
+                    <td>' . $dientePlan2 .'</td>
                     <td>' . $this->dibujarCostosTratamientos($diente->getListaTratamientos()) . '</td>
                 </tr>
             ';
@@ -101,39 +89,6 @@ class DibujadorPlanTratamiento implements DibujadorInterface
 
             $indice++;
         }
-
-        return $html;
-    }
-
-    /**
-     * dibuja un combo de tratamientos
-     * @param string $nombre
-     * @param Collection $listaDienteTratamientos
-     * @param DientePlan $dientePlan
-     * @return string
-     */
-    private function dibujarComboTratamientos($nombre, Collection $listaDienteTratamientos, DientePlan $dientePlan = null)
-    {
-        $html = '
-            <select class="tratamientos form-control">
-                <option value="">Seleccione</option>
-        ';
-
-        foreach ($listaDienteTratamientos as $dienteTratamientos) {
-            $selected = '';
-
-            if (!is_null($dientePlan)) {
-                if ($dienteTratamientos->getId() === $dientePlan->getDienteTratamiento()->getId()) {
-                    $selected = 'selected="selected"';
-                }
-            }
-
-            $html .= '<option value="' . $dienteTratamientos->getId() . '" ' . $selected . '>' . $dienteTratamientos->getTratamiento() . '</option>';
-        }
-
-        $html .= '</select>
-            <input type="hidden" class="numeroTratamiento" value="' . $nombre . '">
-        ';
 
         return $html;
     }

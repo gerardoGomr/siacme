@@ -57,7 +57,7 @@ class PlanTratamientoJohanna extends ReporteJohannaPdf
             $dientePlan1 = $dientePlan2 = null;
             if (!is_null($diente->getListaTratamientos())) {
                 $dientePlan1 = $diente->getListaTratamientos()->get('1')->getDienteTratamiento()->getTratamiento();
-                $dientePlan2 = $diente->getListaTratamientos()->get('2')->getDienteTratamiento()->getTratamiento();
+                $dientePlan2 = !is_null($diente->getListaTratamientos()->get('2')) ? $diente->getListaTratamientos()->get('2')->getDienteTratamiento()->getTratamiento() : '-';
             } else {
                 $dientePlan1 = $dientePlan2 = '';
             }

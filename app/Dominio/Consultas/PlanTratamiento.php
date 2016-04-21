@@ -84,10 +84,12 @@ class PlanTratamiento
 	private function calcularCosto()
 	{
 		$this->costo = 0;
-		foreach ($this->listaDientes as $diente) {
-			if (!is_null($diente->getListaTratamientos())) {
-				foreach ($diente->getListaTratamientos() as $tratamiento) {
-					$this->costo += $tratamiento->getDienteTratamiento()->getCosto();
+		if(count($this->listaDientes) > 0) {
+			foreach ($this->listaDientes as $diente) {
+				if (!is_null($diente->getListaTratamientos())) {
+					foreach ($diente->getListaTratamientos() as $tratamiento) {
+						$this->costo += $tratamiento->getDienteTratamiento()->getCosto();
+					}
 				}
 			}
 		}
@@ -106,13 +108,18 @@ class PlanTratamiento
 	public function atendido()
 	{
 		$atendido = false;
-		foreach ($this->listaDientes as $diente) {
-			foreach ($diente->getListaTratamientos() as $tratamiento) {
-				$atendido = $tratamiento->atendido();
+
+		if (count($this->listaDientes) > 0) {
+			foreach ( $this->listaDientes as $diente ) {
+				foreach ( $diente->getListaTratamientos() as $tratamiento ) {
+					$atendido = $tratamiento->atendido();
+				}
 			}
+
+			return $atendido;
 		}
 
-		return $atendido;
+		return $this->atendido;
 	}
 
 	/**
@@ -210,5 +217,21 @@ class PlanTratamiento
 	public function otroTratamiento($indice)
 	{
 		return $this->listaOtrosTratamientos->get($indice);
+	}
+
+	/**
+	 * @return float
+	 */
+	public function getCosto()
+	{
+		return $this->costo;
+	}
+
+	/**
+	 * @param float $costo
+	 */
+	public function setCosto($costo)
+	{
+		$this->costo = $costo;
 	}
 }

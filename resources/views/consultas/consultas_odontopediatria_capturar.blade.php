@@ -37,12 +37,29 @@
 														<a href="#expediente" data-toggle="tab"><i class="fa fa-folder-open"></i> Expediente</a>
 													</li>
 												@endif
+												@if($expediente->tienePlanesTratamiento())
+													<?php $atendido = true; ?>
+													@foreach($expediente->getListaPlanesTratamiento() as $plan)
+														<?php
+														if (!$plan->atendido()) {
+															$atendido = false;
+														}
+														?>
+													@endforeach
+
+													@if ($atendido)
+														<li>
+															<a href="#odontograma" data-toggle="tab"><i class="fa fa-search"></i> Odontograma</a>
+														</li>
+													@endif
+												@else
+													<li>
+														<a href="#odontograma" data-toggle="tab"><i class="fa fa-search"></i> Odontograma</a>
+													</li>
+												@endif
 												<li>
-													<a href="#odontograma" data-toggle="tab"><i class="fa fa-search"></i> Odontograma</a>
+													<a href="#plan" data-toggle="tab"><i class="fa fa-search"></i> Plan Tratamiento</a>
 												</li>
-												<!--<li>
-													<a href="#historial" data-toggle="tab"><i class="fa fa-clock-o"></i> Historial</a>
-												</li>-->
 											</ul>
 										</div>
 										<div class="widget-body">
@@ -57,7 +74,25 @@
 													@if($expediente->primeraVez())
 														@include('consultas.consultas_odontopediatria_expediente_agregar')
 													@endif
-													@include('consultas.consultas_odontopediatria_odontograma')
+													@if($expediente->tienePlanesTratamiento())
+														<?php $atendido = true; ?>
+														@foreach($expediente->getListaPlanesTratamiento() as $plan)
+															<?php
+																if (!$plan->atendido()) {
+																	$atendido = false;
+																}
+															?>
+														@endforeach
+
+														@if ($atendido)
+															@include('consultas.consultas_odontopediatria_odontograma')
+														@endif
+													@else
+														@include('consultas.consultas_odontopediatria_odontograma')
+													@endif
+
+													@include('consultas.consultas_odontopediatria_plan_atencion')
+
 													<?php // @include('consultas.consultas_odontopediatria_historial') ?>
 												</div>
 												<input type="hidden" name="userMedico" id="userMedico" value="{{ base64_encode($expediente->getMedico()->getUsername()) }}">
