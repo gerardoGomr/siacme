@@ -1,6 +1,7 @@
 <?php
 namespace Siacme\Servicios\Consultas;
 
+use Illuminate\Support\Collection;
 use Siacme\Dominio\Consultas\PlanTratamiento;
 use Siacme\Servicios\DibujadorInterface;
 
@@ -42,17 +43,21 @@ class DibujadorPlanTratamientoAtencion implements DibujadorInterface
                         <th>Tratamiento 1</th>
                         <th>Tratamiento 2</th>
                         <th>Costo</th>
+                        <th>Marcar atención</th>
                     </tr>
                 </thead>
                 <tbody>';
 
         foreach ($this->planTratamiento->getListaDientes() as $diente) {
             $dientePlan1 = $dientePlan2 = null;
+            $accion      = ' -- ';
             if (!is_null($diente->getListaTratamientos())) {
                 $dientePlan1 = $diente->getListaTratamientos()->get('1')->getDienteTratamiento()->getTratamiento();
-                $dientePlan2 = !is_null($diente->getListaTratamientos()->get('2')) ? $diente->getListaTratamientos()->get('2')->getDienteTratamiento()->getTratamiento() : '-';
+                $dientePlan2 = !is_null($diente->getListaTratamientos()->get('2')) ? $diente->getListaTratamientos()->get('2')->getDienteTratamiento()->getTratamiento() : ' -- ';
+
+                $accion = '<label><input type="checkbox" name="dienteAtendido[]" value="'. $diente->getNumero() .'" class="tratamiento" data-costo=""><input type="hidden" value="'. $diente->costoTratamientos() .'"> Atendido</label>';
             } else {
-                $dientePlan1 = $dientePlan2 = '';
+                $dientePlan1 = $dientePlan2 = ' -- ';
             }
             $html .= '
                 <tr>
@@ -61,6 +66,7 @@ class DibujadorPlanTratamientoAtencion implements DibujadorInterface
                     <td>' . $dientePlan1 .'</td>
                     <td>' . $dientePlan2 .'</td>
                     <td>' . $this->dibujarCostosTratamientos($diente->getListaTratamientos()) . '</td>
+                    <td>' . $accion . '</td>
                 </tr>
             ';
         }
@@ -102,7 +108,7 @@ class DibujadorPlanTratamientoAtencion implements DibujadorInterface
     {
         $total = count($listaDienteTratamientos);
         if ($total === 0 || is_null($listaDienteTratamientos)) {
-            return '';
+            return ' -- ';
         }
 
         $html = '';

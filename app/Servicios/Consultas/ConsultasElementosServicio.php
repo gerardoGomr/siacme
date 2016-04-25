@@ -54,12 +54,6 @@ class ConsultasElementosServicio
                 break;
         }
 
-        // verificar si hay interconsulta
-        if ($request->session()->has('interconsulta')) {
-            $interconsulta = $request->session()->get('interconsulta');
-            $expediente->agregarInterconsulta($interconsulta);
-        }
-
         // guardar la información
         return $this->expedientesRepositorio->guardarElementosDeConsulta($expediente);
     }

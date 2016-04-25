@@ -59,4 +59,8 @@ class DientePlan
 		$this->dienteTratamiento = $dienteTratamiento;
 	}
 
+	public function atender()
+	{
+		$this->atendido = true;
+	}
 }

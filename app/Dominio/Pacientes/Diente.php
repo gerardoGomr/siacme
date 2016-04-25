@@ -42,7 +42,9 @@ class Diente
 	public function __construct($numero, DientePadecimiento $padecimiento = null, $existe = true)
 	{
         $this->numero               = $numero;
-        $this->listaPadecimientos[] = $padecimiento;
+        if(!is_null($padecimiento)) {
+            $this->listaPadecimientos[] = $padecimiento;
+        }
         $this->existe               = $existe;
 	}
 
@@ -192,5 +194,29 @@ class Diente
         }
 
         return null;
+    }
+
+    public function tieneTratamientos()
+    {
+        return count($this->listaTratamientos) > 0 ? true : false;
+    }
+
+    public function costoTratamientos()
+    {
+        $costo = null;
+        if ($this->tieneTratamientos()) {
+            foreach ($this->listaTratamientos as $dientePlan) {
+                $costo += $dientePlan->getDienteTratamiento()->getCosto();
+            }
+        }
+
+        return $costo;
+    }
+
+    public function atenderTratamientos()
+    {
+        foreach ($this->listaTratamientos as $dientePlan) {
+            $dientePlan->atender();
+        }
     }
 }

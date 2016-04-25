@@ -83,6 +83,7 @@ class ExpedientesRepositorioLaravelMySQL implements ExpedientesRepositorioInterf
 				$expediente->setPaciente($paciente);
 				$expediente->setMedico($medico);
 				$expediente->setPrimeraVez($expedientes->PrimeraVez);
+				$expediente->setFirma($expedientes->Firma);
 
 				// buscar las interconsultas del expediente
 				$interconsultas = DB::table('interconsulta')
@@ -152,6 +153,7 @@ class ExpedientesRepositorioLaravelMySQL implements ExpedientesRepositorioInterf
 					foreach ( $planes as $planes ) {
 						$plan         = new PlanTratamiento(!$planes->Activo);
 						$listaDientes = new Collection();
+						$plan->setId($planes->idPlanTratamiento);
 
 						foreach ( $dientes as $dientes ) {
 							$dienteActual = new Diente($dientes->Numero);
@@ -179,7 +181,7 @@ class ExpedientesRepositorioLaravelMySQL implements ExpedientesRepositorioInterf
 							if (count($dientesTratamientos) > 0) {
 								$index = 1;
 								foreach ( $dientesTratamientos as $dientesTratamientos ) {
-									$tratamiento = new DientePlan(new DienteTratamiento($dientesTratamientos->idDienteTratamiento, $dientesTratamientos->DienteTratamiento, $dientesTratamientos->Costo), false);
+									$tratamiento = new DientePlan(new DienteTratamiento((int)$dientesTratamientos->idDienteTratamiento, $dientesTratamientos->DienteTratamiento, $dientesTratamientos->Costo), $dientesTratamientos->Atendido === 1 ? true : false);
 
 									$dienteActual->agregarTratamiento((string)$index, $tratamiento);
 									$index++;
@@ -261,21 +263,6 @@ class ExpedientesRepositorioLaravelMySQL implements ExpedientesRepositorioInterf
 				}
 			}
 
-			// insertar interconsulta
-			foreach ($expediente->getListaInterconsultas() as $interconsulta) {
-				$operacion = DB::table('interconsulta')
-					->insertGetId([
-						'idMedicoReferencia' => $interconsulta->getMedico()->getId(),
-						'idExpediente'		 => $expediente->getId(),
-						'Referencia'		 => $interconsulta->getReferencia(),
-						'Respondida'		 => 0,
-						'FechaModificacion'  => date('Y-m-d H:m:i')
-					]);
-
-				// setear id de la interconsulta
-				$interconsulta->setId($operacion);
-			}
-
 			// insertar nuevo plan de tratamiento
 			foreach ($expediente->getListaPlanesTratamiento() as $plan) {
 				$idPlan = DB::table('plan_tratamiento')
@@ -312,6 +299,7 @@ class ExpedientesRepositorioLaravelMySQL implements ExpedientesRepositorioInterf
 									'idPlanTratamiento'   => $plan->getId(),
 									'Numero'			  => $diente->getNumero(),
 									'idDienteTratamiento' => $tratamiento->getDienteTratamiento()->getId(),
+									'Atendido'            => $tratamiento->atendido(),
 									'FechaModificacion'   => date('Y-m-d H:m:i')
 								]);
 						}
@@ -334,6 +322,24 @@ class ExpedientesRepositorioLaravelMySQL implements ExpedientesRepositorioInterf
 		} catch(\PDOException $e) {
 			echo $e->getMessage();
 			return false;
+		}
+	}
+
+	public function guardarInterconsulta(Expediente $expediente)
+	{
+		// insertar interconsulta
+		foreach ($expediente->getListaInterconsultas() as $interconsulta) {
+			$operacion = DB::table('interconsulta')
+					->insertGetId([
+							'idMedicoReferencia' => $interconsulta->getMedico()->getId(),
+							'idExpediente'		 => $expediente->getId(),
+							'Referencia'		 => $interconsulta->getReferencia(),
+							'Respondida'		 => 0,
+							'FechaModificacion'  => date('Y-m-d H:m:i')
+					]);
+
+			// setear id de la interconsulta
+			$interconsulta->setId($operacion);
 		}
 	}
 }

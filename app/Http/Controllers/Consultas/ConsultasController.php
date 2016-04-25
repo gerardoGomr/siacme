@@ -22,6 +22,7 @@ use Siacme\Infraestructura\Consultas\MedicosReferenciaRepositorioInterface;
 use Siacme\Infraestructura\Consultas\OtrosTratamientosRepositorioInterface;
 use Siacme\Infraestructura\Consultas\RecetasRepositorioInterface;
 use Siacme\Infraestructura\Expedientes\ExpedientesRepositorioInterface;
+use Siacme\Infraestructura\Expedientes\PlanTratamientoRepositorioInterface;
 use Siacme\Infraestructura\Pacientes\ComportamientosFranklRepositorioInterface;
 use Siacme\Infraestructura\Pacientes\PadecimientosDentalesRepositorioInterface;
 use Siacme\Reportes\Consultas\InterconsultaJohanna;
@@ -161,7 +162,7 @@ class ConsultasController extends Controller
 
         $plan = $expediente->obtenerPlanActivo();
         $plan !== null ? $dibujadorPlan = new DibujadorPlanTratamientoAtencion($plan) : $dibujadorPlan  = null;
-
+        
         // generar vista de consulta por médico
         return FabricaConsultasViews::construirVista($expediente, $dibujadorOdontograma, $listaComportamientos, $listaPadecimientos, $listaRecetas, $listaMedicos, $listaMorfologiasCraneofacial, $listaMorfologiasFacial, $listaConvexividades, $listaAtms, $listaCostosConsulta, $dibujadorPlan);
     }
@@ -330,9 +331,10 @@ class ConsultasController extends Controller
      * @param Request $request
      * @param ConsultasRepositorioInterface $consultasRepositorio
      * @param CitasRepositorioInterface $citasRepositorio
+     * @param PlanTratamientoRepositorioInterface $planRepositorio
      * @return \Illuminate\Contracts\Routing\ResponseFactory|\Symfony\Component\HttpFoundation\Response
      */
-    public function guardar(Request $request, ConsultasRepositorioInterface $consultasRepositorio, CitasRepositorioInterface $citasRepositorio)
+    public function guardar(Request $request, ConsultasRepositorioInterface $consultasRepositorio, CitasRepositorioInterface $citasRepositorio, PlanTratamientoRepositorioInterface $planRepositorio)
     {
         // variable de respuesta
         $respuesta = '';
@@ -367,14 +369,26 @@ class ConsultasController extends Controller
         }
 
         // verificar los elementos generados durante la consulta (odontograma, plan) y agregarlos al expediente del paciente x
-        $consultasElementosServicio = new ConsultasElementosServicio($this->expedientesRepositorio);
-        if (!$consultasElementosServicio->verificarElementosCreadosEnConsulta($request, $expediente)) {
-            return response(0);
+        if(is_null($expediente->obtenerPlanActivo())) {
+            $consultasElementosServicio = new ConsultasElementosServicio($this->expedientesRepositorio);
+            if (!$consultasElementosServicio->verificarElementosCreadosEnConsulta($request, $expediente)) {
+                return response(0);
+            }
+        }
+
+        // verificar si hay interconsulta
+        if ($request->session()->has('interconsulta')) {
+            $interconsulta = $request->session()->get('interconsulta');
+            $expediente->agregarInterconsulta($interconsulta);
+
+            $this->expedientesRepositorio->guardarInterconsulta($expediente);
         }
 
         // verificar si hay receta
-        $receta = $request->session()->get('receta');
-        $consulta->setReceta($receta);
+        if ($request->session()->has('receta')) {
+            $receta = $request->session()->get('receta');
+            $consulta->setReceta($receta);
+        }
 
         // verificar si es primera vez o subsecuente el expediente para completar la información
         if ($expediente->primeraVez()) {
@@ -391,6 +405,20 @@ class ConsultasController extends Controller
         // persistir consulta
         if (!$consultasRepositorio->persistir($consulta) ) {
             return response(0);
+        }
+
+        // dientes atendidos
+        if(!is_null($request->get('dienteAtendido'))) {
+            $plan = $expediente->obtenerPlanActivo();
+
+            foreach ($request->get('dienteAtendido') as $dienteNumero) {
+                $plan->diente((int)$dienteNumero)->atenderTratamientos();
+            }
+            //dd($plan->getListaDientes());
+
+            if(!$planRepositorio->actualizarAtencionTratamiento($plan)) {
+                return response(0);
+            }
         }
 
         // devolver elementos

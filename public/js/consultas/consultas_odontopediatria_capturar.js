@@ -222,4 +222,19 @@ $(function() {
 
 		$('#costoAsignadoConsulta').val(costoTotalConsulta);
 	});
+
+	// agregar costos de tratamientos a costos de consulta
+	$('#dvPlanTratamiento').on('click', 'input.tratamiento', function(event) {
+		var costoTratamiento  = $(this).siblings('input[type="hidden"]').val(),
+		  	costoConsulta      = $('#costoAsignadoConsulta').val(),
+			costoTotalConsulta = 0;
+
+		if($(this).attr('checked') === 'checked') {
+			costoTotalConsulta = Number(costoTratamiento) + Number(costoConsulta);
+		} else {
+			costoTotalConsulta = Number(costoConsulta) - Number(costoTratamiento);
+		}
+
+		$('#costoAsignadoConsulta').val(costoTotalConsulta);
+	});
 });

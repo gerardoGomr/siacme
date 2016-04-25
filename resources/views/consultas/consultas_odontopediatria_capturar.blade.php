@@ -57,9 +57,11 @@
 														<a href="#odontograma" data-toggle="tab"><i class="fa fa-search"></i> Odontograma</a>
 													</li>
 												@endif
-												<li>
-													<a href="#plan" data-toggle="tab"><i class="fa fa-search"></i> Plan Tratamiento</a>
-												</li>
+												@if(!$expediente->primeraVez() === true)
+													<li>
+														<a href="#plan" data-toggle="tab"><i class="fa fa-search"></i> Plan Tratamiento</a>
+													</li>
+												@endif
 											</ul>
 										</div>
 										<div class="widget-body">
@@ -90,8 +92,9 @@
 													@else
 														@include('consultas.consultas_odontopediatria_odontograma')
 													@endif
-
-													@include('consultas.consultas_odontopediatria_plan_atencion')
+													@if(!$expediente->primeraVez())
+														@include('consultas.consultas_odontopediatria_plan_atencion')
+													@endif
 
 													<?php // @include('consultas.consultas_odontopediatria_historial') ?>
 												</div>

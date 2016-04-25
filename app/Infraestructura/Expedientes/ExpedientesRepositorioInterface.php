@@ -34,4 +34,10 @@ interface ExpedientesRepositorioInterface
 	 * @return bool
 	 */
 	public function guardarElementosDeConsulta(Expediente $expediente);
+
+	/**
+	 * @param Expediente $expediente
+	 * @return bool
+	 */
+	public function guardarInterconsulta(Expediente $expediente);
 }

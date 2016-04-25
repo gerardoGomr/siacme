@@ -60,7 +60,7 @@ $(function() {
 					if(resp === true) {
 						//reprogramar
 						$.ajax({
-							url:        rutaCitas + '/reprogramar',
+							url:        $('#rutaCitas').val() + '/reprogramar',
 							type:       'post',
 							data:		{date: date.getFullYear()+"-"+(date.getMonth() + 1)+"-"+date.getDate(), time: date.getHours()+":"+date.getMinutes(), _token: $('#_token').val()}
 						})

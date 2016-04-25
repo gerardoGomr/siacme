@@ -46,6 +46,12 @@ $(function() {
                 window.open($('#urlExpediente').val() + especialidad + $('#idPaciente').val() + '/' + $('#userMedico').val(), '_blank', 'scrollbars=yes')
             });
         }
+
+        bootbox.confirm('Se registrará la llegada del paciente al consultorio, ¿Desea continuar?', function(event) {
+            if(event === true) {
+                actualizarCitas($urlEstatus.val(), $idCita.val(), 3, _token);
+            }
+        });
     });
 
     // ver expediente una vez capturado

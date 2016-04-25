@@ -107,16 +107,23 @@ class PlanTratamiento
 	 */
 	public function atendido()
 	{
-		$atendido = false;
-
+		$faltantesPorAtender = 0;
 		if (count($this->listaDientes) > 0) {
 			foreach ( $this->listaDientes as $diente ) {
-				foreach ( $diente->getListaTratamientos() as $tratamiento ) {
-					$atendido = $tratamiento->atendido();
+				if (count($diente->getListaTratamientos()) > 0) {
+					foreach ($diente->getListaTratamientos() as $tratamiento) {
+						if($tratamiento->atendido() === false) {
+							$faltantesPorAtender++;
+						}
+					}
+				}
+
+				if ($faltantesPorAtender > 0) {
+					$this->atendido = false;
+				} else {
+					$this->atendido = true;
 				}
 			}
-
-			return $atendido;
 		}
 
 		return $this->atendido;
