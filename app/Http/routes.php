@@ -74,7 +74,7 @@ Route::group(['middleware' => 'checaLogin'], function() {
 	// ver detalle de una cita
 	Route::post('consultas/cita/detalle', 'Consultas\ConsultasController@citaDetalle');
 	// abrir pantalla de captura de consulta
-	Route::get('consultas/capturar/{id}/{med}', 'Consultas\ConsultasController@capturar');
+	Route::get('consultas/capturar/{id}/{med}/{idCita}', 'Consultas\ConsultasController@capturar');
 	// abrir pantalla de selección de estatus, pasando el número de diente
 	Route::get('consultas/odontograma/estatus/{id}', 'Consultas\ConsultasController@seleccionEstatus');
 	// guardar estatus para el odontograma

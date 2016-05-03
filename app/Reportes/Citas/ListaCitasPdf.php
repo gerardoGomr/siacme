@@ -42,9 +42,12 @@ class ListaCitasPdf extends ReporteJohannaPdf
         $this->SetTitle('Lista de Citas');
         $this->AddPage();
         $this->Ln(30);
-        $this->SetFont('courier', 'B', 12);
-        $this->Cell(0, 10, 'Reporte de citados del día ' . $this->fecha, 0, true);
+        $this->SetFont('helvetica', 'B', 12);
+        $this->SetTextColor(36, 197, 173);
+        $this->Cell(0, 10, 'REPORTE DE PACIENTES CITADOS DEL DÍA ' . $this->fecha, 0, true);
+        $this->SetTextColor(0);
         $this->Ln(5);
+        $this->SetFont('helvetica', '', 12);
         $this->generaTabla();
         $this->writeHTML($this->html, true, false, false);
         $this->Output('Lista de Citas', 'I');
@@ -57,12 +60,12 @@ class ListaCitasPdf extends ReporteJohannaPdf
     private function generaTabla()
     {
         $this->html = '
-            <table border="1" style="margin: 5px;">
-                <thead style="background: #cccccc">
-                    <tr>
-                        <th>Horario</th>
-                        <th>Paciente</th>
-                        <th>&nbsp;</th>
+            <table border="1" style="margin: 5px;"  cellpadding="5">
+                <thead>
+                    <tr bgcolor="#24C5AD" style="color:#ffffff" align="center">
+                        <th><strong>Horario</strong></th>
+                        <th><strong>Paciente</strong></th>
+                        <th><strong>Edad</strong></th>
                     </tr>
                 </thead>
                 <tbody>';
@@ -72,7 +75,7 @@ class ListaCitasPdf extends ReporteJohannaPdf
                 <tr>
                     <td>' . $cita->getHora() . '</td>
                     <td>' . $cita->getPaciente()->getNombreCompleto() . '</td>
-                    <td></td>
+                    <td>' . $cita->getPaciente()->getEdadAnios() . ' años</td>
                 </tr>';
         }
 

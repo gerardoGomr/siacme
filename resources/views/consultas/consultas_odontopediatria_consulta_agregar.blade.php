@@ -94,7 +94,7 @@
 						@foreach($listaCostosConsultas as $costoConsulta)
 							<div class="checkbox">
 								<label>
-									<input type="checkbox" name="costoConsulta" class="costoConsulta" data-id="{{ $costoConsulta->getId() }}" value="{{ $costoConsulta->getCosto() }}"> {{ $costoConsulta->getConcepto() }}
+									<input type="checkbox" name="costoConsulta[]" class="costoConsulta" data-id="{{ $costoConsulta->getId() }}" value="{{ $costoConsulta->getCosto() }}"> {{ $costoConsulta->getConcepto() }}
 								</label>
 							</div>
 						@endforeach

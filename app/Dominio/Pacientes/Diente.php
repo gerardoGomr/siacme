@@ -215,8 +215,10 @@ class Diente
 
     public function atenderTratamientos()
     {
-        foreach ($this->listaTratamientos as $dientePlan) {
-            $dientePlan->atender();
+        if ($this->tieneTratamientos()) {
+            foreach ($this->listaTratamientos as $dientePlan) {
+                $dientePlan->atender();
+            }
         }
     }
 }

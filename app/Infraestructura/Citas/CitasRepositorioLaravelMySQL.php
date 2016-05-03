@@ -101,6 +101,7 @@ class CitasRepositorioLaravelMySQL implements CitasRepositorioInterface
 					$paciente->setTelefono($citas->Telefono);
 					$paciente->setCelular($citas->Celular);
 					$paciente->setEmail($citas->Email);
+					$paciente->setEdadAnios($citas->Edad);
 
 					$cita->setId($citas->idCita);
 					$cita->setFecha($citas->FechaCita);

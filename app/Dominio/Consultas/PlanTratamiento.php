@@ -241,4 +241,10 @@ class PlanTratamiento
 	{
 		$this->costo = $costo;
 	}
+
+	public function atender() {
+		foreach ($this->listaDientes as $diente) {
+			$diente->atenderTratamientos();
+		}
+	}
 }

@@ -121,7 +121,7 @@ class ExpedientesRepositorioLaravelMySQL implements ExpedientesRepositorioInterf
 				// buscar las consultas del expediente
 				$consultas = DB::table('consulta')
 					->join('comportamiento_frankl', 'consulta.idComportamientoFrankl', '=', 'comportamiento_frankl.idComportamientoFrankl')
-					->join('receta', 'receta.idReceta', '=', 'consulta.idReceta')
+					->leftJoin('receta', 'receta.idReceta', '=', 'consulta.idReceta')
 					->where('consulta.idExpediente', $expediente->getId())
 					->orderBy('consulta.idConsulta', 'desc')
 					->limit(50)

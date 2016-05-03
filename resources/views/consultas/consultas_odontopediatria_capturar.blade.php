@@ -57,11 +57,15 @@
 														<a href="#odontograma" data-toggle="tab"><i class="fa fa-search"></i> Odontograma</a>
 													</li>
 												@endif
-												@if(!$expediente->primeraVez() === true)
+												@if(!$expediente->primeraVez() && $atendido === false)
 													<li>
 														<a href="#plan" data-toggle="tab"><i class="fa fa-search"></i> Plan Tratamiento</a>
 													</li>
 												@endif
+
+												<li>
+													<a href="#consultas" data-toggle="tab"><i class="fa fa-stethoscope"></i> Historial de consultas</a>
+												</li>
 											</ul>
 										</div>
 										<div class="widget-body">
@@ -92,18 +96,20 @@
 													@else
 														@include('consultas.consultas_odontopediatria_odontograma')
 													@endif
-													@if(!$expediente->primeraVez())
+
+													@if(!$expediente->primeraVez() && $atendido === false)
 														@include('consultas.consultas_odontopediatria_plan_atencion')
 													@endif
 
-													<?php // @include('consultas.consultas_odontopediatria_historial') ?>
+													@include('pacientes.pacientes_consultas')
 												</div>
 												<input type="hidden" name="userMedico" id="userMedico" value="{{ base64_encode($expediente->getMedico()->getUsername()) }}">
 												<input type="hidden" name="idPaciente" id="idPaciente" value="{{ base64_encode($expediente->getPaciente()->getId()) }}">
 
-												<input type="hidden" id="generoReceta" value="0">
-												<input type="hidden" id="generoPlan" value="0">
-												<input type="hidden" id="generoInterconsulta" value="0">
+												<input type="hidden" name="generoReceta" id="generoReceta" value="0">
+												<input type="hidden" name="generoPlan" id="generoPlan" value="0">
+												<input type="hidden" name="generoInterconsulta" id="generoInterconsulta" value="0">
+												<input type="hidden" name="idCita" id="idCita" value="{{ $idCita }}">
 												<input type="hidden" id="url" value="{{ url('consultas') }}">
 											{!! Form::close() !!}
 										</div>

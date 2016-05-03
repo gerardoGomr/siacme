@@ -103,7 +103,7 @@ class ConsultasController extends Controller
     /**
      * @param \Illuminate\Http\Request                                            $request
      * @param \Siacme\Infraestructura\Expedientes\ExpedientesRepositorioInterface $expedientesRepositorio
-     * @return mixed
+     * @return View
      */
     public function citaDetalle(Request $request,ExpedientesRepositorioInterface $expedientesRepositorio)
     {
@@ -117,6 +117,7 @@ class ConsultasController extends Controller
     /**
      * @param $idPaciente
      * @param $userMedico
+     * @param $idCita
      * @param ComportamientosFranklRepositorioInterface $comportamientosRepositorio
      * @param PadecimientosDentalesRepositorioInterface $padecimientosRepositorio
      * @param Request $request
@@ -125,7 +126,7 @@ class ConsultasController extends Controller
      * @param ConsultasCostosRepositorioInterface $consultasCostosRepositorio
      * @return \Siacme\Servicios\Consultas\ExpedienteOtorrino
      */
-    public function capturar($idPaciente, $userMedico, ComportamientosFranklRepositorioInterface $comportamientosRepositorio, PadecimientosDentalesRepositorioInterface $padecimientosRepositorio, Request $request, RecetasRepositorioInterface $recetasRepositorio, MedicosReferenciaRepositorioInterface $medicosRepositorio, ConsultasCostosRepositorioInterface $consultasCostosRepositorio)
+    public function capturar($idPaciente, $userMedico, $idCita, ComportamientosFranklRepositorioInterface $comportamientosRepositorio, PadecimientosDentalesRepositorioInterface $padecimientosRepositorio, Request $request, RecetasRepositorioInterface $recetasRepositorio, MedicosReferenciaRepositorioInterface $medicosRepositorio, ConsultasCostosRepositorioInterface $consultasCostosRepositorio)
     {
         $idPaciente = (int)base64_decode($idPaciente);
         $userMedico = base64_decode($userMedico);
@@ -162,9 +163,9 @@ class ConsultasController extends Controller
 
         $plan = $expediente->obtenerPlanActivo();
         $plan !== null ? $dibujadorPlan = new DibujadorPlanTratamientoAtencion($plan) : $dibujadorPlan  = null;
-        
+
         // generar vista de consulta por médico
-        return FabricaConsultasViews::construirVista($expediente, $dibujadorOdontograma, $listaComportamientos, $listaPadecimientos, $listaRecetas, $listaMedicos, $listaMorfologiasCraneofacial, $listaMorfologiasFacial, $listaConvexividades, $listaAtms, $listaCostosConsulta, $dibujadorPlan);
+        return FabricaConsultasViews::construirVista($expediente, $idCita, $dibujadorOdontograma, $listaComportamientos, $listaPadecimientos, $listaRecetas, $listaMedicos, $listaMorfologiasCraneofacial, $listaMorfologiasFacial, $listaConvexividades, $listaAtms, $listaCostosConsulta, $dibujadorPlan);
     }
 
     /**
@@ -340,8 +341,11 @@ class ConsultasController extends Controller
         $respuesta = '';
 
         // parámetros de consulta
-        $idPaciente                     = (int)base64_decode($request->get('idPaciente'));
+        $idPaciente                     = (int) base64_decode($request->get('idPaciente'));
         $userMedico                     = base64_decode($request->get('userMedico'));
+        $idCita                         = (int) base64_decode($request->get('idCita'));
+        $generoPlan                     = $request->get('generoPlan') === '0' ? false : true;
+        $tipoAnestesia                  = !is_null($request->get('tipoCostoConsulta')) ? true : false;
         $padecimientoActual             = $request->get('txtPadecimiento');
         $interrogatorioAparatosSistemas = $request->get('txtInterrogatorio');
         $peso                           = $request->get('txtPeso');
@@ -362,7 +366,8 @@ class ConsultasController extends Controller
         $paciente             = $pacientesRepositorio->obtenerPacientePorId($idPaciente);
         $expediente           = $this->expedientesRepositorio->obtenerExpedientePorPacienteMedico($paciente, $medico);
 
-        $cita                 = $citasRepositorio->obtenerCitaPorPacienteMedico($paciente, $medico);
+        // cambiar el estatus de la cita a atendida
+        $cita                 = $citasRepositorio->obtenerCitaPorId($idCita);
         $cita->setEstatus(new CitaEstatus(4));
         if (!$citasRepositorio->actualizaEstatus($cita)) {
             return response(0);
@@ -370,9 +375,11 @@ class ConsultasController extends Controller
 
         // verificar los elementos generados durante la consulta (odontograma, plan) y agregarlos al expediente del paciente x
         if(is_null($expediente->obtenerPlanActivo())) {
-            $consultasElementosServicio = new ConsultasElementosServicio($this->expedientesRepositorio);
-            if (!$consultasElementosServicio->verificarElementosCreadosEnConsulta($request, $expediente)) {
-                return response(0);
+            if ($generoPlan) {
+                $consultasElementosServicio = new ConsultasElementosServicio($this->expedientesRepositorio);
+                if (!$consultasElementosServicio->verificarElementosCreadosEnConsulta($request, $expediente)) {
+                    return response(0);
+                }
             }
         }
 
@@ -407,14 +414,23 @@ class ConsultasController extends Controller
             return response(0);
         }
 
-        // dientes atendidos
+        if ($tipoAnestesia === true) {
+            if (!is_null($plan = $expediente->obtenerPlanActivo())) {
+                $plan->atender();
+
+                if(!$planRepositorio->actualizarAtencionTratamiento($plan)) {
+                    return response(0);
+                }
+            }
+        }
+
+        // dientes atendidos - plan atendido
         if(!is_null($request->get('dienteAtendido'))) {
             $plan = $expediente->obtenerPlanActivo();
 
             foreach ($request->get('dienteAtendido') as $dienteNumero) {
                 $plan->diente((int)$dienteNumero)->atenderTratamientos();
             }
-            //dd($plan->getListaDientes());
 
             if(!$planRepositorio->actualizarAtencionTratamiento($plan)) {
                 return response(0);
@@ -426,7 +442,7 @@ class ConsultasController extends Controller
         // id Plan
         $respuesta['expediente'] = $expediente->getId();
 
-        return response($respuesta);
+        return response()->json($respuesta);
     }
 
     /**

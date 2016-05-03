@@ -191,7 +191,28 @@ $(function() {
 	$btnGuardarConsulta.on('click', function(){
 		if ($formConsulta.valid() === true) {
 			// guardar form
-			var respuesta = ajax($formConsulta.attr('action'), 'post', 'json', $formConsulta.serialize(), 'guardar');
+			var datos 		   = $formConsulta.serialize(),
+				tipoEncontrado = false;
+
+			// agregando valor de anestesia general si asi procede
+			$formConsulta.find('input.costoConsulta').each(function() {
+				if ($(this).attr('checked') === 'checked') {
+					if ($(this).data('id') === 7) {
+						/*bootbox.confirm('Se marcó el cobro de tratamiento por anestesia general y se inhabilitará el plan de tratamiento actual si está aún activo. ¿Desea continuar?', function(e){
+							if (e === true) {
+								tipoEncontrado = true;
+							}
+						});*/
+						datos += '&tipoCostoConsulta=7';
+					}
+				}
+			});
+			/*alert(tipoEncontrado);
+			if (tipoEncontrado === false) {
+				return false;
+			}*/
+
+			var respuesta = ajax($formConsulta.attr('action'), 'post', 'json', datos, 'guardar');
 			respuesta.done(function(resultado) {
 				console.log(resultado);
 
@@ -202,7 +223,7 @@ $(function() {
 
 				bootbox.alert('Consulta generada con éxito', function() {
 					// se guardó con éxito, retornar a pantalla de consultas agendadas
-
+					window.location.href = '/siacme/consultas';
 				});
 			})
 			.fail(function(XMLHttpRequest, textStatus, errorThrown) {
@@ -214,7 +235,7 @@ $(function() {
 
 	// costos de consulta
 	$formConsulta.on('click', 'input.costoConsulta', function(event) {
-		if($(this).is(':checked')) {
+		if($(this).attr('checked') === 'checked') {
 			costoTotalConsulta += Number($(this).val());
 		} else {
 			costoTotalConsulta -= Number($(this).val());
@@ -225,9 +246,8 @@ $(function() {
 
 	// agregar costos de tratamientos a costos de consulta
 	$('#dvPlanTratamiento').on('click', 'input.tratamiento', function(event) {
-		var costoTratamiento  = $(this).siblings('input[type="hidden"]').val(),
-		  	costoConsulta      = $('#costoAsignadoConsulta').val(),
-			costoTotalConsulta = 0;
+		var costoTratamiento   = $(this).siblings('input[type="hidden"]').val(),
+		  	costoConsulta      = $('#costoAsignadoConsulta').val();
 
 		if($(this).attr('checked') === 'checked') {
 			costoTotalConsulta = Number(costoTratamiento) + Number(costoConsulta);
