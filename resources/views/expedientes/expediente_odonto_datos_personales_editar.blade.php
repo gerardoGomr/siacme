@@ -28,7 +28,7 @@
 					<div class="col-xs-6">
 						<div class="form-group">
 							{!! Form::label('txtFechaNac', 'Fecha de nacimiento:', ['class' => 'control-label', 'maxlength' => '10']) !!}
-							{!! Form::text('txtFechaNac', $expediente->getPaciente()->getFechaNacimiento(), ['class' => 'fecha form-control']) !!}
+							{!! Form::text('txtFechaNac', $expediente->getPaciente()->getFechaNacimiento(), ['class' => 'fecha form-control', 'readonly' => 'readonly']) !!}
 						</div>
 					</div>
 

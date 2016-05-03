@@ -22,7 +22,7 @@
 				</span>
 			</a>
 			<ul class="dropdown-menu pull-right">
-				<li><a href="{{ url('auth/logout') }}">Logout</a></li>
+				<li><a href="{{ url('logout') }}">Logout</a></li>
 		    </ul>
 		</div>
 	</div>

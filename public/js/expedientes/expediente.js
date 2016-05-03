@@ -16,7 +16,7 @@ $(function() {
 	$formExpediente.find('input.fecha').datepicker({
 		autoclose: true,
 		language:  'es',
-		format:    'dd/mm/yyyy'
+		format:    'yyyy-mm-dd'
 	});
 
 	// inicializar validaciones
