@@ -12,4 +12,10 @@ interface RecetasRepositorioInterface
      * @return Collection
      */
     public function obtenerRecetas();
+
+    /**
+     * @param int $id
+     * @return Receta
+     */
+    public function obtenerPorId($id);
 }

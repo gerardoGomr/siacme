@@ -165,7 +165,8 @@ return [
         Siacme\Providers\ConsultasRepositorioServiceProvider::class,
         Siacme\Providers\ConsultasCostosServiceProvider::class,
         Siacme\Providers\TratamientosOdontologiaRepositorioServiceProvider::class,
-        Siacme\Providers\PlanTratamientoRepositorioServiceProvider::class
+        Siacme\Providers\PlanTratamientoRepositorioServiceProvider::class,
+        Siacme\Providers\InterconsultasRepositorioServiceProvider::class
     ],
 
     /*

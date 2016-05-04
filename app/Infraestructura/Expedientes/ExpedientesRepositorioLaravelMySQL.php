@@ -220,6 +220,131 @@ class ExpedientesRepositorioLaravelMySQL implements ExpedientesRepositorioInterf
 				->where('expediente.idExpediente', $idExpediente)
 				->first();
 
+			$totalExpedientes = count($expedientes);
+
+			if($totalExpedientes > 0) {
+				$expediente = new Expediente($expedientes->idExpediente);
+				$expediente->setPrimeraVez($expedientes->PrimeraVez);
+				$expediente->setFirma($expedientes->Firma);
+
+				// buscar las interconsultas del expediente
+				$interconsultas = DB::table('interconsulta')
+						->join('medico_referencia', 'medico_referencia.idMedicoReferencia', '=', 'interconsulta.idMedicoReferencia')
+						->join('especialidad', 'especialidad.idEspecialidad', '=', 'medico_referencia.idEspecialidad')
+						->where('interconsulta.idExpediente', $expediente->getId())
+						->orderBy('interconsulta.idInterconsulta', 'desc')
+						->limit(50)
+						->get();
+
+				if (count($interconsultas) > 0) {
+
+					foreach ($interconsultas as $interconsultas) {
+						$interconsulta = new Interconsulta(
+								$interconsultas->idInterconsulta,
+								new MedicoReferencia(
+										$interconsultas->idMedicoReferencia,
+										$interconsultas->Direccion,
+										new Especialidad(
+												$interconsultas->idEspecialidad,
+												$interconsultas->Especialidad
+										)
+								),
+								$interconsultas->Referencia
+						);
+
+						$interconsulta->getMedico()->setNombre($interconsultas->Nombre);
+						$interconsulta->getMedico()->setPaterno($interconsultas->Paterno);
+						$interconsulta->getMedico()->setMaterno($interconsultas->Materno);
+
+						$expediente->agregarInterconsulta($interconsulta);
+					}
+				}
+				//===============================================================================
+				// buscar las consultas del expediente
+				$consultas = DB::table('consulta')
+						->join('comportamiento_frankl', 'consulta.idComportamientoFrankl', '=', 'comportamiento_frankl.idComportamientoFrankl')
+						->leftJoin('receta', 'receta.idReceta', '=', 'consulta.idReceta')
+						->where('consulta.idExpediente', $expediente->getId())
+						->orderBy('consulta.idConsulta', 'desc')
+						->limit(50)
+						->get();
+
+				if (count($consultas) > 0) {
+					foreach ( $consultas as $consultas ) {
+						$consulta = new Consulta($consultas->idConsulta, $consultas->PadecimientoActual, $consultas->Interrogatorio, new ExploracionFisica($consultas->Peso, $consultas->Talla, $consultas->Pulso, $consultas->Temperatura, $consultas->TensionArterial), $consultas->Nota, new ComportamientoFrankl($consultas->idComportamientoFrankl), $consultas->Costo, $consultas->Fecha);
+
+						$consulta->setReceta(new Receta($consultas->idReceta, $consultas->Receta));
+						$expediente->agregarConsulta($consulta);
+					}
+				}
+
+				//===============================================================================
+				// buscar los planes de tratamiento
+				$planes = DB::table('plan_tratamiento')
+						->where('idExpediente', $expediente->getId())
+						->orderBy('idPlanTratamiento', 'desc')
+						->limit(50)
+						->get();
+
+				if (count($planes) > 0) {
+					// buscar la lista de dientes
+					$dientes = DB::table('diente')
+							->orderBy('Numero')
+							->get();
+
+					foreach ( $planes as $planes ) {
+						$plan         = new PlanTratamiento(!$planes->Activo);
+						$listaDientes = new Collection();
+						$plan->setId($planes->idPlanTratamiento);
+
+						foreach ( $dientes as $dientes ) {
+							$dienteActual = new Diente($dientes->Numero);
+
+							// padecimientos dentales
+							$dientesPadecimientos = DB::table('diente_diente_padecimiento')
+									->join('diente_padecimiento', 'diente_padecimiento.idDientePadecimiento', '=', 'diente_diente_padecimiento.idDientePadecimiento')
+									->where('diente_diente_padecimiento.idPlanTratamiento', $planes->idPlanTratamiento)
+									->where('diente_diente_padecimiento.Numero', $dientes->Numero)
+									->get();
+
+							foreach ( $dientesPadecimientos as $dientesPadecimientos ) {
+								$padecimiento = new DientePadecimiento($dientesPadecimientos->idDientePadecimiento, $dientesPadecimientos->DientePadecimiento, $dientesPadecimientos->RutaImagen);
+								$dienteActual->agregarPadecimiento($padecimiento);
+							}
+
+							//===============================================================================
+							// tratamientos dentales
+							$dientesTratamientos = DB::table('diente_diente_tratamiento')
+									->leftJoin('diente_tratamiento', 'diente_tratamiento.idDienteTratamiento', '=', 'diente_diente_tratamiento.idDienteTratamiento')
+									->where('diente_diente_tratamiento.idPlanTratamiento', $planes->idPlanTratamiento)
+									->where('diente_diente_tratamiento.Numero', $dientes->Numero)
+									->get();
+
+							if (count($dientesTratamientos) > 0) {
+								$index = 1;
+								foreach ( $dientesTratamientos as $dientesTratamientos ) {
+									$tratamiento = new DientePlan(new DienteTratamiento((int)$dientesTratamientos->idDienteTratamiento, $dientesTratamientos->DienteTratamiento, $dientesTratamientos->Costo), $dientesTratamientos->Atendido === 1 ? true : false);
+
+									$dienteActual->agregarTratamiento((string)$index, $tratamiento);
+									$index++;
+								}
+							} else {
+
+							}
+							//if($dientes->Numero === 18) { dd($dienteActual); }
+							$listaDientes->push($dienteActual);
+						}
+
+						$plan->setCosto($planes->Costo);
+						$plan->setListaDientes($listaDientes);
+
+						$expediente->agregarPlanTratamiento($plan);
+					}
+				}
+
+				return $expediente;
+			}
+
 		} catch (\PDOException $e) {
 			echo $e->getMessage();
 			return null;

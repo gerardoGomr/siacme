@@ -6,8 +6,14 @@ use Siacme\Dominio\Expedientes\TratamientoOdontologia;
 use Siacme\Dominio\Pacientes\Anexo;
 use Siacme\Http\Requests;
 use Siacme\Http\Controllers\Controller;
+use Siacme\Infraestructura\Consultas\InterconsultasRepositorioInterface;
+use Siacme\Infraestructura\Consultas\RecetasRepositorioInterface;
+use Siacme\Infraestructura\Expedientes\PlanTratamientoRepositorioInterface;
 use Siacme\Infraestructura\Pacientes\ITratamientoOrtopediaOrtodonciaRepositorio;
 use Siacme\Infraestructura\Usuarios\UsuariosRepositorioInterface;
+use Siacme\Reportes\Consultas\InterconsultaJohanna;
+use Siacme\Reportes\Consultas\PlanTratamientoJohanna;
+use Siacme\Reportes\Consultas\RecetaJohanna;
 use Siacme\Servicios\Expedientes\AnexosUploader;
 use Siacme\Servicios\Pacientes\PacientesRepositorioFactory;
 use Siacme\Infraestructura\Expedientes\ExpedientesRepositorioInterface;
@@ -35,10 +41,10 @@ class PacientesController extends Controller
     /**
      * Mostrar vista para busqueda de pacientes y ver detalles
      * @param $userMedico
-     * @param UsuariosRepositorioInterface $usuariosRepositorio
      * @return View
+     * @internal param UsuariosRepositorioInterface $usuariosRepositorio
      */
-    public function index($userMedico, UsuariosRepositorioInterface $usuariosRepositorio)
+    public function index($userMedico)
     {
         // obtener el medico
         if(is_null($medico = $this->usuariosRepositorio->obtenerUsuarioPorUsername($userMedico))) {
@@ -153,5 +159,88 @@ class PacientesController extends Controller
         }
 
         return response('1');
+    }
+
+    /**
+     * generar receta en PDF
+     * @param string $id
+     * @param string $idPaciente
+     * @param string $userMedico
+     * @param ExpedientesRepositorioInterface $expedientesRepositorio
+     * @param RecetasRepositorioInterface $recetasRepositorio
+     */
+    public function generarReceta($id, $idPaciente, $userMedico, ExpedientesRepositorioInterface $expedientesRepositorio, RecetasRepositorioInterface $recetasRepositorio)
+    {
+        $id         = (int)base64_decode($id);
+        $idPaciente = (int)base64_decode($idPaciente);
+        $userMedico = base64_decode($userMedico);
+
+        $medico               = $this->usuariosRepositorio->obtenerUsuarioPorUsername($userMedico);
+        $pacientesRepositorio = PacientesRepositorioFactory::crear($medico);
+        $paciente             = $pacientesRepositorio->obtenerPacientePorId($idPaciente);
+        $expediente           = $expedientesRepositorio->obtenerExpedientePorPacienteMedico($paciente, $medico);
+
+        $receta = $recetasRepositorio->obtenerPorId($id);
+
+        $reporte = new RecetaJohanna($receta, $expediente);
+        $reporte->SetHeaderMargin(10);
+        $reporte->SetAutoPageBreak(true);
+        $reporte->SetMargins(15, 25);
+        $reporte->generar();
+    }
+
+    /**
+     * generar la interconsulta en PDF
+     * @param string $id
+     * @param string $idPaciente
+     * @param string $userMedico
+     * @param ExpedientesRepositorioInterface $expedientesRepositorio
+     * @param InterconsultasRepositorioInterface $interconsultasRepositorio
+     */
+    public function generarInterconsulta($id, $idPaciente, $userMedico, ExpedientesRepositorioInterface $expedientesRepositorio, InterconsultasRepositorioInterface $interconsultasRepositorio)
+    {
+        $id         = (int)base64_decode($id);
+        $idPaciente = (int)base64_decode($idPaciente);
+        $userMedico = base64_decode($userMedico);
+
+        $medico               = $this->usuariosRepositorio->obtenerUsuarioPorUsername($userMedico);
+        $pacientesRepositorio = PacientesRepositorioFactory::crear($medico);
+        $paciente             = $pacientesRepositorio->obtenerPacientePorId($idPaciente);
+        $expediente           = $expedientesRepositorio->obtenerExpedientePorPacienteMedico($paciente, $medico);
+
+        $interconsulta = $interconsultasRepositorio->obtenerPorId($id);
+
+        $reporte = new InterconsultaJohanna($interconsulta, $expediente);
+        $reporte->SetHeaderMargin(10);
+        $reporte->SetAutoPageBreak(true);
+        $reporte->SetMargins(15, 25);
+        $reporte->generar();
+    }
+
+    /**
+     * generar plan en PDF
+     * @param string $id
+     * @param string $idPaciente
+     * @param string $userMedico
+     * @param ExpedientesRepositorioInterface $expedientesRepositorio
+     * @param PlanTratamientoRepositorioInterface $planesRepositorio
+     */
+    public function generarPlan($id, $idPaciente, $userMedico, ExpedientesRepositorioInterface $expedientesRepositorio, PlanTratamientoRepositorioInterface $planesRepositorio)
+    {
+        $id         = (int)base64_decode($id);
+        $idPaciente = (int)base64_decode($idPaciente);
+        $userMedico = base64_decode($userMedico);
+
+        $medico               = $this->usuariosRepositorio->obtenerUsuarioPorUsername($userMedico);
+        $pacientesRepositorio = PacientesRepositorioFactory::crear($medico);
+        $paciente             = $pacientesRepositorio->obtenerPacientePorId($idPaciente);
+        $expediente           = $expedientesRepositorio->obtenerExpedientePorPacienteMedico($paciente, $medico);
+
+        $plan = $planesRepositorio->obtenerPorId($id);
+
+        $reporte = new PlanTratamientoJohanna($plan, $expediente);
+        $reporte->SetMargins(15, PDF_MARGIN_TOP-15);
+        $reporte->SetAutoPageBreak(true, PDF_MARGIN_BOTTOM-15);
+        $reporte->generar();
     }
 }

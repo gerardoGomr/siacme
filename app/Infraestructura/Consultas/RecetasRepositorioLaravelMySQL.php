@@ -43,4 +43,30 @@ class RecetasRepositorioLaravelMySQL implements RecetasRepositorioInterface
             return null;
         }
     }
+
+    /**
+     * @param int $id
+     * @return Receta
+     */
+    public function obtenerPorId($id)
+    {
+        // TODO: Implement obtenerPorId() method.
+        try {
+            $recetas = DB::table('receta')
+                ->where('idReceta', $id)
+                ->first();
+
+            $totalRecetas = count($recetas);
+
+            if ($totalRecetas > 0) {
+                return new Receta($recetas->idReceta, $recetas->Receta, $recetas->Nombre);
+            }
+
+            return null;
+
+        } catch (\PDOException $e) {
+            echo $e->getMessage();
+            return null;
+        }
+    }
 }

@@ -12,6 +12,8 @@
 */
 
 // Authentication routes...
+use Illuminate\Support\Facades\Route;
+
 Route::get('login', 'Usuarios\LoginController@index');
 Route::post('login', 'Usuarios\LoginController@logueo');
 Route::get('logout', 'Usuarios\LoginController@logout');
@@ -119,4 +121,13 @@ Route::group(['middleware' => 'checaLogin'], function() {
 	Route::post('pacientes/anexo/eliminar', 'Pacientes\PacientesController@eliminarAnexo');
 	// generar tratamientos ortopedia - ortodoncia
 	Route::post('pacientes/tratamiento/agregar', 'Pacientes\PacientesController@agregarTratamiento');
+
+	// generar receta en PDF
+	Route::get('pacientes/receta/{id}/{idPaciente}/{med}', 'Pacientes\PacientesController@generarReceta');
+
+	// generar interconsulta PDF
+	Route::get('pacientes/interconsulta/{id}/{idPaciente}/{med}', 'Pacientes\PacientesController@generarInterconsulta');
+
+	// generar plan de tratamiento PDF
+	Route::get('pacientes/plan/{id}/{idPaciente}/{med}', 'Pacientes\PacientesController@generarPlan');
 });

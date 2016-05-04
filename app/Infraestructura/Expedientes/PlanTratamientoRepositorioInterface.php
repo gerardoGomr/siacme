@@ -10,5 +10,16 @@ use Siacme\Dominio\Consultas\PlanTratamiento;
  */
 interface PlanTratamientoRepositorioInterface
 {
+    /**
+     * @param PlanTratamiento $plan
+     * @return mixed
+     */
     public function actualizarAtencionTratamiento(PlanTratamiento $plan);
+
+    /**
+     * obtener un plan por su id
+     * @param $id
+     * @return PlanTratamiento
+     */
+    public function obtenerPorId($id);
 }
