@@ -21,7 +21,7 @@
 				</ul>
 			</li>
 			<li>
-
+				<a href="{{ url('usuarios') }}" class="glyphicons user"><i></i> <span>Usuarios</span></a>
 			</li>
 		</ul>
 	</div>

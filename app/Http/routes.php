@@ -11,9 +11,6 @@
 |
 */
 
-// Authentication routes...
-use Illuminate\Support\Facades\Route;
-
 Route::get('login', 'Usuarios\LoginController@index');
 Route::post('login', 'Usuarios\LoginController@logueo');
 Route::get('logout', 'Usuarios\LoginController@logout');
@@ -130,4 +127,8 @@ Route::group(['middleware' => 'checaLogin'], function() {
 
 	// generar plan de tratamiento PDF
 	Route::get('pacientes/plan/{id}/{idPaciente}/{med}', 'Pacientes\PacientesController@generarPlan');
+
+	/////////////////////////////////////////// USUARIOS /////////////////////////////////////////////////////
+	Route::get('usuarios', 'Usuarios\UsuariosController@index');
+	Route::post('usuarios/buscar', 'Usuarios\UsuariosController@buscar');
 });
