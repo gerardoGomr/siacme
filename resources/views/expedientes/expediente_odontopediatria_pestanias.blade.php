@@ -13,9 +13,6 @@
 			<a href="#antOdontopatologicos" data-toggle="tab"><i class="fa fa-bar-chart-o"></i> Ant. odontopatológicos</a>
 		</li>
 		<li class="innerAll">
-			<a href="#trastornos" data-toggle="tab"><i class="fa fa-bar-chart-o"></i> Trastornos de lenguaje</a>
-		</li>
-		<li class="innerAll">
 			<a href="#antOdontalgicos" data-toggle="tab"><i class="fa fa-bar-chart-o"></i> Ant. odontálgicos no patológicos</a>
 		</li>
 		<li class="innerAll">

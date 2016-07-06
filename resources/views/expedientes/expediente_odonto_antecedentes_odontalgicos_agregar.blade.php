@@ -24,7 +24,7 @@
 					<div class="col-xs-6">
 						<div class="form-group">
 							{!! Form::label('txtFechaUltimoExamen', 'Fecha de último examen bucal:', ['class' => 'control-label']) !!}
-							{!! Form::text('txtFechaUltimoExamen', '', ['class' => 'required form-control fecha']) !!}
+							{!! Form::text('txtFechaUltimoExamen', '', ['class' => 'form-control fecha']) !!}
 						</div>
 					</div>
 
@@ -88,10 +88,6 @@
 				<div class="form-group">
 					{!! Form::label('txtTraumatismo', 'Traumatismo bucal:', ['class' => 'control-label']) !!}
 					{!! Form::text('txtTraumatismo', '', ['class' => 'required form-control']) !!}
-				</div>
-
-				<div class="form-group">
-					<a href="javascript:;" title="Guardar>>" class="guardar btn btn-primary"><i class="fa fa-save"></i> Guardar</a>
 				</div>
 			</div>
 		</div>

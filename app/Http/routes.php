@@ -130,5 +130,10 @@ Route::group(['middleware' => 'checaLogin'], function() {
 
 	/////////////////////////////////////////// USUARIOS /////////////////////////////////////////////////////
 	Route::get('usuarios', 'Usuarios\UsuariosController@index');
+	Route::get('usuarios/agregar', 'Usuarios\UsuariosController@agregar');
 	Route::post('usuarios/buscar', 'Usuarios\UsuariosController@buscar');
+	Route::post('usuarios/agregar', [
+		'as'  => 'usuarios-agregar',
+		'uses' =>'Usuarios\UsuariosController@guardarUsuario'
+	]);
 });

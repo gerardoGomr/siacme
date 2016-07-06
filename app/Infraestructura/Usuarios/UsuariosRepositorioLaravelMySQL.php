@@ -61,6 +61,7 @@ class UsuariosRepositorioLaravelMySQL implements UsuariosRepositorioInterface
 	public function obtenerUsuarios($datos = '')
 	{
 		$usuarios = [];
+		$datos    = str_replace(' ', '', $datos);
 		try {
 			$usuarioBD = DB::table('usuario')
 				->join('usuario_tipo', 'usuario.idUsuarioTipo', '=', 'usuario_tipo.idUsuarioTipo')
@@ -68,6 +69,8 @@ class UsuariosRepositorioLaravelMySQL implements UsuariosRepositorioInterface
 				->where('Username', 'LIKE', "%$datos%")
 				->orWhere(DB::raw("REPLACE(CONCAT(Nombre, Paterno, Materno), ' ', '')"), 'LIKE', "%$datos%")
 				->orWhere(DB::raw("REPLACE(CONCAT(Paterno, Materno, Nombre), ' ', '')"), 'LIKE', "%$datos%")
+				->orderBy('usuario.Nombre')
+				->orderBy('usuario.Paterno')
 				->get();
 
 			if(count($usuarioBD) === 0) {
@@ -90,7 +93,7 @@ class UsuariosRepositorioLaravelMySQL implements UsuariosRepositorioInterface
 				$usuario->setPaterno($usuarioBD->Paterno);
 				$usuario->setMaterno($usuarioBD->Materno);
 				$usuario->setRegistrado(true);
-				// injected
+				$usuario->setFechaCreacion($usuarioBD->FechaCreacion);
 				$usuario->setUsuarioTipo($usuarioTipo);
 
 				$usuarios[] = $usuario;

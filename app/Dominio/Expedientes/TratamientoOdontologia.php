@@ -10,18 +10,24 @@ use Illuminate\Support\Collection;
  */
 class TratamientoOdontologia
 {
+    /**
+     * @var int
+     */
+    private $id;
     private $dx, $costo, $duracion, $mensualidades;
     private $listaTratamientos;
 
     /**
      * TratamientoOdontologia constructor.
+     * @param int $id
      * @param string $dx
      * @param string $costo
      * @param string $duracion
      * @param int $mensualidades
      */
-    public function __construct($dx, $costo, $duracion, $mensualidades)
+    public function __construct($id = 0, $dx, $costo, $duracion, $mensualidades)
     {
+        $this->id                = $id;
         $this->dx                = $dx;
         $this->costo             = $costo;
         $this->duracion          = $duracion;
@@ -43,6 +49,14 @@ class TratamientoOdontologia
         if ($ortodoncia === true) {
             $this->listaTratamientos->put('ortodoncia', new TratamientoOdontologiaTipo('ortodoncia'));
         }
+    }
+
+    /**
+     * @return int
+     */
+    public function getId()
+    {
+        return $this->id;
     }
 
     /**

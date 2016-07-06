@@ -5,10 +5,13 @@ use DB;
 use Illuminate\Support\Collection;
 use Siacme\Dominio\Consultas\Consulta;
 use Siacme\Dominio\Consultas\DientePlan;
+use Siacme\Dominio\Consultas\OtroTratamiento;
 use Siacme\Dominio\Consultas\ExploracionFisica;
 use Siacme\Dominio\Consultas\PlanTratamiento;
 use Siacme\Dominio\Consultas\Receta;
 use Siacme\Dominio\Expedientes\Expediente;
+use Siacme\Dominio\Expedientes\TratamientoOdontologia;
+use Siacme\Dominio\Expedientes\TratamientoOdontologiaTipo;
 use Siacme\Dominio\Pacientes\ComportamientoFrankl;
 use Siacme\Dominio\Pacientes\Diente;
 use Siacme\Dominio\Pacientes\DientePadecimiento;
@@ -131,7 +134,10 @@ class ExpedientesRepositorioLaravelMySQL implements ExpedientesRepositorioInterf
 					foreach ( $consultas as $consultas ) {
 						$consulta = new Consulta($consultas->idConsulta, $consultas->PadecimientoActual, $consultas->Interrogatorio, new ExploracionFisica($consultas->Peso, $consultas->Talla, $consultas->Pulso, $consultas->Temperatura, $consultas->TensionArterial), $consultas->Nota, new ComportamientoFrankl($consultas->idComportamientoFrankl), $consultas->Costo, $consultas->Fecha);
 
-						$consulta->setReceta(new Receta($consultas->idReceta, $consultas->Receta));
+						if (!is_null($consultas->idReceta)) {
+							$consulta->setReceta(new Receta($consultas->idReceta, $consultas->Receta));
+						}
+						
 						$expediente->agregarConsulta($consulta);
 					}
 				}
@@ -180,9 +186,8 @@ class ExpedientesRepositorioLaravelMySQL implements ExpedientesRepositorioInterf
 
 							if (count($dientesTratamientos) > 0) {
 								$index = 1;
-								foreach ( $dientesTratamientos as $dientesTratamientos ) {
+								foreach ( $dientesTratamientos as $dientesTratamientos ) { 
 									$tratamiento = new DientePlan(new DienteTratamiento((int)$dientesTratamientos->idDienteTratamiento, $dientesTratamientos->DienteTratamiento, $dientesTratamientos->Costo), $dientesTratamientos->Atendido === 1 ? true : false);
-
 									$dienteActual->agregarTratamiento((string)$index, $tratamiento);
 									$index++;
 								}
@@ -193,10 +198,48 @@ class ExpedientesRepositorioLaravelMySQL implements ExpedientesRepositorioInterf
 							$listaDientes->push($dienteActual);
 						}
 
+						// otros tratamientos
+						$otrosTratamientos = DB::table('plan_tratamiento_otros')
+							->join('plan_otro_tratamiento', 'plan_otro_tratamiento.idOtroTratamiento', '=', 'plan_tratamiento_otros.idOtroTratamiento')
+							->where('plan_tratamiento_otros.idPlanTratamiento', $plan->getId())
+							->get();
+
+						if (count($otrosTratamientos) > 0) {
+							foreach ($otrosTratamientos as $otrosTratamientos) {
+								$otroTratamiento = new OtroTratamiento($otrosTratamientos->idOtroTratamiento, $otrosTratamientos->OtroTratamiento, $otrosTratamientos->Costo);
+
+								$plan->agregarOtroTratamiento($otroTratamiento->getId(), $otroTratamiento);
+							}
+						}
+
 						$plan->setCosto($planes->Costo);
 						$plan->setListaDientes($listaDientes);
-
 						$expediente->agregarPlanTratamiento($plan);
+					}
+				}
+
+				// tratamientos ortopedia ortodoncia
+				$otrosTratamientos = DB::table('tratamiento_ortopedia_ortodoncia')
+					->where('idExpediente', $expediente->getId())
+					->get();
+
+				if (count($otrosTratamientos) > 0) {
+					foreach ($otrosTratamientos as $otroTratamiento) {
+						$tratamientoOdontologia = new TratamientoOdontologia($otroTratamiento->id, $otroTratamiento->Dx, $otroTratamiento->Costo, $otroTratamiento->Duracion, $otroTratamiento->Mensualidades);
+
+						// obtener el detalle de tratamientos
+						$otrosTratamientosDetalle = DB::table('tratamiento_ortopedia_ortodoncia_detalle')
+							->where('id', $tratamientoOdontologia->getId())
+							->get();
+
+						if (count($otrosTratamientosDetalle) > 0) {
+							foreach ($otrosTratamientosDetalle as $otroTratamientoDetalle) {
+								$tratamientoOdontologiaTipo = new TratamientoOdontologiaTipo($otroTratamientoDetalle->Tipo);
+								$tratamientoOdontologia->getListaTratamientos()->push($tratamientoOdontologiaTipo);
+							}
+						}
+
+						$expediente->agregarTratamientoOdontologia($tratamientoOdontologia);
 					}
 				}
 

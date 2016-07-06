@@ -44,10 +44,18 @@ $(function() {
 	};
 
 	// validate
-	$formSubirImagen.validate();
+	$formSubirImagen.validate({
+		ignore: []
+	});
+
+	// validate main form
+	$formExpediente.validate({
+		ignore: []
+	});
 
 	// validacion de formulario
 	agregaValidacionesElementos($formSubirImagen);
+	agregaValidacionesElementos($formExpediente);
 
 	// form ajax
 	$formSubirImagen.ajaxForm(opciones);
@@ -177,6 +185,13 @@ $(function() {
 	$txtNumHermanos.on('keyup', function(event) {
 		var resta;
 
+		if ($(this).val() === '0') {
+			$txtNumHermanosVivos.val('0');
+			$txtNumHermanosFinados.val('0');
+
+			return false;
+		}
+
 		if($txtNumHermanosVivos.val() > 0) {
 			resta = Number($txtNumHermanos.val()) - Number($txtNumHermanosVivos.val());
 			$txtNumHermanosFinados.val(resta);
@@ -195,7 +210,7 @@ $(function() {
 	// guardar formulario
 	$formExpediente.find('a.guardar').on('click', function(event) {
 		// si es un correo valido
-		if($formExpediente.valid() === true) {
+		if ($formExpediente.valid() === true) {
 			$.ajax({
 				url:      $formExpediente.attr('action'),
 				type:     'post',
@@ -220,6 +235,8 @@ $(function() {
 			.fail(function(XMLHttpRequest, textStatus, errorThrown) {
 				console.log(errorThrown.responseJSON);
 			});
+		} else {
+			bootbox.alert('Existen campos obligatorios que aún no se capturan. Por favor, complete los datos.');
 		}
 	});
 });

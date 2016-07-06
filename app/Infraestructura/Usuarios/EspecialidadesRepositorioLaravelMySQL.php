@@ -2,6 +2,7 @@
 namespace Siacme\Infraestructura\Usuarios;
 
 use DB;
+use Siacme\Dominio\Usuarios\Especialidad;
 
 /**
  * Class EspecialidadesRepositorioLaravelMySQL
@@ -38,5 +39,37 @@ class EspecialidadesRepositorioLaravelMySQL implements EspecialidadesRepositorio
 			mail("gerardo.gomr@gmail.com", "Error en el sistema SIACM", "Error: ".$e->getMessage());
 			return null;
 		}
+	}
+
+	/**
+	 * @return array
+	 */
+	public function obtenerEspecialidades()
+	{
+		try
+		{
+			$listaEspecialidades = [];
+			$especialidades = DB::table('especialidad')
+				->orderBy('Especialidad')
+				->get();
+
+			$totalEspecialidad = count($especialidades);
+
+			if($totalEspecialidad > 0) {
+				foreach ($especialidades as $especialidades) {
+					$especialidad = new Especialidad($especialidades->idEspecialidad);
+					$especialidad->setEspecialidad($especialidades->Especialidad);
+
+					$listaEspecialidades[] = $especialidad;
+				}
+
+				return $listaEspecialidades;
+			}
+
+			return null;
+		} catch(Exception $e) {
+			mail("gerardo.gomr@gmail.com", "Error en el sistema SIACM", "Error: ".$e->getMessage());
+			return null;
+		}		
 	}
 }

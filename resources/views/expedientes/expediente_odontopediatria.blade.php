@@ -1,9 +1,5 @@
 @extends('app_no_sidebar')
 
-@section('css')
-	<link rel="stylesheet" type="text/css" href="{{ asset('public/assets/components/common/gallery/image-crop/assets/lib/css/jquery.JCrop.css') }}">
-@stop
-
 @section('titulo')
 	<i class="fa fa-plus"></i> Expediente
 @stop
@@ -32,12 +28,14 @@
                                         ])
                                     !!}
 									<div class="tab-content">
+										<div class="form-group">
+											<a href="javascript:;" title="Guardar>>" class="guardar btn btn-primary"><i class="fa fa-save"></i> Guardar datos de expediente</a>
+										</div>
 										@if(!isset($expediente))
 											@include('expedientes.expediente_odonto_datos_personales_agregar')
 											@include('expedientes.expediente_odonto_antecedentes_heredofamiliares_agregar')
 											@include('expedientes.expediente_odonto_antecedentes_patologicos_agregar')
 											@include('expedientes.expediente_odonto_antecedentes_odontopatologicos_agregar')
-											@include('expedientes.expediente_odonto_trastornos_lenguaje_agregar')
 											@include('expedientes.expediente_odonto_antecedentes_odontalgicos_agregar')
 											@include('expedientes.expediente_odonto_higiene_bucodental_agregar')
 											@include('expedientes.expediente_odonto_habitos_orales_agregar')
@@ -46,7 +44,6 @@
 											@include('expedientes.expediente_odonto_antecedentes_heredofamiliares_editar')
 											@include('expedientes.expediente_odonto_antecedentes_patologicos_editar')
 											@include('expedientes.expediente_odonto_antecedentes_odontopatologicos_editar')
-											@include('expedientes.expediente_odonto_trastornos_lenguaje_editar')
 											@include('expedientes.expediente_odonto_antecedentes_odontalgicos_editar')
 											@include('expedientes.expediente_odonto_higiene_bucodental_editar')
 											@include('expedientes.expediente_odonto_habitos_orales_editar')
@@ -76,13 +73,5 @@
 @stop
 
 @section('js')
-	<script type="text/javascript" src="{{ asset('public/assets/components/common/forms/validator/assets/lib/jquery-validation/dist/jquery.validate.js') }}"></script>
-	<script type="text/javascript" src="{{ asset('public/assets/components/common/forms/validator/assets/lib/jquery-validation/dist/additional-methods.js') }}"></script>
-	<script type="text/javascript" src="{{ asset('public/assets/components/common/forms/validator/assets/lib/jquery-validation/dist/jquery.form.js') }}"></script>
-	<script type="text/javascript" src="{{ asset('public/assets/components/common/gallery/image-crop/assets/lib/js/jquery.Jcrop.js?v=v1.9.6&sv=v0.0.1') }}"></script>
-	<script type="text/javascript" src="{{ asset('public/assets/components/common/forms/elements/bootstrap-datepicker/assets/lib/js/bootstrap-datepicker.js') }}"></script>
-	<script type="text/javascript" src="{{ asset('public/assets/components/common/forms/elements/bootstrap-datepicker/assets/lib/js/locales/bootstrap-datepicker.es.js') }}"></script>
-	<script type="text/javascript" src="{{ asset('public/js/validaciones.js') }}"></script>
-	<script type="text/javascript" src="{{ asset('public/js/ajax.js') }}"></script>
-	<script type="text/javascript" src="{{ asset('public/js/expedientes/expediente.js') }}"></script>
+	<script src="{{ asset('public/js/expedientes/expediente.js') }}"></script>
 @stop

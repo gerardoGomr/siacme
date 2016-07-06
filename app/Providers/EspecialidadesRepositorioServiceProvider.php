@@ -3,7 +3,7 @@
 namespace Siacme\Providers;
 
 use Illuminate\Support\ServiceProvider;
-use Siacme\Usuarios\EspecialidadesRepositorioMySQL;
+use Siacme\Infraestructura\Usuarios\EspecialidadesRepositorioLaravelMySQL;
 
 class EspecialidadesRepositorioServiceProvider extends ServiceProvider
 {
@@ -24,8 +24,8 @@ class EspecialidadesRepositorioServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->app->bind('Siacme\Usuarios\EspecialidadesRepositorioInterface', function() {
-            return new EspecialidadesRepositorioMySQL();
+        $this->app->bind('Siacme\Infraestructura\Usuarios\EspecialidadesRepositorioInterface', function() {
+            return new EspecialidadesRepositorioLaravelMySQL();
         });
     }
 }

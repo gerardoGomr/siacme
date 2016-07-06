@@ -14,4 +14,9 @@ interface EspecialidadesRepositorioInterface
 	 * @return Especialidad
 	 */
 	public function obtenerEspecialidadPorId($id);
+
+	/**
+	 * @return array
+	 */
+	public function obtenerEspecialidades();
 }

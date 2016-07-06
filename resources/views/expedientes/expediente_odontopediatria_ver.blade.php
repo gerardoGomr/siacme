@@ -11,7 +11,7 @@
 
 				<div class="widget-body col-md-9 col-lg-9">
 					<div class="innerAll">
-						<a href="javascript:;" id="firmar" class="btn btn-primary"><i class="fa fa-check"></i> Aceptar y firmar expediente</a>
+						<a href="javascript:;" id="firmar" class="btn btn-primary"><i class="fa fa-check"></i> Los datos del expediente están correctos</a>
 						<a href="{{ url('expedientes/agregar/odont/'.base64_encode($expediente->getPaciente()->getId()).'/'.base64_encode($expediente->getMedico()->getUsername())) }}" class="btn btn-danger"><i class="fa fa-edit"></i> Editar expediente</a>
 
 						{!! Form::hidden('idPaciente', base64_encode($paciente->getId()), ['id' => 'idPaciente']) !!}
@@ -36,6 +36,5 @@
 @stop
 
 @section('js')
-	<script type="text/javascript" src="{{ asset('public/js/ajax.js') }}"></script>
 	<script type="text/javascript" src="{{ asset('public/js/expedientes/expediente_ver.js') }}"></script>
 @stop

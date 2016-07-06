@@ -1,6 +1,6 @@
 $(function() {
 	$('#firmar').on('click', function() {
-		bootbox.confirm('Se procederá a firmar el expediente, ¿desea continuar?', function(r) {
+		bootbox.confirm('Se guardarán los datos del expediente, ¿desea continuar?', function(r) {
 			if(r === true) {
 				var respuesta = ajax($('#urlFirmar').val(), 'post', 'html', {idPaciente: $('#idPaciente').val(), userMedico: $('#userMedico').val(), _token: $('#_token').val()}, 'guardar', '', '');
 				respuesta.done(function(resultado) {
@@ -8,7 +8,7 @@ $(function() {
 						bootbox.alert('Ocurrió un error al firmar el expediente');
 					}
 
-					bootbox.alert('Expediente firmado con éxito', function() {
+					bootbox.alert('Expediente almacenado con éxito', function() {
 						//window.location.href = $('#urlDetalles').val();
 						window.opener.location.reload(true);
 						window.close();

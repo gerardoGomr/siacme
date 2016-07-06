@@ -7,28 +7,21 @@
 @section('contenido')
 	<div id="dvFormCitas">
 		<div class="innerAll bg-gray border-bottom">
-			<div class="row">
-				<div class="col-xs-6 col-md-4 col-lg-6">
-					<p><strong>Fecha:</strong> <span>{{ $fecha }}</span></p>
-				</div>
-
-				<div class="col-xs-6 col-md-4 col-lg-6">
-					<p><strong>Hora:</strong> <span>{{ $hora }}</span></p>
-				</div>
-			</div>
+			<p><strong>Fecha:</strong> <span>{{ $fecha }}</span></p>
+			<p><strong>Hora:</strong> <span>{{ $hora }}</span></p>
 		</div>
 
 		<div class="innerAll bg-white border-bottom">
 			<div class="row border-bottom">
 				<div class="col-xs-6 col-md-6 col-lg-6">
 					<div class="form-group">
-						{!! Form::label('txtNombreBusqueda', 'Buscar paciente:', ['class' => 'control-label']) !!}
+						{!! Form::label('txtNombreBusqueda', 'Busque un paciente o seleccione nuevo:', ['class' => 'control-label']) !!}
 						<div class="input-group">
 							{!! Form::text('txtNombreBusqueda', null, ['class' => 'form-control', 'placeholder' => 'Ingrese nombre y/o apellidos', 'id' => 'txtNombreBusqueda']) !!}
 
 							{!! Form::hidden('urlBusqueda', url('citas/verifica'), ['id' => 'urlBusqueda']) !!}
 							<span class="input-group-btn">
-								{!! Form::button('<i class="fa fa-search"></i>', ['class' => 'btn btn-primary', 'id' => 'btnComprueba']) !!}
+								<button class="btn btn-primary" id="btnComprueba" type="button"><i class="fa fa-search"></i></button>
 							</span>
 						</div>
 					</div>
@@ -37,7 +30,7 @@
 				<div class="col-xs-6 col-md-6 col-lg-6">
 					<div class="separator"></div>
 					<div class="separator"></div>
-					<a href="javascript:;" title="" id="btnPacienteNuevo" class="btn btn-primary">Paciente nuevo</a>
+					<a href="javascript:;" id="btnPacienteNuevo" class="btn btn-primary">Es paciente nuevo</a>
 				</div>
 			</div>
 
@@ -82,14 +75,14 @@
 					<div class="col-xs-6 col-md-4 col-lg-6">
 						<div class="form-group">
 							{!! Form::label('txtTelefono', 'Teléfono:', ['class' => 'control-label']) !!}
-							{!! Form::text('txtTelefono', null, ['class' => 'numeros form-control', 'placeholder' => 'Sin espacios ni guiones']) !!}
+							{!! Form::text('txtTelefono', null, ['class' => 'numerosEnteros form-control', 'placeholder' => 'Sin espacios ni guiones']) !!}
 						</div>
 					</div>
 
 					<div class="col-xs-6 col-md-4 col-lg-6">
 						<div class="form-group">
 							{!! Form::label('txtCelular', 'Celular:', ['class' => 'control-label']) !!}
-							{!! Form::text('txtCelular', null, ['class' => 'required numeros form-control', 'placeholder' => 'Sin espacios ni guiones']) !!}
+							{!! Form::text('txtCelular', null, ['class' => 'required numerosEnteros form-control', 'placeholder' => 'Sin espacios ni guiones']) !!}
 						</div>
 					</div>
 
@@ -117,8 +110,5 @@
 @stop
 
 @section('js')
-	<script type="text/javascript" src="{{ asset('public/assets/components/common/forms/validator/assets/lib/jquery-validation/dist/jquery.validate.js') }}"></script>
-	<script type="text/javascript" src="{{ asset('public/js/ajax.js') }}"></script>
-	<script type="text/javascript" src="{{ asset('public/js/validaciones.js') }}"></script>
 	<script type="text/javascript" src="{{ asset('public/js/citas/citas_agregar.js') }}"></script>
 @stop

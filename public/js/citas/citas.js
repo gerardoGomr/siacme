@@ -2,7 +2,7 @@ $(function() {
 	var $calendario = $('#calendario'),
         date        = new Date(),
         d           = date.getDate(),
-        m           = date.getMonth(),
+        m           = date.getMonth() + 1,
         y           = date.getFullYear(),
         med         = $('#medico').val(),
         fecha       = y + '-' + m + '-' + d,
@@ -98,7 +98,7 @@ $(function() {
 	$calendario.find('span.fc-button-prev').click(function(){
 		verificarFechas();
 		$calendario.fullCalendar('removeEventSource', rutaCitas);
-		fecha = $.fullCalendar.formatDate($('#calendario').fullCalendar('getDate'), 'yyyy-MM-dd');
+		fecha = $.fullCalendar.formatDate($('#calendario').fullCalendar('getDate'), 'yyyy-MM-dd');		
 		rutaCitas = $('#rutaCitas').val() + '/citas/' + btoa(med) + '/' + btoa(fecha);
 		$calendario.fullCalendar('addEventSource', rutaCitas);
 

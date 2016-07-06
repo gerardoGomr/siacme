@@ -508,8 +508,9 @@ class ConsultasController extends Controller
         $plan                 = $request->session()->get('plan');
 
         $reporte = new PlanTratamientoJohanna($plan, $expediente);
-        $reporte->SetMargins(15, PDF_MARGIN_TOP-15);
-        $reporte->SetAutoPageBreak(true, PDF_MARGIN_BOTTOM-15);
+        $reporte->SetHeaderMargin(10);
+        $reporte->SetMargins(15, 50);
+        $reporte->SetAutoPageBreak(true, 20);
         $reporte->generar();
     }
 }

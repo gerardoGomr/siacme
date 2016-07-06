@@ -25,14 +25,16 @@ class RecetaJohanna extends ReporteJohannaPdf
         $this->AddPage();
         $this->Ln(30);
         $this->SetFont('helvetica', '', 12);
+        $this->SetTextColor(60, 60, 60);
         $this->Cell(0, 10, $this->receta->fechaReceta(date('Y-m-d')), 0, 1, 'R');
+        $this->SetTextColor(0);
         $this->Ln(5);
         $this->Cell(0, 5, 'Nombre: '. $this->expediente->getPaciente()->getNombreCompleto(), 0, 1);
         $this->Cell(0, 5, 'Edad: '. $this->expediente->getPaciente()->getEdadAnios(), 0, 1);
         $this->Ln(5);
-        $this->MultiCell(0, 5, utf8_encode($this->receta->getReceta()), 0, 'J');
+        $this->MultiCell(0, 5, ($this->receta->getReceta()), 0, 'J');
         $this->Ln(5);
-
+        $this->Line(10, 50, 200, 50);
         $this->Output('Lista de Citas', 'I');
     }
 }

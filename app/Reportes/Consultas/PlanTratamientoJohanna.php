@@ -24,7 +24,7 @@ class PlanTratamientoJohanna extends ReporteJohannaPdf
         // TODO: Implement generar() method.
         $this->SetTitle('Plan de tratamiento');
         $this->AddPage();
-        $this->Ln(30);
+        //$this->Ln(30);
         $this->SetFont('helvetica', '', 12);
         $this->SetFillColor(178, 178, 178);
         $this->Cell(0, 10, 'Plan de tratamiento', 0, 1, '',1);
@@ -39,9 +39,13 @@ class PlanTratamientoJohanna extends ReporteJohannaPdf
             $otrosTratamientos .= $otroTratamiento->getTratamiento() . ' ($' . (string)number_format($otroTratamiento->getCosto(), 2) . ') - ';
         }
         $html = '
-            <p class="text-medium"><span class="strong">Costo total:</span> <span>$ '.(string) number_format($this->plan->costo(), 2).'</span></p>
-            <p><span class="strong">Otros:</span> <em>' . $otrosTratamientos . '</em></p>
-            <table border="1" cellpading="1" cellspacing="1">
+            <p style="font-size:11pt;">
+                <strong>Costo total:</strong><span>$ '.(string) number_format($this->plan->costo(), 2).'</span>
+            </p>
+            <p style="font-size:11pt;">
+                <strong>Otros:</strong> <em>' . $otrosTratamientos . '</em>
+            </p>
+            <table border="1" cellpadding="2" cellspacing="1">
                 <thead>
                     <tr>
                         <th bgcolor="gray" color="white">Diente</th>

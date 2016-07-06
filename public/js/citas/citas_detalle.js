@@ -45,13 +45,13 @@ $(function() {
                 //window.location.href = $('#urlExpediente').val() + especialidad + $('#idPaciente').val() + '/' + $('#userMedico').val();
                 window.open($('#urlExpediente').val() + especialidad + $('#idPaciente').val() + '/' + $('#userMedico').val(), '_blank', 'scrollbars=yes')
             });
+        } else {
+            bootbox.confirm('Se registrará la llegada del paciente al consultorio, ¿Desea continuar?', function(event) {
+                if(event === true) {
+                    actualizarCitas($urlEstatus.val(), $idCita.val(), 3, _token);
+                }
+            });
         }
-
-        bootbox.confirm('Se registrará la llegada del paciente al consultorio, ¿Desea continuar?', function(event) {
-            if(event === true) {
-                actualizarCitas($urlEstatus.val(), $idCita.val(), 3, _token);
-            }
-        });
     });
 
     // ver expediente una vez capturado
@@ -116,7 +116,7 @@ function actualizarCitas(url, idCita, idEstatus, _token)
          // se actualizo estatus
         bootbox.alert('Cita actualizada con éxito', function() {
             // actualizar pantalla
-            $('#dvOpciones').html(atob(resultado.html));
+            window.location.reload(true);
         });
     })
     .fail(function(XMLHttpRequest, textStatus, errorThrown) {

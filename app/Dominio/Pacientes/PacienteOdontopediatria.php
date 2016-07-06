@@ -1,6 +1,8 @@
 <?php
 namespace Siacme\Dominio\Pacientes;
 
+use Illuminate\Support\Collection;
+
 /**
  * Class PacienteOdontopediatria
  * @package Siacme\Dominio\Pacientes
@@ -589,12 +591,21 @@ class PacienteOdontopediatria extends Paciente
     protected $atm;
 
     /**
+     * @var Collection
+     */
+    protected $listaTratamientosOdontologicos;
+
+    /**
      * PacienteOdontopediatria constructor.
      * @param int|null $id
      */
     public function __construct($id = null)
     {
         parent::__construct($id);
+
+        if (is_null($this->listaTratamientosOdontologicos)) {
+            $this->listaTratamientosOdontologicos = new Collection();
+        }
     }
 
     /**

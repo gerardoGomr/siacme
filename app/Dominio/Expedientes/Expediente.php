@@ -68,6 +68,11 @@ class Expediente
 	protected $listaConsultas;
 
 	/**
+	 * @var Collection
+	 */
+	protected $listaTratamientoOdontologia;
+
+	/**
 	 * Expediente constructor.
 	 * @param null $id
 	 */
@@ -89,6 +94,10 @@ class Expediente
 
 		if (is_null($this->listaConsultas)) {
 			$this->listaConsultas = new Collection();
+		}
+
+		if (is_null($this->listaTratamientoOdontologia)) {
+			$this->listaTratamientoOdontologia = new Collection();
 		}
 	}
 
@@ -338,6 +347,14 @@ class Expediente
 	public function agregarConsulta(Consulta $consulta)
 	{
 		$this->listaConsultas->push($consulta);
+	}
+
+	/**
+	 * @param TratamientoOdontologia $tratamiento
+	 */
+	public function agregarTratamientoOdontologia(TratamientoOdontologia $tratamiento)
+	{
+		$this->listaTratamientoOdontologia->push($tratamiento);
 	}
 
 	/**

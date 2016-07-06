@@ -17,6 +17,11 @@ $(function() {
 		$btnPacienteNuevo  = $('#btnPacienteNuevo'),
 		_token			   = $('input[name="_token"]').val();
 
+	// focus
+	setTimeout(function (argument) {
+		$txtNombreBusqueda.focus();
+	}, 500);
+
 	// inicializar validaciones
 	init();
 
@@ -102,8 +107,6 @@ $(function() {
 				agendarCita(data, $formCita.attr('action'));
 			}
 		});
-
-		//
 	});
 });
 
@@ -116,7 +119,6 @@ function agendarCita(data, url)
 
 		// verificar resultado
 		if(resultado === '1') {
-
 			bootbox.alert('Cita agendada con éxito', function() {
 				// refresh events
 				window.opener.recargarCitas();

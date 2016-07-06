@@ -185,14 +185,14 @@
 					<div class="col-xs-6">
 						<div class="form-group">
 							{!! Form::label('txtPediatra', 'Nombre del pediatra:', ['class' => 'control-label']) !!}
-							{!! Form::text('txtPediatra', null, ['class' => 'required form-control']) !!}
+							{!! Form::text('txtPediatra', null, ['class' => 'form-control']) !!}
 						</div>
 					</div>
 
 					<div class="col-xs-6">
 						<div class="form-group">
 							{!! Form::label('txtRecomienda', '¿Quién lo recomienda?:', ['class' => 'control-label']) !!}
-							{!! Form::text('txtRecomienda', null, ['class' => 'required form-control']) !!}
+							{!! Form::text('txtRecomienda', null, ['class' => 'form-control']) !!}
 						</div>
 					</div>
 
@@ -209,10 +209,6 @@
 							{!! Form::textarea('txtHistoriaEnfermedad', null, ['class' => 'required form-control', 'rows' => '6']) !!}
 						</div>
 					</div>
-				</div>
-
-				<div class="form-group">
-					<a href="javascript:;" title="Guardar>>" class="guardar btn btn-primary"><i class="fa fa-save"></i> Guardar</a>
 				</div>
 			</div>
 		</div>

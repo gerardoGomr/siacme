@@ -1,9 +1,5 @@
 @extends('app')
 
-@section('css')
-	<link rel="stylesheet" type="text/css" href="{{ asset('public/assets/components/modules/admin/modals/assets/css/jquery.fancybox.css') }}">
-@stop
-
 @section('contenido')
 	<div class="row row-app">
 		<div class="col-md-12">
@@ -107,7 +103,24 @@
 												<input type="hidden" name="idPaciente" id="idPaciente" value="{{ base64_encode($expediente->getPaciente()->getId()) }}">
 
 												<input type="hidden" name="generoReceta" id="generoReceta" value="0">
+												<input type="hidden" name="primeraVez" id="primeraVez" value="{{ $expediente->primeraVez() ? '1' : '0' }}">
 												<input type="hidden" name="generoPlan" id="generoPlan" value="0">
+												<input type="hidden" name="atendido" id="atendido" value="<?php 
+													if($expediente->tienePlanesTratamiento()) {
+														$atendido = true;
+														foreach($expediente->getListaPlanesTratamiento() as $plan) {
+															if (!$plan->atendido()) {
+																$atendido = false;
+															}
+														}
+
+														if ($atendido) {
+															echo '1';
+														} else {
+															echo '0';
+														}
+													}
+												?>">
 												<input type="hidden" name="generoInterconsulta" id="generoInterconsulta" value="0">
 												<input type="hidden" name="idCita" id="idCita" value="{{ $idCita }}">
 												<input type="hidden" id="url" value="{{ url('consultas') }}">
@@ -125,10 +138,5 @@
 @stop
 
 @section('js')
-	<script type="text/javascript" src="{{ asset('public/assets/components/common/forms/validator/assets/lib/jquery-validation/dist/jquery.validate.js') }}"></script>
-	<script type="text/javascript" src="{{ asset('public/assets/components/common/forms/validator/assets/lib/jquery-validation/dist/additional-methods.js') }}"></script>
-	<script type="text/javascript" src="{{ asset('public/assets/components/modules/admin/modals/assets/js/jquery.fancybox.js') }}"></script>
-	<script type="text/javascript" src="{{ asset('public/js/validaciones.js') }}"></script>
-	<script type="text/javascript" src="{{ asset('public/js/ajax.js') }}"></script>
-	<script type="text/javascript" src="{{ asset('public/js/consultas/consultas_odontopediatria_capturar.js') }}"></script>
+	<script src="{{ asset('public/js/consultas/consultas_odontopediatria_capturar.js') }}"></script>
 @stop

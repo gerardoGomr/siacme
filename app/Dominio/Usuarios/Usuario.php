@@ -40,6 +40,11 @@ class Usuario extends Persona
 	 */
 	protected $registrado;
 
+	/**
+	 * @var string
+	 */
+	protected $fechaCreacion;
+
 	public function __construct($username = '')
 	{
 		$this->username = $username;
@@ -106,6 +111,22 @@ class Usuario extends Persona
     public function setRegistrado($registrado)
     {
         $this->registrado = $registrado;
+    }
+
+    /**
+     * @param string
+     */
+    public function setFechaCreacion($fechaCreacion)
+    {
+    	$this->fechaCreacion = $fechaCreacion;
+    }
+
+    /**
+     * @return string
+     */
+    public function getFechaCreacion()
+    {
+    	return $this->fechaCreacion;
     }
 
     /**

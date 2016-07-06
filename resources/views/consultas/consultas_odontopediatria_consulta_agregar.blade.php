@@ -43,7 +43,7 @@
 							<div class="col-lg-4 col-md-6">
 								<div class="form-group">
 									<label class="control-label">Pulso:</label>
-									<input type="text" name="txtPulso" id="txtPulso" value="" placeholder="" class="required form-control">
+									<input type="text" name="txtPulso" id="txtPulso" value="" placeholder="" class="form-control">
 								</div>
 							</div>
 
@@ -81,7 +81,7 @@
 						@foreach ($listaComportamientosFrankl as $comportamientoFrankl)
 							<div class="radio">
 								<label>
-									<input type="radio" name="comportamientoFrankl" value="{{ $comportamientoFrankl->getId() }}"> {{ $comportamientoFrankl->getComportamientoFrankl() }}
+									<input type="radio" name="comportamientoFrankl" value="{{ $comportamientoFrankl->getId() }}" class="required"> {{ $comportamientoFrankl->getComportamientoFrankl() }}
 								</label>
 							</div>
 						@endforeach

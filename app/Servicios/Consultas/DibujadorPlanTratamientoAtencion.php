@@ -51,11 +51,23 @@ class DibujadorPlanTratamientoAtencion implements DibujadorInterface
         foreach ($this->planTratamiento->getListaDientes() as $diente) {
             $dientePlan1 = $dientePlan2 = null;
             $accion      = ' -- ';
+            $atendido    = false;
+
             if (!is_null($diente->getListaTratamientos())) {
                 $dientePlan1 = $diente->getListaTratamientos()->get('1')->getDienteTratamiento()->getTratamiento();
                 $dientePlan2 = !is_null($diente->getListaTratamientos()->get('2')) ? $diente->getListaTratamientos()->get('2')->getDienteTratamiento()->getTratamiento() : ' -- ';
 
-                $accion = '<label><input type="checkbox" name="dienteAtendido[]" value="'. $diente->getNumero() .'" class="tratamiento" data-costo=""><input type="hidden" value="'. $diente->costoTratamientos() .'"> Atendido</label>';
+                $atendido = $diente->getListaTratamientos()->get('1')->atendido();
+                if (!is_null($diente->getListaTratamientos()->get('2'))) {
+                    $atendido = $diente->getListaTratamientos()->get('2')->atendido();
+                }
+
+                $accion = '<label><input type="checkbox" name="dienteAtendido[]" value="'. $diente->getNumero() .'" class="tratamiento" data-costo=""><input type="hidden" value="'. $diente->costoTratamientos() .'"> Dar atención</label>';
+
+                if ($atendido) {
+                    $accion = '<span class="strong">Atendido</span>';
+                }
+
             } else {
                 $dientePlan1 = $dientePlan2 = ' -- ';
             }

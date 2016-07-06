@@ -25,9 +25,11 @@
         </div>
         <div class="col-md-9 col-sm-12 border-left">
             <div class="innerAll">
-                <a href="javascript:;" id="btnAceptar" class="btn btn-success btn-lg pull-right"><i class="fa fa-check"></i> Aceptar</a>
-                <a href="{{ url("consultas/plan/$userMed/$idPaciente") }}" id="generarPlan" class="btn btn-success pull-right" disabled="disabled" target="_blank"><i class="fa fa-print"></i> Generar</a>
+                <a href="javascript:;" id="btnAceptar" class="btn btn-success"><i class="fa fa-check"></i> Aceptar</a>
+
+                <a href="{{ url("consultas/plan/$userMed/$idPaciente") }}" id="generarPlan" class="btn btn-success" disabled="disabled" target="_blank"><i class="fa fa-print"></i> Generar PDF</a>
             </div>
+            <div class="separator"></div>
             <div class="innerAll" id="dvPlanTratamiento">
                 {!! $dibujadorPlan->dibujar() !!}
             </div>
@@ -39,6 +41,5 @@
 @stop
 
 @section('js')
-    <script src="{{ asset('public/js/ajax.js') }}"></script>
     <script src="{{ asset('public/js/consultas/consultas_plan_tratamiento.js') }}"></script>
 @stop

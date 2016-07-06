@@ -102,6 +102,11 @@ $(function() {
 	// guardar formulario otros tratamientos
 	$('#guardarFormOtros').on('click', function(event) {
 		if ($formOtroTratamiento.valid() === true) {
+			if (!$formOtroTratamiento.find('input[name="ortodoncia"]').is(':checked') && !$formOtroTratamiento.find('input[name="ortopedia"]').is(':checked')) {
+				bootbox.alert('Por favor, seleccione al menos un tipo de tratamiento');
+				return false;
+			}
+
 			// guardar
 			var respuesta = ajax($formOtroTratamiento.attr('action'), 'post', 'html', $formOtroTratamiento.serialize(), 'guardar');
 			respuesta.done(function(respuesta){

@@ -66,7 +66,5 @@
 @stop
 
 @section('js')
-	<script type="text/javascript" src="{{ asset('public/js/ajax.js') }}"></script>
-	<script type="text/javascript" src="{{ asset('public/js/validaciones.js') }}"></script>
 	<script type="text/javascript" src="{{ asset('public/js/citas/citas_detalle.js') }}"></script>
 @stop

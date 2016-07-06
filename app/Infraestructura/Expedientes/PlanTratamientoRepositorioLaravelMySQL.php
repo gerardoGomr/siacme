@@ -3,6 +3,7 @@ namespace Siacme\Infraestructura\Expedientes;
 use Illuminate\Support\Collection;
 use Siacme\Dominio\Consultas\DientePlan;
 use Siacme\Dominio\Consultas\PlanTratamiento;
+use Siacme\Dominio\Consultas\OtroTratamiento;
 use DB;
 use Siacme\Dominio\Pacientes\Diente;
 use Siacme\Dominio\Pacientes\DientePadecimiento;
@@ -130,6 +131,20 @@ class PlanTratamientoRepositorioLaravelMySQL implements PlanTratamientoRepositor
                     }
                     //if($dientes->Numero === 18) { dd($dienteActual); }
                     $listaDientes->push($dienteActual);
+                }
+
+                // otros tratamientos
+                $otrosTratamientos = DB::table('plan_tratamiento_otros')
+                    ->join('plan_otro_tratamiento', 'plan_otro_tratamiento.idOtroTratamiento', '=', 'plan_tratamiento_otros.idOtroTratamiento')
+                    ->where('plan_tratamiento_otros.idPlanTratamiento', $plan->getId())
+                    ->get();
+
+                if (count($otrosTratamientos) > 0) {
+                    foreach ($otrosTratamientos as $otrosTratamientos) {
+                        $otroTratamiento = new OtroTratamiento($otrosTratamientos->idOtroTratamiento, $otrosTratamientos->OtroTratamiento, $otrosTratamientos->Costo);
+
+                        $plan->agregarOtroTratamiento($otroTratamiento->getId(), $otroTratamiento);
+                    }
                 }
 
                 $plan->setCosto($planes->Costo);

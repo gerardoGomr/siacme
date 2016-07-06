@@ -38,7 +38,7 @@ class CitasController extends Controller
     }
 
     /**
-     * @param string                       $username
+     * @param string $username
      * @param UsuariosRepositorioInterface $usuariosRepositorio
      * @return View
      */
@@ -61,9 +61,15 @@ class CitasController extends Controller
      */
     public function agregar(Request $request, $fecha, $hora, $medico)
     {
+        list($anio, $mes, $dia) = explode('-', base64_decode($fecha));
+
+        if ((int)$mes < 10) {
+            $mes = '0' . $mes;
+        }
+
         return view('citas.citas_agregar')->with([
             'modo'   => 'agregar',
-            'fecha'  => base64_decode($fecha),
+            'fecha'  => $anio . '-' . $mes . '-' . $dia,
             'hora'   => base64_decode($hora),
             'medico' => $medico
         ]);

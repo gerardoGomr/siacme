@@ -8,6 +8,10 @@
             </div>
             <div class="modal-body" style="max-height: 500px; overflow-y: scroll;">
                 <div class="form-group">
+                    <a href="{{ url('consultas/capturar/diente/padecimiento') }}" class="btn btn-success" id="btnGuardarPadecimientoDental"><i class="fa fa-check"></i> Aceptar</a>
+                    <input type="hidden" name="diente" id="diente" value="">
+                </div>
+                <div class="form-group">
                     @foreach($listaPadecimientos as $dientePadecimiento)
                         <div class="checkbox">
                             <label>
@@ -15,10 +19,6 @@
                             </label>
                         </div>
                     @endforeach
-                </div>
-                <div class="form-group">
-                    <a href="{{ url('consultas/capturar/diente/padecimiento') }}" class="btn btn-success" id="btnGuardarPadecimientoDental"><i class="fa fa-check"></i> Aceptar</a>
-                    <input type="hidden" name="diente" id="diente" value="">
                 </div>
             </div>
         </div>

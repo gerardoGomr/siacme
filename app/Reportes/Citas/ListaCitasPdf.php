@@ -43,7 +43,7 @@ class ListaCitasPdf extends ReporteJohannaPdf
         $this->AddPage();
         $this->Ln(30);
         $this->SetFont('helvetica', 'B', 12);
-        $this->SetTextColor(36, 197, 173);
+        $this->SetTextColor(60, 60, 60);
         $this->Cell(0, 10, 'REPORTE DE PACIENTES CITADOS DEL DÍA ' . $this->fecha, 0, true);
         $this->SetTextColor(0);
         $this->Ln(5);

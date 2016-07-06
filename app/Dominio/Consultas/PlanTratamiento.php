@@ -73,6 +73,10 @@ class PlanTratamiento
 	 */
 	public function costo()
 	{
+		if (!is_null($this->costo)) {
+			return $this->costo;
+		}
+		
 		$this->calcularCosto();
 		return $this->costo;
 	}
